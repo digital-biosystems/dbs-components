@@ -1,0 +1,89 @@
+{
+  "name": "dbs-components",
+  "description": "An Aurelia 2 plugin.",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "???"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@aurelia/router": "latest",
+    "@aurelia/web-components": "^2.0.0-beta.25",
+    "aurelia": "latest",
+    "chart.js": "^4.5.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-chart-geo": "^4.3.4",
+    "date-fns": "^4.1.0",
+    "iso-3166-1": "^2.1.1"
+  },
+  "devDependencies": {
+    "@aurelia/babel-jest": "latest",
+    "@aurelia/testing": "latest",
+    "@aurelia/webpack-loader": "latest",
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/plugin-proposal-decorators": "^7.25.9",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.26.0",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "html-webpack-plugin": "^5.6.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-stub": "^2.0.0",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard": "^36.0.1",
+    "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "scripts": {
+    "lint:js": "eslint src test",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint": "npm run lint:js && npm run lint:css",
+    "pretest": "npm run lint",
+    "start": "webpack serve",
+    "build": "webpack --env production;cp dist/* test/",
+    "analyze": "webpack --env production --analyze",
+    "test": "jest",
+    "prepare": "npm run build"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/test/**/*.spec.js"
+    ],
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./test/setup.js"
+    ],
+    "transform": {
+      "\\.(css|sass|scss|styl|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub",
+      "\\.(js|html)$": [
+        "@aurelia/babel-jest",
+        {
+          "defaultShadowOptions": {
+            "mode": "open"
+          }
+        }
+      ]
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}
