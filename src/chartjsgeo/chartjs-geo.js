@@ -2,6 +2,7 @@ import { Chart, registerables } from "chart.js/auto";
 import { bindable, observable } from 'aurelia';
 import { geoOrthographic, topojson, ChoroplethController, GeoFeature, ProjectionScale, ColorScale } from "chartjs-chart-geo";
 import { whereAlpha2 } from 'iso-3166-1';
+import { Chartjs3Base } from "../chartjs/chartjs3-base";
 import countriesData from './countries-50m.json';
 import mydata from './mydata.json';
 
@@ -11,7 +12,7 @@ import mydata from './mydata.json';
 const removeFirstHash = str => str.startsWith('#') ? str.slice(1) : str;
 
 @customElement('dbs-chartjs-geo')
-export class ChartjsGeo {
+export class ChartjsGeo extends Chartjs3Base {
     @bindable datasrc = '';
     @bindable countriessrc = '';
     @bindable continent;
@@ -97,7 +98,8 @@ export class ChartjsGeo {
 //        console.log(this.selected)
     }
 
-    bound(){        
+    bound(){  
+        super.bound();      
         // Get location of data src from url hash
         this.paramshash = window.location.hash
         this.params = this.paramshash.split('&');
@@ -125,7 +127,7 @@ export class ChartjsGeo {
   }, { delay: 100 });
   */
 
-        Chart.register(ChoroplethController, GeoFeature, ProjectionScale, ColorScale, ...registerables);
+        //Chart.register(ChoroplethController, GeoFeature, ProjectionScale, ColorScale, ...registerables);
         if (this.datasrc && this.countriessrc) {
             console.log('fetching data from',this.datasrc,this.countriessrc);
             Promise.all([

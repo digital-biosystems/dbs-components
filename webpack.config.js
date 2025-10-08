@@ -47,8 +47,8 @@ module.exports = function (env, { analyze }) {
     mode: production ? 'production' : 'development',
     devtool: production ? undefined : 'eval-source-map',
     optimization: {
-      minimize: false,
-      /*minimizer: [
+      //minimize: false,
+      minimizer: [
         new TerserPlugin({
           terserOptions: {
             // Terser fast minify mode
@@ -58,7 +58,7 @@ module.exports = function (env, { analyze }) {
             compress: false
           },
         }),
-      ],*/
+      ],
  splitChunks: {
     chunks: chunk => {
       // Exclude the 'bundle' chunk from splitChunks processing

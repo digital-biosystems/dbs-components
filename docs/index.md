@@ -15,11 +15,22 @@ version: 0.1<br/>Note that the components are in heavy development stage thus so
 
 ## Usage
 
-The web components are framework agnostic. They introduce standard 'custom-element' that enhance HTML vocabulary.
+The web components are framework agnostic. They introduce standard custom elements that enhance HTML vocabulary.
 
-1. download local copy of `dbs-components.js` 
-2. include the script module that defines behavior of the web component's custom element: 
+### single bundle with all components
+
+1. download local copy of `dbs-bundle.js` 
+2. include the script that defines behavior of the web component's custom element: 
 ```html
-<script src="dvs-components.js"></script>
+<script src="dbs-bundle.js"></script>
 ```
-3. use the web components custom element in the HTML body in Markdown e.g.:
+3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
+
+### multiple bundles with selected components
+1. download local copy of `dbs-shared.js` and `dbs-[some-component].js`
+2. include the script that defines behavior of the web component's custom element: 
+```html
+<script src="dbs-shared.js"></script>
+<script src="dbs-[some-component].js"></script>
+```
+3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`

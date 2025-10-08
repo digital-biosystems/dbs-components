@@ -1,13 +1,15 @@
 import { Chart, registerables } from "chart.js/auto";
 import 'chartjs-adapter-date-fns';
+//import annotationPlugin from 'chartjs-plugin-annotation';
 import { bindable, customElement } from "aurelia";
+import { Chartjs3Base } from "./chartjs3-base";
 import mydata from './mydata.json';
 
 //Chart.register(...registerables);
 @customElement('dbs-chartjs3')
-export class Chartjs3 {
+export class Chartjs3 extends Chartjs3Base {
     constructor() {
-
+        super();
     }
     attached() {
         console.log('chartjs attached');
@@ -25,6 +27,7 @@ export class Chartjs3 {
         const data12 = mydata.slice(1).map(row => row[6]);
 
         const ctx = this.mychart.getContext('2d');
+        //Chart.register(annotationPlugin, ...registerables);
         this.chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -115,7 +118,51 @@ export class Chartjs3 {
                             text: 'predicted drug concentration [g/L]'
                         }
                     }
+                },
+                plugins: {
+                    legend:{
+                        labels:{
+                            boxWidth:8,
+                            padding:0,
+                            font:{size:8}
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 0.012,
+                                yMax: 0.012,
+                                borderColor: 'rgba(255, 99, 99, 1)',
+                                borderWidth: 1,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: 'toxic level',
+                                    display: true,
+                                    position: 'start',
+                                    backgroundColor: 'rgba(0,0,0,0.4)',
+                                    
+                                }
+                            },
+                            line2: {
+                                type: 'line',
+                                yMin: 0.005,
+                                yMax: 0.005,
+                                borderColor: 'rgba(99, 154, 255, 1)',
+                                borderWidth: 1,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: 'therapeutic level',
+                                    display: true,
+                                    position: 'end',
+                                    backgroundColor: 'rgba(0,0,0,0.4)',
+                                    
+                                }
+                            }
+                        }
+                    }
                 }
+                            
             }
         });
         //console.log('data', data0);

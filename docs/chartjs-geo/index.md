@@ -10,6 +10,13 @@ nav_order: 2
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
+
+## Example
+
+`<dbs-chartjs-geo></dbs-chartjs-geo>`
+
+<dbs-chartjs-geo></dbs-chartjs-geo>
+
 ## Features
 
 - Supports GeoJSON data
@@ -22,7 +29,7 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 Include the component in your HTML file:
 
 ```html
-<script type="module" src="path/to/chartjs-geo.js"></script>
+<script src="path/to/chartjs-geo.js"></script>
 ```
 Place the web component whenever a geochart is needed to be rendered
 ```html

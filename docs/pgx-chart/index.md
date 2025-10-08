@@ -4,12 +4,18 @@ layout: home
 nav_order: 2
 ---
 
-# `<dbs-pgx-chart>` Web Component
+# `<dbs-pgxchart>` Web Component
 
-`dbs-pgx-chart` is a customizable web component for rendering interactive pharmacogenomic charts in web applications.
+`dbs-pgxchart` is a customizable web component for rendering interactive pharmacogenomic charts in web applications.
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
+## Example
+
+`<dbs-pgxchart></dbs-pgxchart>`
+
+<dbs-pgxchart></dbs-pgxchart>
+
 ## Features
 
 - Responsive design
@@ -22,17 +28,17 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 Include the component in your HTML file:
 
 ```html
-<script type="module" src="path/to/dbs-pgxchart.js"></script>
+<script src="path/to/dbs-pgxchart.js"></script>
 ```
 
 Place the custom element
 ```html
-<dbs-pgx-chart
+<dbs-pgxchart
     type="line"
     data='[{"x":1,"y":10},{"x":2,"y":20}]'
     labels='["Jan", "Feb"]'
     color="#3498db">
-</dbs-pgx-chart>
+</dbs-pgxchart>
 ```
 
 ## Attributes

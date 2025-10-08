@@ -10,6 +10,12 @@ The `<dbs-hello-world>` web component displays a simple greeting message. It can
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
+
+## Demo
+`<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
+
+<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>
+
 ## Features
 
 - Customizable greeting text
@@ -21,7 +27,7 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 Include the component in your HTML file:
 
 ```html
-<script type="module" src="path/to/hello-world.js"></script>
+<script src="path/to/hello-world.js"></script>
 ```
 
 Place the custom element

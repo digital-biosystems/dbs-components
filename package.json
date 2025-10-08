@@ -18,6 +18,7 @@
     "chart.js": "^4.5.0",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-chart-geo": "^4.3.4",
+    "chartjs-plugin-annotation": "^3.1.0",
     "date-fns": "^4.1.0",
     "iso-3166-1": "^2.1.1"
   },
@@ -57,7 +58,7 @@
     "lint": "npm run lint:js && npm run lint:css",
     "pretest": "npm run lint",
     "start": "webpack serve",
-    "build": "webpack --env production;cp dist/* test/",
+    "build": "webpack --env production;cp dist/* test/;cp dist/dbs-bundle.js docs/assets/js/",
     "analyze": "webpack --env production --analyze",
     "test": "jest",
     "prepare": "npm run build"
