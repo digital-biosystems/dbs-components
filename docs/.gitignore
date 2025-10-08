@@ -1,0 +1,11 @@
+# Ignore site output
+_site/
+site/
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# Jekyll/GitHub Pages cache and temp
+.jekyll-cache/
+.jekyll-metadata

@@ -26,10 +26,16 @@ module.exports = function (env, { analyze }) {
 
   const entry = production
     ? {
-      helloworld: './src/helloworld/index.js',
-      chartjsgeo: './src/chartjsgeo/index.js',
-      chartjs: './src/chartjs/index.js',
-      pgxchart: './src/pgxchart/index.js',
+      'dbs-helloworld': './src/helloworld/index.js',
+      'dbs-chartjsgeo': './src/chartjsgeo/index.js',
+      'dbs-chartjs': './src/chartjs/index.js',
+      'dbs-pgxchart': './src/pgxchart/index.js',  
+      'dbs-bundle': [
+        './src/helloworld/index.js',
+        './src/chartjsgeo/index.js',
+        './src/chartjs/index.js',
+        './src/pgxchart/index.js'
+      ]    
     }
     : {
       entry: './dev-app/main.js'
@@ -41,8 +47,8 @@ module.exports = function (env, { analyze }) {
     mode: production ? 'production' : 'development',
     devtool: production ? undefined : 'eval-source-map',
     optimization: {
-
-      minimizer: [
+      minimize: false,
+      /*minimizer: [
         new TerserPlugin({
           terserOptions: {
             // Terser fast minify mode
@@ -52,12 +58,30 @@ module.exports = function (env, { analyze }) {
             compress: false
           },
         }),
-      ],
-      splitChunks: {
-        chunks: 'all', // split all types of chunks (async & initial)
-        name: 'shared',  // this will create shared.js with common modules
-        minChunks: 2,   // included in shared chunk if used in 2+ entries
+      ],*/
+ splitChunks: {
+    chunks: chunk => {
+      // Exclude the 'bundle' chunk from splitChunks processing
+      if (chunk.name === 'dbs-bundle') {
+        return false; // exclude 'bundle' chunk
       }
+      return true; // include other chunks
+    },
+    name: 'dbs-shared',
+    minChunks: 2,
+    cacheGroups: {
+      default: false, // disable defaults if you want full control
+      vendors: false,
+      common: {
+        name: 'dbs-shared',
+        chunks: chunk => chunk.name !== 'dbs-bundle',
+        minChunks: 2,
+        priority: 10,
+        reuseExistingChunk: true,
+        enforce: true
+      }
+    }
+  }
     },
     entry,//: {
     // Build only plugin in production mode,
