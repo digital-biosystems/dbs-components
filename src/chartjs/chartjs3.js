@@ -14,6 +14,11 @@ export class Chartjs3 extends Chartjs3Base {
     constructor() {
         super();
     }
+    bound(){
+        super.bound();
+        if(typeof this.therapLevel === "string") this.therapLevel=parseFloat(this.therapLevel);
+        if(typeof this.toxicLevel === "string") this.toxicLevel=parseFloat(this.toxicLevel);
+    }
 
     attached() {
         console.log('chartjs attached');
@@ -135,8 +140,8 @@ export class Chartjs3 extends Chartjs3Base {
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: 0.012,
-                                yMax: 0.012,
+                                yMin: this.toxicLevel,
+                                yMax: this.toxicLevel,                                
                                 borderColor: 'rgba(255, 99, 99, 1)',
                                 borderWidth: 1,
                                 borderDash: [6, 6],
@@ -150,8 +155,8 @@ export class Chartjs3 extends Chartjs3Base {
                             },
                             line2: {
                                 type: 'line',
-                                yMin: 0.005,
-                                yMax: 0.005,
+                                yMin: this.therapLevel,
+                                yMax: this.therapLevel,
                                 borderColor: 'rgba(99, 154, 255, 1)',
                                 borderWidth: 1,
                                 borderDash: [6, 6],
