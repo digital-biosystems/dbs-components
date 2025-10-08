@@ -8,9 +8,13 @@ import mydata from './mydata.json';
 //Chart.register(...registerables);
 @customElement('dbs-chartjs3')
 export class Chartjs3 extends Chartjs3Base {
+    @bindable therapLevel = 0.005;
+    @bindable toxicLevel = 0.012;
+
     constructor() {
         super();
     }
+
     attached() {
         console.log('chartjs attached');
         // Extract labels (time column), skipping header
@@ -55,7 +59,7 @@ export class Chartjs3 extends Chartjs3Base {
                     data: data12,
                     pointRadius: 0,
                     //pointHoverRadius: 0,
-                },{
+                }, {
                     label: 'normal',
                     backgroundColor: 'rgba(99, 102, 255, 1)',
                     borderColor: 'rgb(99, 102, 255)',
@@ -81,7 +85,7 @@ export class Chartjs3 extends Chartjs3Base {
                 }]
             },
             options: {
-                responsive:true,
+                responsive: true,
                 interaction: {
                     mode: 'index',
                     intersect: false,
@@ -120,11 +124,11 @@ export class Chartjs3 extends Chartjs3Base {
                     }
                 },
                 plugins: {
-                    legend:{
-                        labels:{
-                            boxWidth:8,
-                            padding:0,
-                            font:{size:8}
+                    legend: {
+                        labels: {
+                            boxWidth: 8,
+                            padding: 0,
+                            font: { size: 8 }
                         }
                     },
                     annotation: {
@@ -141,7 +145,7 @@ export class Chartjs3 extends Chartjs3Base {
                                     display: true,
                                     position: 'start',
                                     backgroundColor: 'rgba(0,0,0,0.4)',
-                                    
+
                                 }
                             },
                             line2: {
@@ -156,15 +160,37 @@ export class Chartjs3 extends Chartjs3Base {
                                     display: true,
                                     position: 'end',
                                     backgroundColor: 'rgba(0,0,0,0.4)',
-                                    
+
                                 }
                             }
                         }
                     }
                 }
-                            
+
             }
         });
         //console.log('data', data0);
+    }
+
+    therapLevelChanged(newVal, oldVal) {
+        console.log('Value changed');
+        if (this.chart && this.chart.options.plugins && this.chart.options.plugins.annotation) {
+            this.chart.options.plugins.annotation.annotations.line2.yMin = newVal;
+            this.chart.options.plugins.annotation.annotations.line2.yMax = newVal;
+            this.chart.update();
+        } else {
+            console.warn('Chart or annotation line2 not found');
+        }
+    }
+
+    toxicLevelChanged(newVal, oldVal) {
+        console.log('Value changed');
+        if (this.chart && this.chart.options.plugins && this.chart.options.plugins.annotation) {
+            this.chart.options.plugins.annotation.annotations.line1.yMin = newVal;
+            this.chart.options.plugins.annotation.annotations.line1.yMax = newVal;
+            this.chart.update();
+        } else {
+            console.warn('Chart or annotation line1 not found');
+        }
     }
 }

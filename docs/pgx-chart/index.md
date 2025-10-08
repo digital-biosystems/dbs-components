@@ -34,10 +34,8 @@ Include the component in your HTML file:
 Place the custom element
 ```html
 <dbs-pgxchart
-    type="line"
-    data='[{"x":1,"y":10},{"x":2,"y":20}]'
-    labels='["Jan", "Feb"]'
-    color="#3498db">
+    toxicLevel="0.012"
+    therapLevel="0.005">
 </dbs-pgxchart>
 ```
 
@@ -45,10 +43,8 @@ Place the custom element
 
 | Attribute | Type   | Description                       |
 |-----------|--------|-----------------------------------|
-| `type`    | string | Chart type (`line`, `bar`, `pie`) |
-| `data`    | array  | Chart data in JSON format         |
-| `labels`  | array  | Labels for data points            |
-| `color`   | string | Primary color for chart           |
+| `toxicLevel` | string | toxic level `0.012` |
+| `therapLevel`| string | therapeutic level `0.005` |
 
 ## Events
 
@@ -58,24 +54,4 @@ Place the custom element
 
 - `updateData(data)`: Updates chart data dynamically.
 
-## Example
 
-```html
-<dbs-pgx-chart
-    type="bar"
-    data='[{"x":"A","y":5},{"x":"B","y":15}]'
-    labels='["A", "B"]'
-    color="#e74c3c">
-</dbs-pgx-chart>
-```
-
-## Styling
-
-Customize with CSS:
-
-```css
-dbs-pgx-chart {
-    width: 100%;
-    height: 400px;
-}
-```
