@@ -1,0 +1,62 @@
+# .github/workflows/jekyll-gh-pages.yml
+
+name: Build and Deploy Jekyll Site
+
+on:
+  push:
+    branches: ["release"]
+    paths:
+      - 'docs/**'  # Trigger only if changes are made within the docs/ directory
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # Include if your project uses submodules
+
+      # Step 2: Set up Ruby environment
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'       # Specify your Ruby version
+          bundler-cache: true       # Automatically caches installed gems
+          cache-version: 0          # Increment if you need to reset the cache
+
+      # Step 3: Install Dependencies
+      - name: Install Dependencies
+        working-directory: ./docs    # Navigate to the docs/ directory
+        run: |
+          bundle install             # Install gems as specified in Gemfile
+
+      # Step 4: Build the Jekyll Site
+      - name: Build with Jekyll
+        working-directory: ./docs    # Ensure Jekyll builds from docs/
+        run: |
+          bundle exec jekyll build    # Build the site, outputting to docs/_site by default
+        env:
+          JEKYLL_ENV: production
+
+      # Step 5: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_site    # Points to the built site
+          publish_branch: gh-pages     # The branch to deploy to
+          force_orphan: true           # Creates a new branch without history
+          keep_files: false            # Removes existing files before deploying
