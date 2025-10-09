@@ -1,0 +1,13 @@
+title: Web Components for Digital BioSystems
+description: Documentation for web components
+theme: just-the-docs
+baseurl: /dbs-webcomponents
+url: https://digital-biosystems.github.io
+
+aux_links:
+  source codes: https://github.com/digital-biosystems/dbs-components
+callouts:
+  note:
+    color: yellow
+extra_head: |
+  <script src="dbs-bundle.js"></script>
