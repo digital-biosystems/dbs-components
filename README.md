@@ -6,15 +6,21 @@ This project is bootstrapped by [aurelia/new](https://github.com/aurelia/new).
 
     npm start
 
-Note this plugin project comes with a dev-app. The above command starts the dev app in `dev-app/` folder. The plugin source code is in `src/` folder.
+Note this web components project comes with a dev-app. The above command starts the dev app in `dev-app/` folder. The web components source code is in `src/` folder.
 
-## Build the plugin in production modern
+## Build the production
 
     npm run build
 
-It builds plugin into `dist/index.js` file.
+It builds web components into `dist/` directory.
 
-Note when you do `npm publish` or `npm pack` to prepare the plugin package, it automatically run the above build command by the `prepare` script defined in your package.json `"scripts"` section.
+Note when you do `npm publish` or `npm pack` to prepare the web components package, it automatically run the above build command by the `prepare` script defined in your package.json `"scripts"` section.
+
+## Source codes
+In `/src`
+
+## Documentation
+In `/docs`. Currently - merge changes in `/docs` and `/dist` to `release` branch and push them to external `github` repository at `github.com:digital-biosystems/dbs-components`. Automatic build of just-the-docs template is triggered and public documentation is rendered at https://digital-biosystems.github.io/dbs-components/
 
 ## Use web components
 
@@ -22,8 +28,8 @@ See `test/index.html` file.
 In general, add shared script and component script
 ```
 <head> 
-<script src="shared.js"></script>
-<script src="pgxchart.js"></script>
+<script src="dbs-shared.js"></script>
+<script src="dbs-pgxchart.js"></script>
 ...
 </head>
 ```
