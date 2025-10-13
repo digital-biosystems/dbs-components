@@ -47,3 +47,6 @@ Include the script bundle in head of your HTML and use web-component's custom el
 <script src="dbs-[some-component].js"></script>
 ```
 3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
+
+## Live examples
+ See component documentation on live examples
