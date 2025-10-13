@@ -24,25 +24,42 @@ In `/docs`. Currently - merge changes in `/docs` and `/dist` to `release` branch
 
 ## Use web components
 
+
 See `test/index.html` file.
-In general, add shared script and component script
-```
-<head> 
-<script src="dbs-shared.js"></script>
-<script src="dbs-pgxchart.js"></script>
-...
+
+Choose prefered method, either using cached JS from CDN or local copy of single JS or multiple JS bundles.
+
+### CDN
+Include the script bundle in head of your HTML and use web-component's custom element anywhare in your web app.
+```html
+<head>
+    ...
+<script src="https://cdn.jsdelivr.net/gh/digital-biosystems/dbs-components@release/dist/dbs-bundle.js "></script>
 </head>
-```
-
-Use the web component at the right place 
-```
 <body>
-...
-    <dbs-pgxchart></dbs-pgxchart>
-...
-</body>
+    ...
+    <dbs-hello-world message='DBS web components'></dbs-hello-world>
+    ...
+</body>    
 ```
 
+### single bundle with all components
+
+1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-bundle.js` and copy to your web app location.
+2. include the script that defines behavior of the web component's custom element: 
+```html
+<script src="dbs-bundle.js"></script>
+```   
+3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
+
+### multiple bundles with selected components
+1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-shared.js` and `/dist/dbs-[some-component].js` and copy to your web app location.
+2. include the script that defines behavior of the web component's custom element: 
+```html
+<script src="dbs-shared.js"></script>
+<script src="dbs-[some-component].js"></script>
+```
+3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
 Integrate web components into another app. <a href="https://docs.aurelia.io/developer-guides/web-components#usage-outside-aurelia-applications">https://docs.aurelia.io/developer-guides/web-components#usage-outside-aurelia-applications</a>
 Consult web component sources or docs howto use it.
 
