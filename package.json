@@ -14,6 +14,7 @@
   "dependencies": {
     "@aurelia/router": "latest",
     "@aurelia/web-components": "^2.0.0-beta.25",
+    "@mlc-ai/web-llm": "^0.2.79",
     "aurelia": "latest",
     "chart.js": "^4.5.0",
     "chartjs-adapter-date-fns": "^3.0.0",

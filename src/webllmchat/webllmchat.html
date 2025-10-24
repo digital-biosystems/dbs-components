@@ -1,0 +1,17 @@
+<require from="./webllmchat.css"></require>
+
+<div class="download-container">
+      <select ref="modelSelection" value.bind="selectedModel"></select>
+      <button id="download" click.trigger="clickDownload">
+        Download
+      </button>
+</div>
+    <p id="download-status" class.bind="dsclass">${reportText}</p>
+<div class="chat-container">
+      <div id="chat-box" class="chat-box"></div>
+      <div id="chat-stats" class.bind="chatclass"></div>
+      <div class="chat-input-container">
+        <input type="text" value.bind="userinput" placeholder.bind="placeholder" />
+        <button id="send" disabled.bind="isdisabled" click.trigger="clickSend">Send</button>
+      </div>
+</div>
