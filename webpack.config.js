@@ -30,11 +30,15 @@ module.exports = function (env, { analyze }) {
       'dbs-chartjsgeo': './src/chartjsgeo/index.js',
       'dbs-chartjs': './src/chartjs/index.js',
       'dbs-pgxchart': './src/pgxchart/index.js',  
+      'dbs-webllmchat': './src/webllmchat/index.js',  
+      'dbs-pgxbadge': './src/pgxbadge/index.js',  
       'dbs-bundle': [
         './src/helloworld/index.js',
         './src/chartjsgeo/index.js',
         './src/chartjs/index.js',
-        './src/pgxchart/index.js'
+        './src/pgxchart/index.js',
+        './src/webllmchat/index.js',
+        './src/pgxbadge/index.js'
       ]    
     }
     : {
