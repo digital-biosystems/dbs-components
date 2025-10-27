@@ -19,7 +19,7 @@ export class Webllmchat {
                 role: "system",
             }];
         this.engine = new webllm.MLCEngine();
-        this.engine.setInitProgressCallback(this.updateEngineInitProgressCallback);
+        this.engine.setInitProgressCallback(this.updateEngineInitProgressCallback.bind(this));
         this.isdisabled = true;
 
     }
@@ -47,8 +47,10 @@ export class Webllmchat {
     }
     // Callback function for initializing progress
     updateEngineInitProgressCallback(report) {
-        this.reportText = report.text;
-        console.log("initialize", report.progress);
+        //this.reportText = report.text;
+        console.log("initialize", report);
+        this.progressPercent = Math.max(0, Math.min(1, parseFloat(report.progress))) * 100;
+        this.reporttext = report.text;
         //document.getElementById("download-status").textContent = report.text;
     }
 
@@ -56,7 +58,7 @@ export class Webllmchat {
     dsclass = "hidden";
 
     async initializeWebLLMEngine() {
-        this.dsclass = "";//document.getElementById("download-status").classList.remove("hidden");
+        this.dsclass = "w3-tiny";//document.getElementById("download-status").classList.remove("hidden");
         //this.selectedModel = document.getElementById("model-selection").value;
         const config = {
             temperature: 1.0,
@@ -70,7 +72,8 @@ export class Webllmchat {
         //updateLastMessage,            onFinishGenerating,            console.error,        );
         try {
             this.curMessage = "";
-            completion = await engine.chat.completions.create({
+            console.log("Starting streaming generation...");
+            this.completion = await this.engine.chat.completions.create({
                 stream: true,
                 messages,
             });
@@ -81,7 +84,7 @@ export class Webllmchat {
                 }
                 this.updateLastMessage(this.curMessage);
             }
-            const finalMessage = await engine.getMessage();
+            const finalMessage = await this.engine.getMessage();
 
             this.onFinishGenerating(finalMessage);
         } catch (err) {
@@ -116,7 +119,7 @@ export class Webllmchat {
         this.appendMessage(aiMessage);
 
         this.streamingGenerating(
-            messages);//,            updateLastMessage,            onFinishGenerating,            console.error,        );
+            this.messages);//,            updateLastMessage,            onFinishGenerating,            console.error,        );
     }
     onFinishGenerating(finalMessage) {
         this.updateLastMessage(finalMessage);
@@ -128,7 +131,7 @@ export class Webllmchat {
     }
 
     appendMessage(message) {
-        const chatBox = document.getElementById("chat-box");
+        //this.chatbox = document.getElementById("chat-box");
         const container = document.createElement("div");
         container.classList.add("message-container");
         const newMessage = document.createElement("div");
@@ -142,13 +145,12 @@ export class Webllmchat {
         }
 
         container.appendChild(newMessage);
-        chatBox.appendChild(container);
-        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+        this.chatbox.appendChild(container);
+        this.chatbox.scrollTop = this.chatbox.scrollHeight; // Scroll to the latest message
     }
 
     updateLastMessage(content) {
-        const messageDoms = document
-            .getElementById("chat-box")
+        const messageDoms = this.chatbox
             .querySelectorAll(".message");
         const lastMessageDom = messageDoms[messageDoms.length - 1];
         lastMessageDom.textContent = content;

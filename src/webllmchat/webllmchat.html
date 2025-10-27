@@ -1,4 +1,5 @@
 <require from="./webllmchat.css"></require>
+<require from="../w3.css"></require>
 
 <div class="download-container">
       <select ref="modelSelection" value.bind="selectedModel"></select>
@@ -6,9 +7,10 @@
         Download
       </button>
 </div>
-    <p id="download-status" class.bind="dsclass">${reportText}</p>
+<p id="download-status" class.bind="dsclass" width.style="progressPercent + '%'">${reporttext}</p>
+
 <div class="chat-container">
-      <div id="chat-box" class="chat-box"></div>
+      <div ref="chatbox" class="chat-box"></div>
       <div id="chat-stats" class.bind="chatclass"></div>
       <div class="chat-input-container">
         <input type="text" value.bind="userinput" placeholder.bind="placeholder" />
