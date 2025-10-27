@@ -15,7 +15,7 @@ export class Webllmchat {
         this.selectedModel = "Qwen3-0.6B-q4f16_1-MLC";
         this.messages = [
             {
-                content: "You are a helpful AI agent helping users.",
+                content: "You are a helpful AI agent helping users proficient in medicine and healthcare. Answer the questions as accurately as possible. If you don't know the answer, just say that you don't know, don't try to make up an answer.",
                 role: "system",
             }];
         this.engine = new webllm.MLCEngine();

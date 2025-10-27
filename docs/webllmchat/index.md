@@ -18,7 +18,6 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 
 ## Usage
 
-
 If you use full bundle, its. included, otherwise include the component in your HTML file:
 
 ```html
@@ -28,5 +27,8 @@ If you use full bundle, its. included, otherwise include the component in your H
 Place the custom element
 ```html
 <dbs-webllmchat>
-</dbs-pgxchart>
+</dbs-webllmchat>
 ```
+
+User then should select LLM model and click Download. After several seconds or minutes the LLM model is downloaded into browser's cache and instantiated. Progress bar is visible. To send a message type it and click 'Send' button.
+
