@@ -7,11 +7,17 @@
         Download
       </button>
 </div>
-<p id="download-status" class.bind="dsclass" width.style="progressPercent + '%'">${reporttext}</p>
-
-<div class="chat-container">
+<div class="progress-container">
+  <div class="progress-bar" width.style="progressPercent+'%'"></div>
+  <p id="download-status"
+     class.bind="dsclass"
+     style="white-space: nowrap;">
+    ${reporttext}
+  </p>
+</div>
+<div class="chat-container w3-small">
       <div ref="chatbox" class="chat-box"></div>
-      <div id="chat-stats" class.bind="chatclass"></div>
+      <div ref="chatstats" class.bind="chatclass">${statsText}</div>
       <div class="chat-input-container">
         <input type="text" value.bind="userinput" placeholder.bind="placeholder" />
         <button id="send" disabled.bind="isdisabled" click.trigger="clickSend">Send</button>

@@ -4,15 +4,6 @@
   margin-bottom: 20px;
 }
 
-#download-status {
-  border: solid 1px #b2ecc8;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
-  padding: 0px;
-  background:    #b2ecc8;  
-  position: relative;
-  overflow:visible;
-  min-width: 400px;
-}
 
 .chat-container {
   height: 400px;
@@ -99,4 +90,30 @@ button:hover:not(:disabled) {
 
 .hidden {
   display: none;
+}
+
+.progress-container {
+  position: relative;
+  display: inline-block;
+  /* Container grows with text naturally */
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  /* Make sure bar is behind the text */
+  background: #4ade80;
+  z-index: 0;
+  transition: width 0.2s;
+}
+
+#download-status {
+  position: relative;
+  z-index: 1;
+  padding: 0px;
+  border: solid 1px #4ade80;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+  white-space: nowrap;
+  background: transparent; /* needed if you used background styling */
+  margin: 0; /* remove default margin if needed */
 }

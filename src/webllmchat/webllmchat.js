@@ -12,7 +12,7 @@ export class Webllmchat {
         this.availableModels = webllm.prebuiltAppConfig.model_list.map(
             (m) => m.model_id,
         );
-        this.selectedModel = "Qwen3-1.7B-q4f16_1-MLC";
+        this.selectedModel = "Qwen3-0.6B-q4f16_1-MLC";
         this.messages = [
             {
                 content: "You are a helpful AI agent helping users.",
@@ -125,8 +125,9 @@ export class Webllmchat {
         this.updateLastMessage(finalMessage);
         this.isdisabled = false;
         this.engine.runtimeStatsText().then(statsText => {
+            this.statsText = statsText;
             this.chatclass = "chat-stats";//document.getElementById('chat-stats').classList.remove('hidden');
-            document.getElementById('chat-stats').textContent = statsText;
+            //document.getElementById('chat-stats').textContent = statsText;
         })
     }
 
