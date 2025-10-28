@@ -159,7 +159,7 @@ export class Webllmchat {
         //lastMessageDom.textContent = content;
         //marked parsing with custom think tag handling
         const enhancedContent = content.replace(/<think>([\s\S]*?)<\/think>/g,
-  (_, inner) => `<div class="reasoning-block"><span class="reasoning-prefix">Reasoning:</span> ${inner}</div>`
+  (_, inner) => `<div class="reasoning-block">${inner}</div>`
 );
         lastMessageDom.innerHTML = marked.parse(enhancedContent);
 
