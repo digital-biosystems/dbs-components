@@ -7,16 +7,14 @@
 
 .chat-container {
   height: 400px;
-  width: 100%;
-  border: 2px solid black;
+  width: 100%;  
   display: flex;
   flex-direction: column;
 }
 
 .chat-box {
-  overflow-y: scroll;
-  background-color: #c3c3c3;
-  border: 1px solid #ccc;
+  overflow-y: auto;
+  background-color:rgb(245, 244, 244);
   padding: 5px;
   flex: 1 1;
 }
@@ -36,7 +34,7 @@
 .message {
   padding: 10px;
   margin: 10px 0;
-  border-radius: 10px;
+  border-radius: 5px;
   width: fit-content;
 }
 
@@ -70,7 +68,7 @@
   border: 1px solid #ccc;
 }
 
-button {
+/*button {
   width: 25%;
   padding: 10px;
   border: none;
@@ -86,7 +84,7 @@ button:disabled {
 
 button:hover:not(:disabled) {
   background-color: #0056b3;
-}
+}*/
 
 .hidden {
   display: none;
@@ -116,4 +114,12 @@ button:hover:not(:disabled) {
   white-space: nowrap;
   background: transparent; /* needed if you used background styling */
   margin: 0; /* remove default margin if needed */
+}
+
+think,.reasoning-block {
+  display:block;
+  border: 1px dashed #888;
+}
+think:before,.reasoning-block:before {
+  content:"Thinking ...";
 }

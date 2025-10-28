@@ -1,4 +1,5 @@
 import * as webllm from '@mlc-ai/web-llm';
+import { marked} from 'marked';
 
 @customElement('dbs-webllmchat')
 export class Webllmchat {
@@ -123,6 +124,7 @@ export class Webllmchat {
     }
     onFinishGenerating(finalMessage) {
         this.updateLastMessage(finalMessage);
+        //console.log("Generation finished:", finalMessage);
         this.isdisabled = false;
         this.engine.runtimeStatsText().then(statsText => {
             this.statsText = statsText;
@@ -154,7 +156,13 @@ export class Webllmchat {
         const messageDoms = this.chatbox
             .querySelectorAll(".message");
         const lastMessageDom = messageDoms[messageDoms.length - 1];
-        lastMessageDom.textContent = content;
+        //lastMessageDom.textContent = content;
+        //marked parsing with custom think tag handling
+        const enhancedContent = content.replace(/<think>([\s\S]*?)<\/think>/g,
+  (_, inner) => `<div class="reasoning-block"><span class="reasoning-prefix">Reasoning:</span> ${inner}</div>`
+);
+        lastMessageDom.innerHTML = marked.parse(enhancedContent);
+
     }
 
 

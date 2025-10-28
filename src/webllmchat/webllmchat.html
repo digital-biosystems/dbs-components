@@ -3,7 +3,7 @@
 
 <div class="download-container">
       <select ref="modelSelection" value.bind="selectedModel"></select>
-      <button id="download" click.trigger="clickDownload">
+      <button id="download" click.trigger="clickDownload" class="w3-button w3-round w3-blue">
         Download
       </button>
 </div>
@@ -20,6 +20,6 @@
       <div ref="chatstats" class.bind="chatclass">${statsText}</div>
       <div class="chat-input-container">
         <input type="text" value.bind="userinput" placeholder.bind="placeholder" />
-        <button id="send" disabled.bind="isdisabled" click.trigger="clickSend">Send</button>
+        <button id="send" disabled.bind="isdisabled" click.trigger="clickSend" class="w3-button w3-round w3-blue">Send</button>
       </div>
 </div>

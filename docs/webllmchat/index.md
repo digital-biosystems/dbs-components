@@ -30,5 +30,13 @@ Place the custom element
 </dbs-webllmchat>
 ```
 
-User then should select LLM model and click Download. After several seconds or minutes the LLM model is downloaded into browser's cache and instantiated. Progress bar is visible. To send a message type it and click 'Send' button.
+User then should 
+  1. select LLM model and click Download. 
+  2. After several seconds or minutes the LLM model is downloaded into browser's cache and instantiated. Progress bar shows status.
+  3. Type a message and click 'Send' button.
+
+## Future development
+
+Currently the generic models are available. `Qwen3-*` models are recommended for their small size and still reasonable quality of responses. Custom embedding via custom attribute is planned to be done to enhance LLM capabilities with domain specific focused answers and reasoning.
+
 

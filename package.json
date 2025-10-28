@@ -21,7 +21,8 @@
     "chartjs-chart-geo": "^4.3.4",
     "chartjs-plugin-annotation": "^3.1.0",
     "date-fns": "^4.1.0",
-    "iso-3166-1": "^2.1.1"
+    "iso-3166-1": "^2.1.1",
+    "marked": "^16.4.1"
   },
   "devDependencies": {
     "@aurelia/babel-jest": "latest",
