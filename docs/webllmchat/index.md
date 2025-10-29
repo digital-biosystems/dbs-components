@@ -26,9 +26,18 @@ If you use full bundle, its. included, otherwise include the component in your H
 
 Place the custom element
 ```html
-<dbs-webllmchat>
+<dbs-webllmchat model-class="">
 </dbs-webllmchat>
 ```
+
+## Attributes
+
+| Attribute | Type   | Description                       |
+|-----------|--------|-----------------------------------|
+| `model-class` | string | optional model class filter to be allowed, e.g. 'Qwen', default '' |
+| `temperature` | number | optional Randomness scaler T≥0 increases variability and creativity, T=0 typically means greedy decoding, default `0.5` |
+| `top-p` | number | optional Nucleus sampling threshold 1≥p>0, default `0.9`|
+| `system-prompt` | string | optional system prompt to set the AI agent context |
 
 User then should 
   1. select LLM model and click Download. 
