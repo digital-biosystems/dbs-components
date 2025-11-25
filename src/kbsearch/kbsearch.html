@@ -1,3 +1,8 @@
 <div show.bind="showinput">
     <input type="text" value.bind="query" />
+    <ul>
+    <li repeat.for="item of result">
+      <strong>${item.hash}</strong>: ${item.name}
+    </li>
+  </ul>
 </div>
