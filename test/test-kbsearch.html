@@ -1,0 +1,23 @@
+<html>
+    <head>        
+        <script src="dbs-shared.js"></script>
+        <script src="dbs-kbsearch.js"></script>        
+        <title>DBS web components test</title>
+    </head>
+    <body>
+        <h1>DBS web components test page</h1>
+        <p>KB Search component:</p>
+        <dbs-kbsearch showinput="true"></dbs-kbsearch>        
+        <script>
+
+            // Subscribe to KBSearch result events
+            window.DbsKbsearch.subscribe('kbsearch:result', (data) => {
+                console.log('Got KBSearch response:', data);
+            });
+
+            // Publish query to KBSearch component
+            window.DbsKbsearch.publish('kbsearch:query', 'lapatinib');
+            
+        </script>
+    </body>
+</html>

@@ -8,6 +8,7 @@ export class Webllmchat {
     @bindable temperature = 0.5;
     @bindable topP = 0.9;
     @bindable systemPrompt = "You are a helpful AI agent helping users. Answer the questions as accurately as possible. If you don't know the answer, just say that you don't know, don't try to make up an answer.";
+    @bindable memorySize= 128; //how many previous messages to remember for context
 
     /*************** WebLLM logic ***************/
     messages = []; availableModels = []; selectedModel = "";
@@ -104,7 +105,7 @@ export class Webllmchat {
             //    : [];
 
             // 3) Keep a compact recent window (last N pairs) from your existing messages
-            const N = 8; // tune 2–4 pairs typically
+            const N = this.memorySize; // tune default 128
             const recentMessages = (() => {
                 const capped = [];
                 // Walk backwards and collect up to N user/assistant turns
@@ -142,8 +143,8 @@ export class Webllmchat {
                 devFocusMsg,
                 currentUserMsg            
             ];
-            console.log("Starting streaming generation, messages:",messages);
-            console.log("Starting streaming generation, rawmessages:",rawmessages);
+            //console.log("Starting streaming generation, messages:",messages);
+            //console.log("Starting streaming generation, rawmessages:",rawmessages);
             this.completion = await this.engine.chat.completions.create({
                 messages,
                 stream: true                

@@ -1,6 +1,8 @@
 <html>
     <head>
+        
         <script src="dbs-shared.js"></script>
+        <script src="dbs-kbsearch.js"></script>
         <script src="dbs-helloworld.js"></script>
         <script src="dbs-chartjsgeo.js"></script>
         <script src="dbs-chartjs.js"></script>
@@ -8,6 +10,9 @@
         <title>DBS web components test</title>
     </head>
     <body>
+        <h1>DBS web components test page</h1>
+        <p>KB Search component:</p>
+        <dbs-kbsearch showinput.bind="true"></dbs-kbsearch>        
         <p>Hello world component:</p>
         <dbs-hello-world message="DBS web component"></dbs-hello-world>
         <p>Chartjs geo component:</p>
@@ -16,5 +21,15 @@
         <dbs-chartjs3></dbs-chartjs3>
         <p>pgx chart component:</p>
         <dbs-pgxchart></dbs-pgxchart>
+        <script>
+
+            // Publish event into Aurelia
+            window.appEventBus.publish('kbsearch:query', 'lapatinib');
+
+            // Subscribe to Aurelia events
+            window.appEventBus.subscribe('kbsearch:result', (data) => {
+                console.log('Got KBSearch response:', data);
+            });
+        </script>
     </body>
 </html>
