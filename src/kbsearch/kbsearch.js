@@ -1,4 +1,4 @@
-import { IEventAggregator, resolve,bindable } from 'aurelia';
+import { IEventAggregator, resolve, bindable } from 'aurelia';
 //import { bindable } from 'aurelia';
 import kb from './kgv3_full_llama3.json';
 import debounce from 'lodash/debounce';
@@ -7,14 +7,16 @@ import debounce from 'lodash/debounce';
 @customElement('dbs-kbsearch')
 export class Kbsearch {
     @bindable showinput = false;
+    @bindable caseSensitive = false;
     @bindable query = "";
+    result = [];
 
-    constructor(){
-         this.ea = resolve(IEventAggregator);
-         this.debouncedSearch = debounce(this.search.bind(this), 1000);
+    constructor() {
+        this.ea = resolve(IEventAggregator);
+        this.debouncedSearch = debounce(this.search.bind(this), 1000);
     }
 
-    bound(){                
+    bound() {
         // Expose globally event aggregator
         window.DbsKbsearch = this.ea;
 
@@ -27,40 +29,50 @@ export class Kbsearch {
             //this.search();
             this.get(msg);
         });
-        if (typeof this.showinput === 'string'){
+        if (typeof this.showinput === 'string') {
             this.showinput = (this.showinput.toLowerCase() === 'true');
         }
-       
+
     }
-    unbinding(){
+    unbinding() {
         this.myEventSubscription.dispose();
     }
 
-    get(queryid) {        
+    get(queryid) {
         let result = kb.knowledge[queryid];
         this.ea.publish('kbget:result', result);
     }
-    
+
     search() {
-        console.log("Searching for:", this.query);
-        const lower = this.query.toLowerCase();
+        if (!this.query || this.query.length < 2) {
+            console.log("Query too short, skipping search.");
+            return;
+        }
+        
+        const lower = this.caseSensitive ? this.query : this.query.toLowerCase();
+        console.log("Searching for:", this.lower);
         console.log("knowledge:", kb);
         this.result = Object.entries(kb.knowledge)
-    .filter(([key, value]) => 
-      value.name && value.name.toLowerCase().includes(lower)
-    )
-    .map(([key, value]) => ({
-      hash: key,
-      name: value.name,
-    }));
+            .filter(([key, value]) =>
+                value.name && (this.caseSensitive ? value.name.includes(lower) : value.name.toLowerCase().includes(lower))
+            )
+            /*.map(([key, value]) => ({
+                hash: key,
+                name: value.name,
+            }))*/;
         console.log("Search results:", this.result);
-        this.ea.publish('kbsearch:result', {query:this.query,result:this.result});
+        this.ea.publish('kbsearch:result', { query: this.query, result: this.result });
     }
 
     queryChanged(newValue, oldValue) {
         console.log(`Query changed from ${oldValue} to ${newValue}`);
         this.debouncedSearch();
     }
-    
+
+    caseSensitiveChanged(newValue, oldValue) {
+        console.log(`Case sensitivity changed from ${oldValue} to ${newValue}`);
+        this.debouncedSearch();
+    }   
+
 
 }

@@ -1,8 +1,8 @@
 <div show.bind="showinput">
-    <input type="text" value.bind="query" />
+    <input type="text" value.bind="query" /><span style="font-weight:bold;font-size: 0.8em;" title="case sensitive"><input type="checkbox" checked.bind="caseSensitive" />Aa</span>
     <ul>
     <li repeat.for="item of result">
-      <strong>${item.hash}</strong>: ${item.name}
+      <strong>${item[0]}</strong>: ${item[1].name}
     </li>
   </ul>
 </div>

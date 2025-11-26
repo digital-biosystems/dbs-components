@@ -12,9 +12,9 @@ nav_order: 2
 version: 0.1<br/>The component is in development. Some features may not work or may change.
 ## Example
 
-`<dbs-kbsearch></dbs-kbsearch>`
+`<dbs-kbsearch showinput="true"></dbs-kbsearch>`
 
-<dbs-kbsearch></dbs-kbsearch>
+<dbs-kbsearch showinput="true"></dbs-kbsearch>
 
 ## Features
 
@@ -60,7 +60,7 @@ Results are returned via 'kbsearch:result' channel. It can be listened e.g. by r
 
 ## Attributes
 
-`showinput` default `"false"`. Renders input bar in component view, user can type query
+`showinput` default `"false"`. If 'true' Renders input bar in component view, and simple list of results, user can type query. If 'false', component is invisible and visualisation and sending query is upon other components via the custom events.
 
 `src` default `""`. Gets knowledge base JSON from the URL.
 
