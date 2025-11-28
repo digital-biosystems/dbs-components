@@ -1,6 +1,6 @@
 import { IEventAggregator, resolve, bindable } from 'aurelia';
 //import { bindable } from 'aurelia';
-import kb from './kgv3_full_llama3.json';
+import kb from './kgl3v3.json';
 import debounce from 'lodash/debounce';
 
 //custom element decorator for use in dev-app

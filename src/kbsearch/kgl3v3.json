@@ -1,5 +1,298 @@
 {
     "knowledge": {
+    "RULE_SCREEN_01": {
+      "name": "The \"45 is the new 50\" Screening Rule",
+      "doc_id": "USPSTF 2021 Recommendations.",
+      "category": "Screening Guidelines",
+      "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+      "details": [
+        {
+          "subject": "The \"45 is the new 50\" Screening Rule",
+          "predicate": "has_clinical_context",
+          "object": "The USPSTF and American Cancer Society now recommend starting average-risk screening at age 45."
+        },
+        {
+          "subject": "The \"45 is the new 50\" Screening Rule",
+          "predicate": "has_logic_description",
+          "object": "If patient is 45, has no prior screening (implied by lack of history), and is average risk."
+        },
+        {
+          "subject": "The \"45 is the new 50\" Screening Rule",
+          "predicate": "has_python_logic",
+          "object": "patient.patient_demographics.age >= 45 and not patient.personal_history.previous_cancer and not patient.personal_history.previous_polyp_history and not patient.family_history.colorectal_cancer"
+        },
+        {
+          "subject": "The \"45 is the new 50\" Screening Rule",
+          "predicate": "outputs_recommendation",
+          "object": "Patient meets criteria for average-risk colorectal cancer screening (Age ≥ 45). Recommend referring for colonoscopy or FIT testing."
+        }
+      ],
+      "entities": {
+        "The \"45 is the new 50\" Screening Rule": "RULE_NAME",
+        "USPSTF": "SOURCE",
+        "Colonoscopy": "PROCEDURE"
+      }
+    },
+    "RULE_DX_01": {
+      "name": "Iron Deficiency Anemia Investigation",
+      "doc_id": "British Society of Gastroenterology / AGA Guidelines.",
+      "category": "Diagnosis Guidelines",
+      "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+      "details": [
+        {
+          "subject": "Iron Deficiency Anemia Investigation",
+          "predicate": "has_clinical_context",
+          "object": "Unexplained iron deficiency anemia in men or post-menopausal women is a GI malignancy red flag until proven otherwise."
+        },
+        {
+          "subject": "Iron Deficiency Anemia Investigation",
+          "predicate": "has_logic_description",
+          "object": "Patient is male or older female + Anemia + No recent colonoscopy."
+        },
+        {
+          "subject": "Iron Deficiency Anemia Investigation",
+          "predicate": "has_python_logic",
+          "object": "(patient.patient_demographics.gender == \"Male\" or (patient.patient_demographics.gender == \"Female\" and patient.patient_demographics.age > 50)) and results.cbc.is_anemic is True and results.colonoscopy.performed is False"
+        },
+        {
+          "subject": "Iron Deficiency Anemia Investigation",
+          "predicate": "outputs_recommendation",
+          "object": "Unexplained anemia in this demographic is an alarm feature. Bidirectional endoscopy (EGD and Colonoscopy) is recommended to rule out GI malignancy."
+        }
+      ],
+      "entities": {
+        "Iron Deficiency Anemia Investigation": "RULE_NAME",
+        "Anemia": "DIAGNOSIS",
+        "GI malignancy": "DISEASE"
+      }
+    },
+    "RULE_DX_02": {
+      "name": "Rectal Bleeding Evaluation",
+      "doc_id": "NICE Guidelines (NG12).",
+      "category": "Diagnosis Guidelines",
+      "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+      "details": [
+        {
+          "subject": "Rectal Bleeding Evaluation",
+          "predicate": "has_clinical_context",
+          "object": "Rectal bleeding is often dismissed as hemorrhoids, but requires evaluation, especially with changed bowel habits."
+        },
+        {
+          "subject": "Rectal Bleeding Evaluation",
+          "predicate": "has_logic_description",
+          "object": "Rectal bleeding is present AND (Age > 40 OR associated bowel habit changes)."
+        },
+        {
+          "subject": "Rectal Bleeding Evaluation",
+          "predicate": "has_python_logic",
+          "object": "patient.symptoms.rectal_bleeding is not None and (patient.patient_demographics.age > 40 or patient.symptoms.bowel_habit_change is not None)"
+        },
+        {
+          "subject": "Rectal Bleeding Evaluation",
+          "predicate": "outputs_recommendation",
+          "object": "Patient presents with rectal bleeding and risk factors (Age > 40 or associated bowel habit changes). A flexible sigmoidoscopy or colonoscopy is indicated to evaluate for neoplasia."
+        }
+      ],
+      "entities": {
+        "Rectal Bleeding Evaluation": "RULE_NAME",
+        "Rectal bleeding": "SYMPTOM",
+        "Neoplasia": "DISEASE"
+      }
+    },
+    "RULE_DX_03": {
+      "name": "Universal Lynch Syndrome Screening",
+      "doc_id": "NCCN Guidelines for Genetic/Familial High-Risk Assessment.",
+      "category": "Genetic Screening",
+      "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+      "details": [
+        {
+          "subject": "Universal Lynch Syndrome Screening",
+          "predicate": "has_clinical_context",
+          "object": "All newly diagnosed colorectal cancers should be tested for Lynch syndrome (MMR deficiency) regardless of age."
+        },
+        {
+          "subject": "Universal Lynch Syndrome Screening",
+          "predicate": "has_logic_description",
+          "object": "Biopsy confirms adenocarcinoma AND MMR/MSI testing has not been performed yet."
+        },
+        {
+          "subject": "Universal Lynch Syndrome Screening",
+          "predicate": "has_python_logic",
+          "object": "results.biopsy.histology == \"Adenocarcinoma\" and results.biopsy.cancer_confirmed is True and results.mmr_ihc.performed is False and results.msi_testing.performed is False"
+        },
+        {
+          "subject": "Universal Lynch Syndrome Screening",
+          "predicate": "outputs_recommendation",
+          "object": "New CRC diagnosis confirmed. NCCN guidelines recommend universal screening for Lynch Syndrome via MMR Immunohistochemistry (IHC) or MSI testing on tumor tissue."
+        }
+      ],
+      "entities": {
+        "Universal Lynch Syndrome Screening": "RULE_NAME",
+        "Lynch syndrome": "GENETIC_CONDITION",
+        "Adenocarcinoma": "DISEASE"
+      }
+    },
+    "RULE_STAGING_01": {
+      "name": "Rectal Cancer Local Staging",
+      "doc_id": "NCCN Guidelines for Rectal Cancer.",
+      "category": "Staging Guidelines",
+      "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+      "details": [
+        {
+          "subject": "Rectal Cancer Local Staging",
+          "predicate": "has_clinical_context",
+          "object": "Unlike colon cancer, rectal cancer requires a pelvic MRI to assess the distance to the mesorectal fascia for surgical planning."
+        },
+        {
+          "subject": "Rectal Cancer Local Staging",
+          "predicate": "has_logic_description",
+          "object": "Mass found in Rectum AND MRI not performed."
+        },
+        {
+          "subject": "Rectal Cancer Local Staging",
+          "predicate": "has_python_logic",
+          "object": "results.colonoscopy.mass_location == \"Rectum\" and results.mri_imaging.performed is False"
+        },
+        {
+          "subject": "Rectal Cancer Local Staging",
+          "predicate": "outputs_recommendation",
+          "object": "Lesion located in the rectum. Order High-Resolution Pelvic MRI to assess T-stage and circumferential resection margin (CRM) status prior to treatment planning."
+        }
+      ],
+      "entities": {
+        "Rectal Cancer Local Staging": "RULE_NAME",
+        "Pelvic MRI": "PROCEDURE",
+        "Rectum": "ANATOMICAL_SITE"
+      }
+    },
+        "a7F3kLmQ": {
+            "name": "CRC Risk Factor: Male sex",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Male sex",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.3398"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "B9dPqLw8": {
+            "name": "CRC Risk Factor: Age",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Age",
+                    "predicate": "standardized_mean_difference",
+                    "object": "0.4449"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "p3XnJ1tA": {
+            "name": "CRC Risk Factor: Overweight/Obesity BMI",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Overweight/Obesity BMI",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.1224"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "Qm8cVzR2": {
+            "name": "CRC Risk Factor: Alcohol consumption",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Alcohol consumption",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.0366"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "wT92hKfL": {
+            "name": "CRC Risk Factor: Smoking",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Smoking",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.3409"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "Hk2sJ8wQ": {
+            "name": "CRC Risk Factor: Low physical activity",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Low physical activity",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.1667"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "eJ7bP1yT": {
+            "name": "CRC Risk Factor: High intake of processed meat",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: High intake of processed meat",
+                    "predicate": "log_risk_ratio",
+                    "object": "0.2220"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
+        "Rk98LnYs": {
+            "name": "CRC Risk Factor: Low/no intake of vegetables and fruits",
+            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
+            "category": "CRC risk factors",
+            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
+            "details": [
+                {
+                    "subject": "CRC Risk Factor: Low/no intake of vegetables and fruits",
+                    "predicate": "log_risk_ratio",
+                    "object": "-0.4351"
+                }
+            ],
+            "entities": {
+                "colorectal cancer": "CANCER"
+            }
+        },
         "PGsH3emT": {
             "name": "MUC20 is expressed in 61.7% of colorectal cancers, making it a potential target for imaging studies and therapeutic agent delivery",
             "doc_id": "10.3390/cancers15051491",
@@ -17509,134 +17802,6 @@
                 }
             ],
             "entities": {}
-        },
-        "a7F3kLmQ": {
-            "name": "CRC Risk Factor: Male sex",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Male sex",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.3398"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "B9dPqLw8": {
-            "name": "CRC Risk Factor: Age",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Age",
-                    "predicate": "standardized_mean_difference",
-                    "object": "0.4449"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "p3XnJ1tA": {
-            "name": "CRC Risk Factor: Overweight/Obesity BMI",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Overweight/Obesity BMI",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.1224"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "Qm8cVzR2": {
-            "name": "CRC Risk Factor: Alcohol consumption",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Alcohol consumption",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.0366"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "wT92hKfL": {
-            "name": "CRC Risk Factor: Smoking",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Smoking",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.3409"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "Hk2sJ8wQ": {
-            "name": "CRC Risk Factor: Low physical activity",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Low physical activity",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.1667"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "eJ7bP1yT": {
-            "name": "CRC Risk Factor: High intake of processed meat",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: High intake of processed meat",
-                    "predicate": "log_risk_ratio",
-                    "object": "0.2220"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
-        },
-        "Rk98LnYs": {
-            "name": "CRC Risk Factor: Low/no intake of vegetables and fruits",
-            "doc_id": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
-            "category": "CRC risk factors",
-            "llm_id": "llama3.3:70b-instruct-q8_0/KeP1-",
-            "details": [
-                {
-                    "subject": "CRC Risk Factor: Low/no intake of vegetables and fruits",
-                    "predicate": "log_risk_ratio",
-                    "object": "-0.4351"
-                }
-            ],
-            "entities": {
-                "colorectal cancer": "CANCER"
-            }
         }
     },
     "documents": {
@@ -18222,7 +18387,7 @@
             "long_citation": "Forsea, et al., International incidence of childhood cancer, 2001-10: a population-based registry study, , 2017-06",
             "category": "Existing open dataset from EU"
         },
-      "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis": {
+        "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis": {
       		"doi": null,
             "short_citation": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",
             "long_citation": "ONCOSCREEN_CRC_RiskFactors_MetaAnalysis",

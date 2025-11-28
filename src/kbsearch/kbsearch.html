@@ -1,8 +1,9 @@
+<require from="../w3.css"></require>
 <div show.bind="showinput">
-    <input type="text" value.bind="query" /><span style="font-weight:bold;font-size: 0.8em;" title="case sensitive"><input type="checkbox" checked.bind="caseSensitive" />Aa</span>
-    <ul>
+    <input type="text" value.bind="query" /><span class="w3-small w3-bold" style="letter-spacing:-0.1em;" title="case sensitive"><input type="checkbox" checked.bind="caseSensitive" />Aa</span>
+    <ul class="w3-small" style="letter-spacing:-0.02em;">
     <li repeat.for="item of result">
-      <strong>${item[0]}</strong>: ${item[1].name}
+       ${item[1].name}
     </li>
   </ul>
 </div>
