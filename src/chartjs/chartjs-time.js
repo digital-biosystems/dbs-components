@@ -8,7 +8,7 @@ import {useView} from 'aurelia-templating';
 export class ChartjsTime extends Chartjs {
     @bindable fromid;
     @bindable labels;
-    @bindable refindex;// starting  index - if moooor indices, separate by comma
+    @bindable refindex;// starting  index - if more indices, separate by comma
     @bindable refvalues; //number of values from refindex - only if one refindex is   defined
     @bindable type;
     @bindable min;

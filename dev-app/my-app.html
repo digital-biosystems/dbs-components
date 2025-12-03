@@ -1,7 +1,7 @@
 <p>FMI Component with value labels and show values option:</p>
 <dbs-fmi id="hemodynamics" 
-    showvalues="true"
-    mode="oneshot" 
+    showvalues="false"
+    mode="" 
     src="BurkhoffFMI.js" 
     fminame="Cardiovascular_Model_Burkhoff_HemodynamicsBurkhoff_0shallow" 
     tolerance="0.000001" 
@@ -15,7 +15,7 @@
     inputlabels="heartRate.k,LVElastance.Ees,LAElastance.Ees,RVElastance.Ees,RAElastance.Ees"></dbs-fmi>
 
 <p>Chartjs</p>
-<dbs-chartjs3></dbs-chartjs3>
+<dbs-chartjs3 fromid="hemodynamics" refindex="1"></dbs-chartjs3>
 
 <p>kbsearch component with debounce:</p>
 
