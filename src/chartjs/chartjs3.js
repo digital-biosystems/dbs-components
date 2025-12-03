@@ -10,6 +10,9 @@ import mydata from './mydata.json';
 export class Chartjs3 extends Chartjs3Base {
     @bindable therapLevel = 0.005;
     @bindable toxicLevel = 0.012;
+    @bindable demodata = true;
+    @bindable labels = "patient, , ,population norm, , ";
+    labelsRaw = []
 
     constructor() {
         super();
@@ -18,22 +21,38 @@ export class Chartjs3 extends Chartjs3Base {
         super.bound();
         if(typeof this.therapLevel === "string") this.therapLevel=parseFloat(this.therapLevel);
         if(typeof this.toxicLevel === "string") this.toxicLevel=parseFloat(this.toxicLevel);
+        if(typeof this.demodata === "string") this.demodata = this.demodata === "true";
+        if(typeof this.labels === "string") this.labelsRaw = this.labels.split(",");
     }
 
     attached() {
         console.log('chartjs attached');
-        // Extract labels (time column), skipping header
-        const rawSeconds = mydata.slice(1).map(row => row[0] * 1000); // convert to milliseconds
-        const labels = rawSeconds;//.map(s => new Date(1970, 0, 1, 0, 0, s)); // convert to Date objects
+        
+        // Prepare labels and data based on demodata flag
+        let labels, data0, data1, data2, data10, data11, data12;
+        
+        if (this.demodata) {
+            // Extract labels (time column), skipping header
+            const rawSeconds = mydata.slice(1).map(row => row[0] * 1000); // convert to milliseconds
+            labels = rawSeconds;//.map(s => new Date(1970, 0, 1, 0, 0, s)); // convert to Date objects
 
-
-        // Extract data for each dataset from columns 1, 2, and 3 (skip header)
-        const data0 = mydata.slice(1).map(row => row[1]);
-        const data1 = mydata.slice(1).map(row => row[2]);
-        const data2 = mydata.slice(1).map(row => row[3]);
-        const data10 = mydata.slice(1).map(row => row[4]);
-        const data11 = mydata.slice(1).map(row => row[5]);
-        const data12 = mydata.slice(1).map(row => row[6]);
+            // Extract data for each dataset from columns 1, 2, and 3 (skip header)
+            data0 = mydata.slice(1).map(row => row[1]);
+            data1 = mydata.slice(1).map(row => row[2]);
+            data2 = mydata.slice(1).map(row => row[3]);
+            data10 = mydata.slice(1).map(row => row[4]);
+            data11 = mydata.slice(1).map(row => row[5]);
+            data12 = mydata.slice(1).map(row => row[6]);
+        } else {
+            // No demo data - empty arrays
+            labels = [];
+            data0 = [];
+            data1 = [];
+            data2 = [];
+            data10 = [];
+            data11 = [];
+            data12 = [];
+        }
 
         const ctx = this.mychart.getContext('2d');
         //Chart.register(annotationPlugin, ...registerables);
@@ -50,7 +69,7 @@ export class Chartjs3 extends Chartjs3Base {
                     //pointHoverRadius: 1,
                 }, {
                     label: '',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: "transparent",
                     fill: 0,
                     data: data11,
@@ -58,7 +77,7 @@ export class Chartjs3 extends Chartjs3Base {
                     //pointHoverRadius: 0,
                 }, {
                     label: '',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: "transparent",
                     fill: 0,
                     data: data12,
@@ -73,7 +92,7 @@ export class Chartjs3 extends Chartjs3Base {
                     //pointHoverRadius: 1,
                 }, {
                     label: '',
-                    backgroundColor: 'rgba(99, 102, 255, 0.5)',
+                    backgroundColor: 'rgba(99, 102, 255, 0.2)',
                     borderColor: "transparent",
                     fill: 3,
                     data: data1,
@@ -81,7 +100,7 @@ export class Chartjs3 extends Chartjs3Base {
                     //pointHoverRadius: 0,
                 }, {
                     label: '',
-                    backgroundColor: 'rgba(99, 102, 255, 0.5)',
+                    backgroundColor: 'rgba(99, 102, 255, 0.2)',
                     borderColor: "transparent",
                     fill: 3,
                     data: data2,

@@ -28,14 +28,14 @@ module.exports = function (env, { analyze }) {
     ? {
       'dbs-helloworld': './src/helloworld/index.js',
       'dbs-chartjsgeo': './src/chartjsgeo/index.js',      
-      'dbs-pgxchart': './src/pgxchart/index.js',  
+      'dbs-chartjs': './src/chartjs/index.js',  
       'dbs-webllmchat': './src/webllmchat/index.js',  
       'dbs-pgxbadge': './src/pgxbadge/index.js',  
       'dbs-kbsearch': './src/kbsearch/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
         './src/chartjsgeo/index.js',        
-        './src/pgxchart/index.js',
+        './src/chartjs/index.js',
         './src/webllmchat/index.js',
         './src/pgxbadge/index.js',
         './src/kbsearch/index.js'
@@ -119,11 +119,11 @@ module.exports = function (env, { analyze }) {
     },
     devServer: {
       historyApiFallback: true,
-      open: !process.env.CI,
+      //open: !process.env.CI,
       port: 9000,
       static: {
         directory: path.resolve(__dirname, 'static'), // Serve static files from 'static' folder
-        publicPath: '/static', // Optional: access static files under /static
+        publicPath: '/',//'/static', // Optional: access static files under /static
         watch: true
       }
     },

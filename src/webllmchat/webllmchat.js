@@ -1,5 +1,5 @@
 import * as webllm from '@mlc-ai/web-llm';
-import { bindable } from 'aurelia';
+import { customElement, bindable } from 'aurelia';
 import { marked } from 'marked';
 
 @customElement('dbs-webllmchat')

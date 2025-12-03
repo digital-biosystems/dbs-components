@@ -1,4 +1,4 @@
-import { IEventAggregator, resolve, bindable } from 'aurelia';
+import { customElement, IEventAggregator, resolve, bindable } from 'aurelia';
 //import { bindable } from 'aurelia';
 import kb from './kgl3v3.json';
 import debounce from 'lodash/debounce';
@@ -36,6 +36,7 @@ export class Kbsearch {
     }
     unbinding() {
         this.myEventSubscription.dispose();
+        this.myEventSubscription2.dispose();
     }
 
     get(queryid) {

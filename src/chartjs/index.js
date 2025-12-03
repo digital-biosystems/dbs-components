@@ -18,5 +18,7 @@ container.register(StyleConfiguration.shadowDOM({
 const registry = container.get(WcCustomElementRegistry);
 
 import { Chartjs3 } from './chartjs3';
+import { Pgxchart } from './pgxchart';
 
 registry.define('dbs-chartjs3', Chartjs3);
+registry.define('dbs-pgxchart', Pgxchart);

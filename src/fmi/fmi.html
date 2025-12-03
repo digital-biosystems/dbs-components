@@ -1,0 +1,50 @@
+  <require from="../w3.css"></require>
+  <div show.bind="simplecontrols">
+    <button class="w3-button w3-orange" click.trigger="startstop()" title="Start/Stop simulation"><span>${animationstarted ? '⏹' : '▶'}</span> &nbsp;</button>
+  </div>  
+  <div show.bind="showcontrols">
+    <table>
+      <tr>
+        <td>
+          <button class="w3-button w3-orange" click.trigger="startstop()" title="Start/Stop simulation"><span>${animationstarted ? '⏹' : '▶'}</span></button>
+        </td>
+        <td>
+          <button class="w3-button w3-orange" click.trigger="step()" title="Do simulation step">&#10073;&#10073;<sub><b>1</b></sub></button>
+        </td>
+        <td>
+          <button class="w3-button w3-orange" click.trigger="reset()" title="Reset simulation">&#10227;</button>
+        </td>
+        <td class="w3-tiny">
+          <table>
+            <tr><td><input type="checkbox" checked.bind="measurefps"/>
+              <i show.bind="measurefps" title="FMI: ${fminame}">FPS:${fps}</i></td>
+              <td show.bind="measurefps">
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="0.1"/>0.1 x</label>
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="1"/>1.0 x</label>
+              </td>
+            </tr>
+            <tr><td show.bind="measurefps"><input type="number" min="1" max="60" value.bind="fpslimit" style="width:8ch" /></td>
+              <td show.bind="measurefps">
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="10"/>10 x</label>
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="100"/>100 x</label>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td show.bind="showtime">
+          <table style="font-family:Consolas,'courier new';line-height: 1.0;" title="simulation time">
+            <tr><td><span>d hh:mm:ss</span></td></tr>
+            <tr><td><span>${simulationtime}</span></td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div show.bind="showvalues">
+    <table class="w3-table w3-bordered w3-striped w3-border w3-hoverable w3-small">
+      <tr repeat.for="varname of variablelabels">
+        <td>${varname}</td>
+        <td>${mydata[$index]}</td>
+      </tr>
+    </table>
+  </div>

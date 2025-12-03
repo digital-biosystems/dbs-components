@@ -1,4 +1,4 @@
-import { bindable } from 'aurelia';
+import { customElement,bindable } from 'aurelia';
 
 //custom element decorator for use in dev-app
 @customElement('dbs-pgx-badge')

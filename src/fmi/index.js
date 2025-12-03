@@ -1,5 +1,3 @@
-//export { HelloWorld } from 'basic/hello-world';
-
 import { WcCustomElementRegistry } from '@aurelia/web-components'; 
 import { DI, Registration  } from '@aurelia/kernel';
 import { StandardConfiguration, IPlatform } from '@aurelia/runtime-html';
@@ -17,6 +15,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Chartjs3 } from '../chartjs/chartjs3';
+import { Fmi } from './fmi';
 
-registry.define('dbs-pgxchart', Chartjs3);
+registry.define('dbs-fmi', Fmi);
