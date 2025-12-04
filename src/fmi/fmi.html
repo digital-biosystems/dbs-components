@@ -40,7 +40,7 @@
       </tr>
     </table>
   </div>
-  <div show.bind="showvalues">
+  <div if.bind="showvalues">
     <table class="w3-table w3-bordered w3-striped w3-border w3-hoverable w3-small">
       <tr repeat.for="varname of variablelabels">
         <td>${varname}</td>

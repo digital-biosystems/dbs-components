@@ -12,6 +12,10 @@ export class Chartjs3 extends Chartjs3Base {
     @bindable toxicLevel = 0.012;
     @bindable demodata = false;
     @bindable labels = "patient, , ,population norm, , ";
+    @bindable labelxaxis = "Time [seconds]";
+    @bindable labelyaxis = "";
+    @bindable levellabels = "therapeutic,toxic";
+    @bindable levelvalues = "0.005,0.012";
     @bindable fromid;
     @bindable labels;
     @bindable refindex;// starting  index - if more indices, separate by comma, if range use format start-end
@@ -19,7 +23,7 @@ export class Chartjs3 extends Chartjs3Base {
     @bindable convertors;
     @bindable timedenom; //coeficient which will be denominated from time (e.g. 60 => time/60 in minutes 3600 => time/3600 in hours)
     @bindable timedenomfixed = 1;
-    maxdata = 1024;
+    @bindable maxdata = 1024;
 
     labelsRaw = []
     refindices; // array of indices if multiple indices are defined in refindex separated by comma
@@ -30,10 +34,13 @@ export class Chartjs3 extends Chartjs3Base {
     }
     bound() {
         super.bound();
+        if (typeof this.maxdata === "string") this.maxdata = parseInt(this.maxdata, 10);
         if (typeof this.therapLevel === "string") this.therapLevel = parseFloat(this.therapLevel);
         if (typeof this.toxicLevel === "string") this.toxicLevel = parseFloat(this.toxicLevel);
         if (typeof this.demodata === "string") this.demodata = this.demodata === "true";
         if (typeof this.labels === "string") this.labelsRaw = this.labels.split(",");
+        this.levell = this.levellabels.split(',');
+        this.levelv = this.levelvalues.split(',');
 
         if (typeof this.refindex == 'string') {
             //indides are comma separated
@@ -127,6 +134,65 @@ export class Chartjs3 extends Chartjs3Base {
             data12 = [];
         }
 
+        // Build plugins configuration dynamically based on levelv and levell arrays
+        const pluginsConfig = {
+            legend: {
+                labels: {
+                    boxWidth: 8,
+                    padding: 0,
+                    font: { size: 8 }
+                }
+            }
+        };
+
+        // Add annotation plugin only if there are levels defined
+        if (this.levelv && this.levelv.length > 0) {
+            const annotations = {};
+            
+            // Add line1 if first level exists
+            if (this.levelv.length >= 1 && this.levelv[0]) {
+                annotations.line1 = {
+                    type: 'line',
+                    yMin: parseFloat(this.levelv[0]),
+                    yMax: parseFloat(this.levelv[0]),
+                    borderColor: 'rgba(255, 99, 99, 1)',
+                    borderWidth: 1,
+                    borderDash: [6, 6],
+                    label: {
+                        content: this.levell[0] || 'Level 1',
+                        display: true,
+                        position: 'start',
+                        backgroundColor: 'rgba(0,0,0,0.4)',
+                    }
+                };
+            }
+            
+            // Add line2 if second level exists
+            if (this.levelv.length >= 2 && this.levelv[1]) {
+                annotations.line2 = {
+                    type: 'line',
+                    yMin: parseFloat(this.levelv[1]),
+                    yMax: parseFloat(this.levelv[1]),
+                    borderColor: 'rgba(99, 154, 255, 1)',
+                    borderWidth: 1,
+                    borderDash: [6, 6],
+                    label: {
+                        content: this.levell[1] || 'Level 2',
+                        display: true,
+                        position: 'end',
+                        backgroundColor: 'rgba(0,0,0,0.4)',
+                    }
+                };
+            }
+            
+            // Only add annotation plugin if we have annotations
+            if (Object.keys(annotations).length > 0) {
+                pluginsConfig.annotation = {
+                    annotations: annotations
+                };
+            }
+        }
+
         const ctx = this.mychart.getContext('2d');
         //Chart.register(annotationPlugin, ...registerables);
         this.chart = new Chart(ctx, {
@@ -198,70 +264,21 @@ export class Chartjs3 extends Chartjs3Base {
                 },
                 scales: {
                     x: {
-                        type: 'time',
-                        time: {
-                            unit: 'second',  // display units as hours on axis
-                            tooltipFormat: 'SS'  // format tooltips as hours:minutes
-                            
-                        },
                         title: {
                             display: true,
-                            text: 'Time [days (hours)]'
+                            text: this.labelxaxis
                         },
-                        min: 0,  // optional: start scale at 0 milliseconds
+                        //min: 0,  // optional: start scale at 0 milliseconds
                         // max will auto-adjust
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'predicted drug concentration [g/L]'
+                            text: this.labelyaxis
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        labels: {
-                            boxWidth: 8,
-                            padding: 0,
-                            font: { size: 8 }
-                        }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: this.toxicLevel,
-                                yMax: this.toxicLevel,
-                                borderColor: 'rgba(255, 99, 99, 1)',
-                                borderWidth: 1,
-                                borderDash: [6, 6],
-                                label: {
-                                    content: 'toxic level',
-                                    display: true,
-                                    position: 'start',
-                                    backgroundColor: 'rgba(0,0,0,0.4)',
-
-                                }
-                            },
-                            line2: {
-                                type: 'line',
-                                yMin: this.therapLevel,
-                                yMax: this.therapLevel,
-                                borderColor: 'rgba(99, 154, 255, 1)',
-                                borderWidth: 1,
-                                borderDash: [6, 6],
-                                label: {
-                                    content: 'therapeutic level',
-                                    display: true,
-                                    position: 'end',
-                                    backgroundColor: 'rgba(0,0,0,0.4)',
-
-                                }
-                            }
-                        }
-                    }
-                }
-
+                plugins: pluginsConfig
             }
         });
         //console.log('data', data0);
@@ -321,16 +338,16 @@ export class Chartjs3 extends Chartjs3Base {
         function handleIndex(i) {
             {
                 //adds data to datasets
-                console.log('chartjs handleValueChange() adding data index, message', i, e);
-                console.log('chartjs handleValueChange() current dataset data', this.chart.data.datasets[j].data);
+                //console.log('chartjs handleValueChange() adding data index, message', i, e);
+                //console.log('chartjs handleValueChange() current dataset data', this.chart.data.datasets[j].data);
                 //if convert operation is defined as array then convert
                 if (this.operation && this.operation[j]) {
-                    console.log('chartjs handleValueChange() applying convertor to data:', e);
-                    console.log('chartjs handleValueChange() applying convertor to data:', e.data[i]);
+                    //console.log('chartjs handleValueChange() applying convertor to data:', e);
+                    //console.log('chartjs handleValueChange() applying convertor to data:', e.data[i]);
                     this.chart.data.datasets[j].data.push(this.operation[j](e.data[i]));
                 } else {
-                    console.log('chartjs handleValueChange() applying data directly:', e);
-                    console.log('chartjs handleValueChange() applying data directly:', e.data[i]);
+                    //console.log('chartjs handleValueChange() applying data directly:', e);
+                    //console.log('chartjs handleValueChange() applying data directly:', e.data[i]);
                     //else push data directly
                     this.chart.data.datasets[j].data.push(e.data[i]);
                 }

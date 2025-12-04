@@ -6,3 +6,4 @@ export { PgxBadge} from 'pgxbadge/pgx-badge';
 export { Webllmchat} from 'webllmchat/webllmchat';
 export { Kbsearch } from 'kbsearch/kbsearch';
 export { Fmi } from 'fmi/fmi';
+export { Pgxchart } from 'chartjs/pgxchart';

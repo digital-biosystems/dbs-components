@@ -139,6 +139,7 @@ export class Fmi {
 // Aurelia lifecycle: bind
   binding() {
     // Set mode flags
+    this.showvalues = (this.showvalues === true || this.showvalues === 'true');
     this.isOneshot = this.mode === 'oneshot';
     this.isOnestep = this.mode === 'onestep';
     if (this.isOneshot || this.isOnestep) {
@@ -388,7 +389,7 @@ export class Fmi {
     const payload = detail !== undefined ? detail : {};
     this.ea.publish(channel, payload);
     
-    console.log(`[EventAggregator] Published '${channel}'`, payload);
+    //console.log(`[EventAggregator] Published '${channel}'`, payload);
   }
   /**
    * Sets input variables for the FMU, ported from fmi-old.js

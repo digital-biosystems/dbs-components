@@ -1,4 +1,5 @@
-import { Chartjs3 } from './chartjs3.js';
-export class Pgxchart extends Chartjs3 {
+import { customElement } from 'aurelia'
+@customElement('dbs-pgxchart')
+export class Pgxchart{
 
 }
