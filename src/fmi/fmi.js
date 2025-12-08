@@ -1,4 +1,4 @@
-import { bindable, customElement, IEventAggregator,resolve } from 'aurelia';
+import { bindable, customElement, IEventAggregator, resolve } from 'aurelia';
 import _ from 'lodash';
 import { FmiInputManager } from './FmiInputManager.js';
 import { FmiBufferManager } from './FmiBufferManager.js';
@@ -11,34 +11,37 @@ export const thirdpartytimeout = 5000;
 
 @customElement('dbs-fmi')
 export class Fmi {
-  @bindable fminame='';
-  @bindable fmifunctionprefixname='';
-  @bindable tolerance=0.000001;
-  @bindable starttime=0;
-  @bindable stoptime=0;
-  @bindable guid='';
+  @bindable fminame = '';
+  @bindable fmifunctionprefixname = '';
+  @bindable tolerance = 0.000001;
+  @bindable starttime = 0;
+  @bindable stoptime = 0;
+  @bindable guid = '';
   @bindable id;
   @bindable inputs;
   @bindable otherinputs;
   @bindable valuereferences;
   @bindable ticksToUpdate = 30;
   @bindable src;
-  @bindable fstepsize=0.01;
+  @bindable fstepsize = 0.01;
   @bindable controlid;
-  @bindable showcontrols=true;
+  @bindable showcontrols = true;
   @bindable fpslimit = 60;
   @bindable showtime = false;
   @bindable showtimemultiply = 1;
   @bindable eventlisten = 'input'; //default 'input' or 'change'
-  @bindable mode="continuous";
+  @bindable mode = "continuous";
   @bindable stepsperframe = 1;
   @bindable startafter = 0;
   @bindable fmuspeed = 1;
   @bindable fmuspeed2;
-  @bindable fmuspeed2after=10;
+  @bindable fmuspeed2after = 10;
   @bindable debug = 0;
   @bindable valuelabels = ''; //comma separated labels for showvalues
   @bindable showvalues = false;
+  //element = resolve(Element);
+  @bindable parentelement;
+  shotinprogress = false;
 
   // Properties referenced in fmi.html (initialized in constructor)
 
@@ -89,7 +92,8 @@ export class Fmi {
     this.debounceShot = _.debounce(this.handleShot, 50);
     this.handleRegister = () => this.eventHandlers.handleRegister();
     this.inst = false;
-    
+    //this.shotInProgress = false;
+
     // EventAggregator subscriptions
     this.subscriptions = [];
   }
@@ -99,17 +103,31 @@ export class Fmi {
       return this.simulationController.step();
     }
   }
-  shot() {
-    console.log('fmi shot() called');
+  async shot() {
+    //console.log('fmi shot() called');
+    this.shotinprogress = true;
+      // Force DOM update BEFORE simulation starts
+  //queueTask(() => {});  // Flushes bindings immediately
+    await new Promise(resolve => setTimeout(resolve, 10));
     if (this.simulationController && typeof this.simulationController.shot === 'function') {
-      return this.simulationController.shot();
+      const result = await this.simulationController.shot();
+      this.shotinprogress = false;
+      return result;
     }
+    this.shotinprogress = false;
   }
+
+  async shot2() {
+  this.shotinprogress = true;
+  await new Promise(r => setTimeout(r, 1000));  // 10ms visible delay
+  console.log('Progress should be visible now');
+  this.shotinprogress = false;
+}
 
   reset() {
     // Full reset logic, matching fmi-old.js
     this.stepTime = this.starttime;
-    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
+    this.stepSize = this.fmuspeed * ((typeof (this.fstepsize) === 'string') ? parseFloat(this.fstepsize) : this.fstepsize);
     this.mystep = this.stepSize;
     this.stepi = 0;
     this.fpstick = 0;
@@ -134,9 +152,9 @@ export class Fmi {
     if (this.instance && typeof this.instance.initialize === 'function') {
       this.instance.initialize();
     }
-  this.dispatchFmiEvent('fmireset');
+    this.dispatchFmiEvent('fmireset');
   }
-// Aurelia lifecycle: bind
+  // Aurelia lifecycle: bind
   binding() {
     // Set mode flags
     this.showvalues = (this.showvalues === true || this.showvalues === 'true');
@@ -174,7 +192,7 @@ export class Fmi {
       this.debug = parseInt(this.debug);
     }
     this.variablelabels = this.valuelabels.split(',').map(x => x.trim());
-    
+
   }
 
   // Load a script dynamically, as in the original fmi-old.js
@@ -188,7 +206,7 @@ export class Fmi {
     let script = document.createElement('script');
     let prior = document.getElementsByTagName('script')[0];
     script.async = 1;
-    script.onerror = function() {
+    script.onerror = function () {
       if (!script.readyState || /loaded|complete/.test(script.readyState)) {
         script.onerror = script.onload = null;
         script = undefined;
@@ -199,7 +217,7 @@ export class Fmi {
         if (callback) setTimeout(callback, 1500);
       }
     };
-    script.onload = function(_, isAbort) {
+    script.onload = function (_, isAbort) {
       if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
         script.onerror = script.onload = null;
         script = undefined;
@@ -209,7 +227,7 @@ export class Fmi {
     script.src = window.bdlBaseHref ? window.bdlBaseHref + source : source;
     prior.parentNode.insertBefore(script, prior);
   }
-  
+
   // Aurelia lifecycle: attached
   attached() {
     console.log('fmi attached()');
@@ -223,9 +241,9 @@ export class Fmi {
     // FMU script loading/init
     if (this.src && this.src.length > 0) {
       window.thisfmi = this;
-      
+
       this.getScript(this.src, this.instance.initfmi.bind(this.instance));
-      
+
     } else {
       if (this.instance && typeof this.instance.initfmi === 'function') {
         this.instance.initfmi();
@@ -243,7 +261,7 @@ export class Fmi {
     if (typeof this.showcontrols === 'string') {
       this.showcontrols = (this.showcontrols === 'true');
     }
-    
+
     // Subscribe to global EventAggregator channels
     this.subscriptions.push(
       this.ea.subscribe('fmiregister', this.handleRegister)
@@ -251,7 +269,7 @@ export class Fmi {
     this.subscriptions.push(
       this.ea.subscribe('dostep', this.handleStep)
     );
-    
+
     this.dispatchFmiEvent('fmiattached', true);
   }
 
@@ -260,7 +278,7 @@ export class Fmi {
     // Dispose all EventAggregator subscriptions
     this.subscriptions.forEach(subscription => subscription.dispose());
     this.subscriptions = [];
-    
+
     if (this.animationstarted) {
       this.startstop();
     }
@@ -271,9 +289,9 @@ export class Fmi {
       window.editorapi.removeScriptById(this.src, 'fmiobj-' + this.src);
     }
   }
-/**
-   * Implements a rudimentary browser console logger for the FMU.
-   */
+  /**
+     * Implements a rudimentary browser console logger for the FMU.
+     */
   consoleLogger(componentEnvironment, instanceName, status, category, message, other) {
     // Fills variables into message returned by the FMU, the C way
     const formatMessage = (message1, other1) => {
@@ -290,11 +308,11 @@ export class Fmi {
     };
 
     // eslint-disable-next-line new-cap
-    console.log('FMU(' + this.inst.UTF8ToString(instanceName) +  
-    ' status:' + status + 
-    ' cat:' + this.inst.UTF8ToString(category) + 
-    ') msg: ' + this.inst.UTF8ToString(formatMessage(message, other))
-  );
+    console.log('FMU(' + this.inst.UTF8ToString(instanceName) +
+      ' status:' + status +
+      ' cat:' + this.inst.UTF8ToString(category) +
+      ') msg: ' + this.inst.UTF8ToString(formatMessage(message, other))
+    );
     /*console.log(
       'FMU(' + 
       instanceName +  ' status:' + 
@@ -303,7 +321,7 @@ export class Fmi {
       message + ' other:'+ other
     );*/
     this.inst._free(formatMessage);
-  }  
+  }
 
   secondsToTime(sec, multiply = 1) {
     let x = Math.floor(sec * multiply);
@@ -331,32 +349,32 @@ export class Fmi {
     // strip the ms
     timeDiff /= 1000;
     // get seconds
-    console.warn("Simulation took "+ timeDiff + " seconds");
+    console.warn("Simulation took " + timeDiff + " seconds");
   }
 
   fmuspeedChanged(newValue, oldValue) {
-    console.log('Changing simulation speed of '+this.id+ ' from '+this.fmuspeed+' to '+newValue);
+    console.log('Changing simulation speed of ' + this.id + ' from ' + this.fmuspeed + ' to ' + newValue);
     this.fmuspeedalreadychanged = true;
     //this.fmuspeed = newValue;    
-    this.stepSize = newValue * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
+    this.stepSize = newValue * ((typeof (this.fstepsize) === 'string') ? parseFloat(this.fstepsize) : this.fstepsize);
   }
   resetFmuspeed() {
-    console.log('Reseting simulation speed to '+this.fmuspeed);
+    console.log('Reseting simulation speed to ' + this.fmuspeed);
     this.fmuspeedalreadychanged = false;
     //this.fmuspeed = newValue;    
-    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
+    this.stepSize = this.fmuspeed * ((typeof (this.fstepsize) === 'string') ? parseFloat(this.fstepsize) : this.fstepsize);
   }
 
   //TODO implement getState of FMU properly, now just a stub
-  getState(){
+  getState() {
     let size = this.fmiSerializedFMUStateSize()
-    let status = this.fmiSerializeFMUState(this.fmiinst,this.fmistate,this.serializedstate,size);
+    let status = this.fmiSerializeFMUState(this.fmiinst, this.fmistate, this.serializedstate, size);
     console.log('getState() size, status', size, status);
   }
 
 
   round(value, decimals) {
-    if (decimals < 0) {let posdecimals = -decimals; return Number(Math.round(value + 'e' + posdecimals) + 'e-' + posdecimals);}
+    if (decimals < 0) { let posdecimals = -decimals; return Number(Math.round(value + 'e' + posdecimals) + 'e-' + posdecimals); }
     return Number(Math.round(value + 'e' + '-' + decimals) + 'e+' + decimals);
   }
 
@@ -366,13 +384,13 @@ export class Fmi {
   sendStartEvent() {
     //create custom event
     console.log('fmi.sendStartEvent()');
-    this.dispatchFmiEvent('fmistart', false, {time: this.round(this.stepTime, this.pow)});
+    this.dispatchFmiEvent('fmistart', false, { time: this.round(this.stepTime, this.pow) });
     //animate using requestAnimationFrame
   }
 
   //sends fmistop event
   sendStopEvent() {
-    this.dispatchFmiEvent('fmistop', false, {time: this.round(this.stepTime, this.pow)});
+    this.dispatchFmiEvent('fmistop', false, { time: this.round(this.stepTime, this.pow) });
   }
 
   /**
@@ -384,11 +402,11 @@ export class Fmi {
   dispatchFmiEvent(eventName, global = false, detail = undefined) {
     // Create the channel name - scope to component id if not global
     const channel = global ? eventName : `${eventName}:${this.id}`;
-    
+
     // Publish the event with optional detail data
     const payload = detail !== undefined ? detail : {};
     this.ea.publish(channel, payload);
-    
+
     //console.log(`[EventAggregator] Published '${channel}'`, payload);
   }
   /**
@@ -399,11 +417,13 @@ export class Fmi {
     console.log('fmi.setInputVariables()');//+resetAfterChange);
     for (let key in this.changeinputs) {
       let myinputs = this.changeinputs[key];
-      if (this.inputreferences && this.inputreferences[myinputs.id]) {
-        for (let iref of this.inputreferences[myinputs.id].refs) {
-          let normalizedvalue = myinputs.value * iref.numerator / iref.denominator + iref.addconst;
-          if (myinputs.id) this.setSingleReal(iref.ref, normalizedvalue);
-          else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
+      for (let myinput of myinputs) { 
+        if (this.inputreferences && this.inputreferences[myinput.id]) {
+          for (let iref of this.inputreferences[myinput.id].refs) {
+            let normalizedvalue = myinput.value * iref.numerator / iref.denominator + iref.addconst;
+            if (myinput.id) this.setSingleReal(iref.ref, normalizedvalue);
+            else if (myinput.valuereference) this.setSingleReal(myinput.valuereference, normalizedvalue);
+          }
         }
       }
     }
@@ -461,11 +481,11 @@ export class Fmi {
    * Handles play/pause simulation logic, ported from fmi-old.js
    */
   startstop() {
-  // Methods for template click.delegate bindings
+    // Methods for template click.delegate bindings
     //if (this.simulationController && typeof this.simulationController.startstop === 'function') {
-//      return this.simulationController.startstop();
+    //      return this.simulationController.startstop();
     //}   
-    
+
     if (this.animationstarted) {
       this.stopSimulation();
       this.sendStopEvent();
@@ -499,7 +519,7 @@ export class Fmi {
    * Adds a real value to setRealQueue, ported from fmi-old.js
    */
   setSingleReal(reference, value) {
-    console.log('setSingleReal reference,value', reference, value);
+    //console.log('setSingleReal reference,value', reference, value);
     if (!this.setRealQueue) {
       this.setRealQueue = {
         references: [],

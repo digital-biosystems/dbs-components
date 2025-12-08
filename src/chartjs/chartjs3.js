@@ -155,7 +155,7 @@ export class Chartjs3 extends Chartjs3Base {
                     type: 'line',
                     yMin: parseFloat(this.levelv[0]),
                     yMax: parseFloat(this.levelv[0]),
-                    borderColor: 'rgba(255, 99, 99, 1)',
+                    borderColor: 'rgba(99, 154, 255, 1)',
                     borderWidth: 1,
                     borderDash: [6, 6],
                     label: {
@@ -173,7 +173,7 @@ export class Chartjs3 extends Chartjs3Base {
                     type: 'line',
                     yMin: parseFloat(this.levelv[1]),
                     yMax: parseFloat(this.levelv[1]),
-                    borderColor: 'rgba(99, 154, 255, 1)',
+                    borderColor: 'rgba(255, 99, 99, 1)',
                     borderWidth: 1,
                     borderDash: [6, 6],
                     label: {
@@ -283,7 +283,7 @@ export class Chartjs3 extends Chartjs3Base {
         });
         //console.log('data', data0);
         this.ea.subscribe(`fmidata:${this.fromid}`, msg => { this.handleValueChange(msg); });
-        this.ea.subscribe(`fmireset:${this.fromid}`, msg => { });
+        this.ea.subscribe(`fmireset:${this.fromid}`, msg => {this.resetChart(); });
         this.ea.subscribe(`fmistart:${this.fromid}`, msg => {
             if (this.chart) {
                 console.log('chartjs fmistart()');
@@ -311,8 +311,8 @@ export class Chartjs3 extends Chartjs3Base {
     therapLevelChanged(newVal, oldVal) {
         console.log('Value changed');
         if (this.chart && this.chart.options.plugins && this.chart.options.plugins.annotation) {
-            this.chart.options.plugins.annotation.annotations.line2.yMin = newVal;
-            this.chart.options.plugins.annotation.annotations.line2.yMax = newVal;
+            this.chart.options.plugins.annotation.annotations.line1.yMin = newVal;
+            this.chart.options.plugins.annotation.annotations.line1.yMax = newVal;
             this.chart.update();
         } else {
             console.warn('Chart or annotation line2 not found');
@@ -322,8 +322,8 @@ export class Chartjs3 extends Chartjs3Base {
     toxicLevelChanged(newVal, oldVal) {
         console.log('Value changed');
         if (this.chart && this.chart.options.plugins && this.chart.options.plugins.annotation) {
-            this.chart.options.plugins.annotation.annotations.line1.yMin = newVal;
-            this.chart.options.plugins.annotation.annotations.line1.yMax = newVal;
+            this.chart.options.plugins.annotation.annotations.line2.yMin = newVal;
+            this.chart.options.plugins.annotation.annotations.line2.yMax = newVal;
             this.chart.update();
         } else {
             console.warn('Chart or annotation line1 not found');
@@ -382,6 +382,20 @@ export class Chartjs3 extends Chartjs3Base {
             this.chart.active = [];
         }
         this.chart.update(0);
+    }
+
+    resetChart() {
+        console.log('chartjs resetChart()');
+        if (this.chart && this.chart.data && this.chart.data.datasets) {
+            // Clear all data arrays in all datasets
+            this.chart.data.datasets.forEach(dataset => {
+                dataset.data = [];
+            });
+            // Clear labels as well
+            this.chart.data.labels = [];
+            // Update the chart to reflect changes
+            this.chart.update();
+        }
     }
 
 }

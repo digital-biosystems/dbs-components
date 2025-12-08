@@ -98,40 +98,48 @@ export class FmiSimulationController {
     }
   }
 
-  shot() {
-    if (this.shotInProgress) {
-      console.warn('shot() already in progress, ignoring subsequent call');
-      return;
-    }
-    console.log('fmi shot() called');
-    this.shotInProgress = true;
-    try {
-      // ...existing shot logic...
-      let needsReset = false;
-      if (!this.fmi.inst) {
-        if (window.fmiinst && window.fmiinst[this.fmi.fminame]) {
-          console.warn('fmi shot() not instantiated, do it first time');
-          this.fmi.instance.instantiate();
-          this.fmi.instance.initialize();
-          needsReset = true;
-        } else {
-          this.shotInProgress = false;
-          return;
-        }
-      } else {
-        needsReset = true;
-      }
-      if (needsReset) {
-        console.log('fmi shot doing reset');
-        this.reset();
-      }
-      do {
-        this.step();
-      } while (this.fmi.stoptime > this.fmi.stepTime);
-    } finally {
-      this.shotInProgress = false;
-    }
+async shot() {
+  if (this.shotInProgress) {
+    console.warn('shot() already in progress, ignoring subsequent call');
+    return;
   }
+  
+  this.shotInProgress = true;
+  
+  try {
+    let needsReset = false;
+    
+    if (!this.fmi.inst) {
+      if (window.fmiinst && window.fmiinst[this.fmi.fminame]) {
+        console.warn('fmi shot() not instantiated, do it first time');
+        this.fmi.instance.instantiate();
+        this.fmi.instance.initialize();
+        needsReset = true;
+      } else {
+        this.shotInProgress = false;
+        return;
+      }
+    } else {
+      needsReset = true;
+    }
+    
+    if (needsReset) {
+      console.log('fmi shot doing reset');
+      this.reset();
+    }
+    
+    // Async loop with yielding for UI updates
+    while (this.fmi.stoptime > this.fmi.stepTime) {
+      this.step();
+      // Yield to event loop so UI can update shotinprogress binding
+      await 0;  // or await queueMicrotask(() => {});
+    }
+    
+  } finally {
+    this.shotInProgress = false;
+  }
+}
+
 
   reset() {
     console.log('doing reset()');

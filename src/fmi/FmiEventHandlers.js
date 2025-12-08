@@ -13,8 +13,9 @@ export class FmiEventHandlers {
     else targetid = e.target.parentElement && e.target.parentElement.parentElement ? e.target.parentElement.parentElement.id : undefined;
     let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
     console.log('fmi handle value change:'+targetvalue,e);
-    if (this.fmi.changeinputs[targetid] && this.fmi.changeinputs[targetid].value === targetvalue) return;
-    this.fmi.changeinputs[targetid] = {id:targetid, value:targetvalue};
+    //if (this.fmi.changeinputs[targetid] && this.fmi.changeinputs[targetid].value === targetvalue) return;
+    if (! this.fmi.changeinputs[targetid]) this.fmi.changeinputs[targetid] = []
+    this.fmi.changeinputs[targetid].push({id:targetid, value:targetvalue});
     this.fmi.resetBeforeChange = this.fmi.resetBeforeChange || (this.fmi.inputreferences && this.fmi.inputreferences[targetid] && this.fmi.inputreferences[targetid].fixed);
     if (this.fmi.isOnestep) setTimeout(this.fmi.handleStep, 200);
     if (this.fmi.isOneshot) {
@@ -25,8 +26,9 @@ export class FmiEventHandlers {
 
   handleDetailChange = (e) => {
     console.log('fmi handle detail change:');
-    if (this.fmi.changeinputs[e.detail.id] && this.fmi.changeinputs[e.detail.id].value === e.detail.value) return;
-    this.fmi.changeinputs[e.detail.id] = {valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id};
+    //if (this.fmi.changeinputs[e.detail.id] && this.fmi.changeinputs[e.detail.id].value === e.detail.value) return;
+    if (! this.fmi.changeinputs[e.detail.id]) this.fmi.changeinputs[e.detail.id] = []
+    this.fmi.changeinputs[e.detail.id].push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id});
     //console.log('fmi handle detail change', this.fmi.changeinputs);
     if (this.fmi.isOnestep) setTimeout(this.fmi.handleStep, 200);
     if (this.fmi.isOneshot) setTimeout(this.fmi.debounceShot, 200);
@@ -42,10 +44,10 @@ export class FmiEventHandlers {
 
   handleShot = (e) => {
     console.log('fmiEventHandler handleShot()',e);
-    if (this.fmi.simulationController && typeof this.fmi.simulationController.shot === 'function') {
-      this.fmi.simulationController.shot(e);
+    //if (this.fmi.simulationController && typeof this.fmi.simulationController.shot === 'function') {
+      this.fmi.shot(e);
       //      this.fmi.debounceShot();
-    }
+    //}
   }
 
   handleStep = (e) => {

@@ -11,6 +11,7 @@ export class FmiInputManager {
       this.fmi.inputreferences = [];
       for (let inputpart of inputparts) {
         let myinputs = inputpart.split(',');
+        let inputid = myinputs[0].trim();
         let numerator = (myinputs.length > 2) ? parseFloat(myinputs[2]) : 1;
         let denominator = (myinputs.length > 3) ? parseFloat(myinputs[3]) : 1;
         let addconst = (myinputs.length > 4) ? parseFloat(myinputs[4]) : 0;
@@ -20,23 +21,31 @@ export class FmiInputManager {
           fixedsignature = myinputs[4] === 'f';
         }
         let inputref = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature};
-        if (this.fmi.inputreferences[myinputs[0]]) {
-          this.fmi.inputreferences[myinputs[0]].fixed = this.fmi.inputreferences[myinputs[0]].fixed || fixedsignature;
-          this.fmi.inputreferences[myinputs[0]].refs.push(inputref);
+        if (this.fmi.inputreferences[inputid]) {
+          this.fmi.inputreferences[inputid].fixed = this.fmi.inputreferences[inputid].fixed || fixedsignature;
+          this.fmi.inputreferences[inputid].refs.push(inputref);
         } else {
-          this.fmi.inputreferences[myinputs[0]] = {fixed:fixedsignature,refs:[inputref]};
+          this.fmi.inputreferences[inputid] = {fixed:fixedsignature,refs:[inputref]};
         }
-        let dependentEl = document.getElementById(myinputs[0]);
+        let dependentEl = document.getElementById(inputid);
+        if (!dependentEl) {
+          //try to find in shadow DOM
+          console.warn('looking for element in shadow DOM:', this.fmi.parentelement);
+          if (this.fmi.parentelement && this.fmi.parentelement.shadowRoot) {
+            dependentEl = this.fmi.parentelement.shadowRoot.getElementById(inputid);
+          }
+        }
         if (dependentEl) {
           dependentEl.addEventListener(this.fmi.eventlisten, this.fmi.handleValueChange);
-          console.warn('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
-        } else {
+          console.warn('registering input, ref, num,den,add,fixed', inputid, myinputs[1], numerator, denominator, addconst, fixedsignature);
+        } else {          
           if (!window.animateranges) window.animateranges = [];
           window.animateranges.push({
-            name:myinputs[0],
+            name:inputid,
             handleValueChange: this.fmi.handleValueChange
           });
           console.warn('non-existing element id, will try to register to animation:', myinputs[0]);
+          console.warn('shadowroot:', this.shadowRoot);
         }
       }
     }

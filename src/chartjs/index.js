@@ -19,6 +19,8 @@ const registry = container.get(WcCustomElementRegistry);
 
 import { Chartjs3 } from './chartjs3';
 import { Pgxchart } from './pgxchart';
+import { Fmi} from '../fmi/fmi';
 
 registry.define('dbs-chartjs3', Chartjs3);
 registry.define('dbs-pgxchart', Pgxchart);
+registry.define('dbs-fmi', Fmi);
