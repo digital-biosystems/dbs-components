@@ -104,7 +104,7 @@ export class Fmi {
     }
   }
   async shot() {
-    //console.log('fmi shot() called');
+    console.log('fmi async shot() called');
     this.shotinprogress = true;
       // Force DOM update BEFORE simulation starts
   //queueTask(() => {});  // Flushes bindings immediately
@@ -117,7 +117,21 @@ export class Fmi {
     this.shotinprogress = false;
   }
 
-  async shot2() {
+  shot2() {
+    console.log('fmi shot() called');
+    this.shotinprogress = true;
+      // Force DOM update BEFORE simulation starts
+  //queueTask(() => {});  // Flushes bindings immediately
+    //await new Promise(resolve => setTimeout(resolve, 10));
+    if (this.simulationController && typeof this.simulationController.shot === 'function') {
+      const result = this.simulationController.shot();
+      this.shotinprogress = false;
+      return result;
+    }
+    this.shotinprogress = false;
+  }
+
+  async shot3() {
   this.shotinprogress = true;
   await new Promise(r => setTimeout(r, 1000));  // 10ms visible delay
   console.log('Progress should be visible now');

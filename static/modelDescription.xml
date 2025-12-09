@@ -1,0 +1,1339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="Pharmacolibrary.Examples.Pharmacogenomics.PK_2C_single"
+  guid="{dd3b0871-6f16-49ac-b8f6-1a7e5e09da39}"
+  description=""
+  version=""
+  generationTool="OpenModelica Compiler OpenModelica 1.25.4"
+  generationDateAndTime="2025-12-09T15:38:30Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="8">
+  <CoSimulation
+    modelIdentifier="PK_2C_single"
+    needsExecutionTool="false"
+    canHandleVariableCommunicationStepSize="true"
+    canInterpolateInputs="true"
+    maxOutputDerivativeOrder="1"
+    canRunAsynchronuously = "false"
+    canBeInstantiatedOnlyOncePerProcess="false"
+    canNotUseMemoryManagementFunctions="false"
+    canGetAndSetFMUstate="false"
+    canSerializeFMUstate="false"
+    providesDirectionalDerivative="false">
+    <SourceFiles>
+      <File name="PK_2C_single.c" />
+      <File name="PK_2C_single_functions.c" />
+      <File name="PK_2C_single_records.c" />
+      <File name="PK_2C_single_01exo.c" />
+      <File name="PK_2C_single_02nls.c" />
+      <File name="PK_2C_single_03lsy.c" />
+      <File name="PK_2C_single_04set.c" />
+      <File name="PK_2C_single_05evt.c" />
+      <File name="PK_2C_single_06inz.c" />
+      <File name="PK_2C_single_07dly.c" />
+      <File name="PK_2C_single_08bnd.c" />
+      <File name="PK_2C_single_09alg.c" />
+      <File name="PK_2C_single_10asr.c" />
+      <File name="PK_2C_single_11mix.c" />
+      <File name="PK_2C_single_12jac.c" />
+      <File name="PK_2C_single_13opt.c" />
+      <File name="PK_2C_single_14lnz.c" />
+      <File name="PK_2C_single_15syn.c" />
+      <File name="PK_2C_single_16dae.c" />
+      <File name="PK_2C_single_17inl.c" />
+      <File name="PK_2C_single_18spd.c" />
+      <File name="PK_2C_single_init_fmu.c" />
+      <File name="PK_2C_single_FMU.c" />
+      <File name="./gc/memory_pool.c" />
+      <File name="./gc/omc_gc.c" />
+      <File name="./util/base_array.c" />
+      <File name="./util/boolean_array.c" />
+      <File name="./util/context.c" />
+      <File name="./util/division.c" />
+      <File name="./util/doubleEndedList.c" />
+      <File name="./util/generic_array.c" />
+      <File name="./util/index_spec.c" />
+      <File name="./util/integer_array.c" />
+      <File name="./util/list.c" />
+      <File name="./util/modelica_string_lit.c" />
+      <File name="./util/modelica_string.c" />
+      <File name="./util/ModelicaUtilities.c" />
+      <File name="./util/omc_error.c" />
+      <File name="./util/omc_file.c" />
+      <File name="./util/omc_init.c" />
+      <File name="./util/omc_mmap.c" />
+      <File name="./util/omc_msvc.c" />
+      <File name="./util/omc_numbers.c" />
+      <File name="./util/parallel_helper.c" />
+      <File name="./util/rational.c" />
+      <File name="./util/real_array.c" />
+      <File name="./util/ringbuffer.c" />
+      <File name="./util/simulation_options.c" />
+      <File name="./util/string_array.c" />
+      <File name="./util/utility.c" />
+      <File name="./util/varinfo.c" />
+      <File name="./math-support/pivot.c" />
+      <File name="./simulation/jacobian_util.c" />
+      <File name="./simulation/omc_simulation_util.c" />
+      <File name="./simulation/options.c" />
+      <File name="./simulation/simulation_info_json.c" />
+      <File name="./simulation/simulation_omc_assert.c" />
+      <File name="./simulation/solver/delay.c" />
+      <File name="./simulation/solver/fmi_events.c" />
+      <File name="./simulation/solver/model_help.c" />
+      <File name="./simulation/solver/omc_math.c" />
+      <File name="./simulation/solver/spatialDistribution.c" />
+      <File name="./simulation/solver/stateset.c" />
+      <File name="./simulation/solver/synchronous.c" />
+      <File name="./simulation/solver/initialization/initialization.c" />
+      <File name="./meta/meta_modelica_catch.c" />
+      <File name="./external_solvers/dgesv.c" />
+      <File name="./external_solvers/dgetrf.c" />
+      <File name="./external_solvers/dgetri.c" />
+      <File name="./external_solvers/dtrtri.c" />
+      <File name="./external_solvers/dtrti2.c" />
+      <File name="./external_solvers/dlamch.c" />
+      <File name="./external_solvers/ilaenv.c" />
+      <File name="./external_solvers/xerbla.c" />
+      <File name="./external_solvers/dgetf2.c" />
+      <File name="./external_solvers/dgetrs.c" />
+      <File name="./external_solvers/dlaswp.c" />
+      <File name="./external_solvers/ieeeck.c" />
+      <File name="./external_solvers/iparmq.c" />
+      <File name="./external_solvers/dgemm.c" />
+      <File name="./external_solvers/dger.c" />
+      <File name="./external_solvers/dgemv.c" />
+      <File name="./external_solvers/dscal.c" />
+      <File name="./external_solvers/dswap.c" />
+      <File name="./external_solvers/dtrsm.c" />
+      <File name="./external_solvers/dtrmm.c" />
+      <File name="./external_solvers/dtrmv.c" />
+      <File name="./external_solvers/idamax.c" />
+      <File name="./external_solvers/lsame.c" />
+      <File name="./external_solvers/i_nint.c" />
+      <File name="./external_solvers/pow_di.c" />
+      <File name="./external_solvers/s_cmp.c" />
+      <File name="./external_solvers/s_copy.c" />
+      <File name="./external_solvers/s_cat.c" />
+      <File name="./external_solvers/F77_aloc.c" />
+      <File name="./external_solvers/exit_.c" />
+      <File name="./external_solvers/enorm_.c" />
+      <File name="./external_solvers/hybrj_.c" />
+      <File name="./external_solvers/dpmpar_.c" />
+      <File name="./external_solvers/qrfac_.c" />
+      <File name="./external_solvers/qform_.c" />
+      <File name="./external_solvers/dogleg_.c" />
+      <File name="./external_solvers/r1updt_.c" />
+      <File name="./external_solvers/r1mpyq_.c" />
+      <File name="simulation/solver/cvode_solver.c" />
+      <File name="simulation/solver/sundials_error.c" />
+      <File name="ModelicaExternalC/ModelicaStandardTables.c" />
+      <File name="ModelicaExternalC/ModelicaMatIO.c" />
+      <File name="ModelicaExternalC/ModelicaIO.c" />
+      <File name="ModelicaExternalC/ModelicaStandardTablesDummyUsertab.c" />
+      <File name="ModelicaExternalC/snprintf.c" />
+    </SourceFiles>
+  </CoSimulation>
+  <UnitDefinitions>
+    <Unit name="1/s">
+      <BaseUnit s="-1" />
+    </Unit>
+    <Unit name="kg/mol">
+      <BaseUnit mol="-1" kg="1" />
+    </Unit>
+    <Unit name="m3/kg">
+      <BaseUnit m="3" kg="-1" />
+    </Unit>
+    <Unit name="m3">
+      <BaseUnit m="3" />
+    </Unit>
+    <Unit name="1">
+      <BaseUnit />
+    </Unit>
+    <Unit name="m3/s">
+      <BaseUnit m="3" s="-1" />
+    </Unit>
+    <Unit name="s">
+      <BaseUnit s="1" />
+    </Unit>
+    <Unit name="kg/s">
+      <BaseUnit s="-1" kg="1" />
+    </Unit>
+    <Unit name="mol/m3">
+      <BaseUnit mol="1" m="-3" />
+    </Unit>
+    <Unit name="ks-1.g">
+      <BaseUnit s="-1" kg="1" factor="1e-6" />
+    </Unit>
+    <Unit name="km-3.s-1.g">
+      <BaseUnit m="-3" s="-1" kg="1" factor="1.0000000000000002e-12" />
+    </Unit>
+    <Unit name="km-3.g">
+      <BaseUnit m="-3" kg="1" factor="1.0000000000000002e-12" />
+    </Unit>
+    <Unit name="kg">
+      <BaseUnit kg="1" />
+    </Unit>
+    <Unit name="kg/m3">
+      <BaseUnit m="-3" kg="1" />
+    </Unit>
+    <Unit name="kg.s/m3">
+      <BaseUnit m="-3" s="1" kg="1" />
+    </Unit>
+  </UnitDefinitions>
+  <LogCategories>
+    <Category name="logEvents" />
+    <Category name="logSingularLinearSystems" />
+    <Category name="logNonlinearSystems" />
+    <Category name="logDynamicStateSelection" />
+    <Category name="logStatusWarning" />
+    <Category name="logStatusDiscard" />
+    <Category name="logStatusError" />
+    <Category name="logStatusFatal" />
+    <Category name="logStatusPending" />
+    <Category name="logAll" />
+    <Category name="logFmi2Call" />
+  </LogCategories>
+  <DefaultExperiment startTime="0.0" stopTime="1.0" tolerance="1e-6" stepSize="0.002"/>
+  <ModelVariables>
+  <!-- Index of variable = "1" -->
+  <ScalarVariable
+    name="patient.central.AUC"
+    valueReference="0"
+    description="area under curve"
+    initial="exact">
+    <Real start="0.0" unit="kg.s/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "2" -->
+  <ScalarVariable
+    name="patient.central.C"
+    valueReference="1"
+    description="drug actual concentration in tissue"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "3" -->
+  <ScalarVariable
+    name="patient.elim.MExc"
+    valueReference="2"
+    description="excreted drug mass"
+    initial="exact">
+    <Real start="0.0" min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "4" -->
+  <ScalarVariable
+    name="patient.periodicDose.TotalCumulativeMass"
+    valueReference="3"
+    description="Total dose adminitrated by this source"
+    initial="exact">
+    <Real start="0.0" min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "5" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.AUC"
+    valueReference="4"
+    description="area under curve"
+    initial="exact">
+    <Real start="0.0" unit="kg.s/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "6" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.C"
+    valueReference="5"
+    description="drug actual concentration in tissue"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "7" -->
+  <ScalarVariable
+    name="patient.periodicDose.delayedAbsorption.TotalCumulativeMass"
+    valueReference="6"
+    description="Total dose adminitrated by this source"
+    initial="exact">
+    <Real start="0.0" min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "8" -->
+  <ScalarVariable
+    name="patient.peripheral.AUC"
+    valueReference="7"
+    description="area under curve"
+    initial="exact">
+    <Real start="0.0" unit="kg.s/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "9" -->
+  <ScalarVariable
+    name="patient.peripheral.C"
+    valueReference="8"
+    description="drug actual concentration in tissue"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "10" -->
+  <ScalarVariable
+    name="der(patient.central.AUC)"
+    valueReference="9"
+    description="der(area under curve)"
+    >
+    <Real derivative="1" unit="km-3.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "11" -->
+  <ScalarVariable
+    name="der(patient.central.C)"
+    valueReference="10"
+    description="der(drug actual concentration in tissue)"
+    >
+    <Real derivative="2" unit="km-3.s-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "12" -->
+  <ScalarVariable
+    name="der(patient.elim.MExc)"
+    valueReference="11"
+    description="der(excreted drug mass)"
+    >
+    <Real derivative="3" unit="ks-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "13" -->
+  <ScalarVariable
+    name="der(patient.periodicDose.TotalCumulativeMass)"
+    valueReference="12"
+    description="der(Total dose adminitrated by this source)"
+    >
+    <Real derivative="4" unit="ks-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "14" -->
+  <ScalarVariable
+    name="der(patient.periodicDose.absorptionLumen.AUC)"
+    valueReference="13"
+    description="der(area under curve)"
+    >
+    <Real derivative="5" unit="km-3.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "15" -->
+  <ScalarVariable
+    name="der(patient.periodicDose.absorptionLumen.C)"
+    valueReference="14"
+    description="der(drug actual concentration in tissue)"
+    >
+    <Real derivative="6" unit="km-3.s-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "16" -->
+  <ScalarVariable
+    name="der(patient.periodicDose.delayedAbsorption.TotalCumulativeMass)"
+    valueReference="15"
+    description="der(Total dose adminitrated by this source)"
+    >
+    <Real derivative="7" unit="ks-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "17" -->
+  <ScalarVariable
+    name="der(patient.peripheral.AUC)"
+    valueReference="16"
+    description="der(area under curve)"
+    >
+    <Real derivative="8" unit="km-3.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "18" -->
+  <ScalarVariable
+    name="der(patient.peripheral.C)"
+    valueReference="17"
+    description="der(drug actual concentration in tissue)"
+    >
+    <Real derivative="9" unit="km-3.s-1.g"/>
+  </ScalarVariable>
+  <!-- Index of variable = "19" -->
+  <ScalarVariable
+    name="der(patient.central.M)"
+    valueReference="18"
+    description="drug mass total"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "20" -->
+  <ScalarVariable
+    name="der(patient.periodicDose.absorptionLumen.M)"
+    valueReference="19"
+    description="drug mass total"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "21" -->
+  <ScalarVariable
+    name="der(patient.peripheral.M)"
+    valueReference="20"
+    description="drug mass total"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "22" -->
+  <ScalarVariable
+    name="patient.central.C_molar"
+    valueReference="21"
+    description="molar concentration"
+    >
+    <Real unit="mol/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "23" -->
+  <ScalarVariable
+    name="patient.central.M"
+    valueReference="22"
+    description="drug mass total"
+    >
+    <Real min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "24" -->
+  <ScalarVariable
+    name="patient.central.cport.qm"
+    valueReference="23"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "25" -->
+  <ScalarVariable
+    name="patient.centralCPort.qm"
+    valueReference="25"
+    description="mass flow rate"
+    initial="exact">
+    <Real start="0.0" unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "26" -->
+  <ScalarVariable
+    name="patient.elim.cport.qm"
+    valueReference="26"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "27" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.C_molar"
+    valueReference="27"
+    description="molar concentration"
+    >
+    <Real unit="mol/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "28" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.M"
+    valueReference="28"
+    description="drug mass total"
+    >
+    <Real min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "29" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.cport.qm"
+    valueReference="29"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "30" -->
+  <ScalarVariable
+    name="patient.periodicDose.cport.qm"
+    valueReference="31"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "31" -->
+  <ScalarVariable
+    name="patient.periodicDose.delay.y"
+    valueReference="32"
+    description="Connector of Real output signal"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "32" -->
+  <ScalarVariable
+    name="patient.periodicDose.delayedAbsorption.cport.qm"
+    valueReference="33"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "33" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.y"
+    valueReference="35"
+    description="Connector of Real output signal"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "34" -->
+  <ScalarVariable
+    name="patient.peripheral.C_molar"
+    valueReference="36"
+    description="molar concentration"
+    >
+    <Real unit="mol/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "35" -->
+  <ScalarVariable
+    name="patient.peripheral.M"
+    valueReference="37"
+    description="drug mass total"
+    >
+    <Real min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "36" -->
+  <ScalarVariable
+    name="patient.peripheral.cport.qm"
+    valueReference="38"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "37" -->
+  <ScalarVariable
+    name="patient.peripheralCPort.qm"
+    valueReference="40"
+    description="mass flow rate"
+    initial="exact">
+    <Real start="0.0" unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "38" -->
+  <ScalarVariable
+    name="patient.t1_2"
+    valueReference="41"
+    description="elimination half-life"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "39" -->
+  <ScalarVariable
+    name="patient.central.Cmax"
+    valueReference="42"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "40" -->
+  <ScalarVariable
+    name="patient.central.Cmin"
+    valueReference="43"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "41" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.Cmax"
+    valueReference="44"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "42" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.Cmin"
+    valueReference="45"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "43" -->
+  <ScalarVariable
+    name="patient.peripheral.Cmax"
+    valueReference="47"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "44" -->
+  <ScalarVariable
+    name="patient.peripheral.Cmin"
+    valueReference="48"
+    variability="discrete"
+    initial="exact">
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "45" -->
+  <ScalarVariable
+    name="patient.C_tox_peak"
+    valueReference="49"
+    description="Peak toxicity concentration"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.025" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "46" -->
+  <ScalarVariable
+    name="patient.C_tox_valley"
+    valueReference="50"
+    description="Peak toxicity concentration"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.0021" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "47" -->
+  <ScalarVariable
+    name="patient.Cl"
+    valueReference="51"
+    description="clearance"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="3.777777777777778e-7" nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "48" -->
+  <ScalarVariable
+    name="patient.Cmax"
+    valueReference="52"
+    description="minimal therapeutic range"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.01" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "49" -->
+  <ScalarVariable
+    name="patient.Cmin"
+    valueReference="53"
+    description="minimal therapeutic range"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.001" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "50" -->
+  <ScalarVariable
+    name="patient.Ctox_peak"
+    valueReference="54"
+    description="toxicity peak level"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.02" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "51" -->
+  <ScalarVariable
+    name="patient.Ctox_trough"
+    valueReference="55"
+    description="toxicity trough level"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.01" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "52" -->
+  <ScalarVariable
+    name="patient.F"
+    valueReference="56"
+    description="bioavailiability (0-1)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.8" min="0.0" max="1.0" unit="1"/>
+  </ScalarVariable>
+  <!-- Index of variable = "53" -->
+  <ScalarVariable
+    name="patient.MIC"
+    valueReference="57"
+    description="Minimal inhibitory concentration"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.002" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "54" -->
+  <ScalarVariable
+    name="patient.Tlag"
+    valueReference="58"
+    description="delay between oral administration and absorption (default 10min)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="10.200000000000001" unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "55" -->
+  <ScalarVariable
+    name="patient.Vd"
+    valueReference="59"
+    description="Volume of distribution (m3)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.009720000000000001" unit="m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "56" -->
+  <ScalarVariable
+    name="patient.VdPerKg"
+    valueReference="60"
+    description="Volume of distribution (L/kg)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.9" min="0.0" unit="m3/kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "57" -->
+  <ScalarVariable
+    name="patient.Vdp"
+    valueReference="61"
+    description="Volume of distribution (m3)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.00639" unit="m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "58" -->
+  <ScalarVariable
+    name="patient.VdpPerKg"
+    valueReference="62"
+    description="Volume of distribution peripheral(l/kg)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.9" min="0.0" unit="m3/kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "59" -->
+  <ScalarVariable
+    name="patient.adminDuration"
+    valueReference="63"
+    description="administration duration (s)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="600.0" unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "60" -->
+  <ScalarVariable
+    name="patient.adminMass"
+    valueReference="64"
+    description="administration mass (mg)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="4e-4" min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "61" -->
+  <ScalarVariable
+    name="patient.adminPeriod"
+    valueReference="65"
+    description="period of administration (default 8 hours)(s)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="28800.0" unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "62" -->
+  <ScalarVariable
+    name="patient.adminTime"
+    valueReference="66"
+    description="first administration time (s)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="60.0" unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "63" -->
+  <ScalarVariable
+    name="patient.central.C0"
+    valueReference="67"
+    description="drug initial concentration in tissue"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "64" -->
+  <ScalarVariable
+    name="patient.central.V"
+    valueReference="68"
+    description="total distribution volume"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "65" -->
+  <ScalarVariable
+    name="patient.central.molarWeight"
+    valueReference="70"
+    description="molar weight of molecule"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.0" min="0.0" unit="kg/mol"/>
+  </ScalarVariable>
+  <!-- Index of variable = "66" -->
+  <ScalarVariable
+    name="patient.elim.CL"
+    valueReference="71"
+    description="clearence"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "67" -->
+  <ScalarVariable
+    name="patient.k12"
+    valueReference="73"
+    description="intercompartmental C-P clearance"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.2361111111111111e-6" nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "68" -->
+  <ScalarVariable
+    name="patient.k21"
+    valueReference="74"
+    description="intercompartmental P-C clearance"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.2361111111111111e-6" nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "69" -->
+  <ScalarVariable
+    name="patient.ka"
+    valueReference="75"
+    description="first order absorption rate"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.019666666666666666" min="0.0" unit="1/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "70" -->
+  <ScalarVariable
+    name="patient.periodicDose.F"
+    valueReference="76"
+    description="bioavailability [0-1]"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "71" -->
+  <ScalarVariable
+    name="patient.periodicDose.Tlag"
+    valueReference="77"
+    description="time delay between administration and absorption (default 10 min)"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "72" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.C0"
+    valueReference="78"
+    description="drug initial concentration in tissue"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "73" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.V"
+    valueReference="79"
+    description="total distribution volume"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.0" unit="m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "74" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.molarWeight"
+    valueReference="81"
+    description="molar weight of molecule"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.0" min="0.0" unit="kg/mol"/>
+  </ScalarVariable>
+  <!-- Index of variable = "75" -->
+  <ScalarVariable
+    name="patient.periodicDose.adminDuration"
+    valueReference="82"
+    description="administration duration (not used here)"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "76" -->
+  <ScalarVariable
+    name="patient.periodicDose.adminMass"
+    valueReference="83"
+    description="drug dose mass"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real min="-1e-12" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "77" -->
+  <ScalarVariable
+    name="patient.periodicDose.adminPeriod"
+    valueReference="84"
+    description="time period between doses"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "78" -->
+  <ScalarVariable
+    name="patient.periodicDose.delay.delayTime"
+    valueReference="85"
+    description="Delay time of output with respect to input signal"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "79" -->
+  <ScalarVariable
+    name="patient.periodicDose.delayedAbsorption.F"
+    valueReference="86"
+    description="bioavailability [0-1]"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "80" -->
+  <ScalarVariable
+    name="patient.periodicDose.firstAdminTime"
+    valueReference="87"
+    description="time of first dose"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "81" -->
+  <ScalarVariable
+    name="patient.periodicDose.ka"
+    valueReference="88"
+    description="first order absorption rate"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real min="0.0" unit="1/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "82" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.amplitude"
+    valueReference="89"
+    description="Amplitude of pulse"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "83" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.offset"
+    valueReference="90"
+    description="Offset of output signal y"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "84" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.period"
+    valueReference="91"
+    description="Time for one period"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real min="1e-60" unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "85" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.startTime"
+    valueReference="92"
+    description="Output y = offset for time &lt; startTime"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "86" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.width"
+    valueReference="93"
+    description="Width of pulse in % of period"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real min="1e-60" max="100.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "87" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.CLa"
+    valueReference="94"
+    description="intercompartmental clearence"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "88" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.CLb"
+    valueReference="95"
+    description="intercompartmental clearence"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.0" nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "89" -->
+  <ScalarVariable
+    name="patient.peripheral.C0"
+    valueReference="96"
+    description="drug initial concentration in tissue"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="0.0" min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "90" -->
+  <ScalarVariable
+    name="patient.peripheral.V"
+    valueReference="97"
+    description="total distribution volume"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real unit="m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "91" -->
+  <ScalarVariable
+    name="patient.peripheral.molarWeight"
+    valueReference="99"
+    description="molar weight of molecule"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="1.0" min="0.0" unit="kg/mol"/>
+  </ScalarVariable>
+  <!-- Index of variable = "92" -->
+  <ScalarVariable
+    name="patient.transfer.CLa"
+    valueReference="100"
+    description="intercompartmental clearence"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "93" -->
+  <ScalarVariable
+    name="patient.transfer.CLb"
+    valueReference="101"
+    description="intercompartmental clearence"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Real nominal="5.9999999999999995e-5" unit="m3/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "94" -->
+  <ScalarVariable
+    name="patient.weight"
+    valueReference="102"
+    description="patient weight (kg)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Real start="70.0" min="0.0" unit="kg"/>
+  </ScalarVariable>
+  <!-- Index of variable = "95" -->
+  <ScalarVariable
+    name="patient.C_central"
+    valueReference="1"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "96" -->
+  <ScalarVariable
+    name="patient.C_peripheral1"
+    valueReference="8"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "97" -->
+  <ScalarVariable
+    name="patient.central.cport.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "98" -->
+  <ScalarVariable
+    name="patient.centralCPort.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "99" -->
+  <ScalarVariable
+    name="patient.elim.C"
+    valueReference="1"
+    description="free concentration of either blood/plasma or tissue at the connector"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "100" -->
+  <ScalarVariable
+    name="patient.elim.cport.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "101" -->
+  <ScalarVariable
+    name="patient.periodicDose.absorptionLumen.cport.c"
+    valueReference="5"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "102" -->
+  <ScalarVariable
+    name="patient.periodicDose.cport.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "103" -->
+  <ScalarVariable
+    name="patient.periodicDose.delay.u"
+    valueReference="35"
+    description="Connector of Real input signal"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "104" -->
+  <ScalarVariable
+    name="patient.periodicDose.delayedAbsorption.cport.c"
+    valueReference="5"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "105" -->
+  <ScalarVariable
+    name="patient.periodicDose.delayedAbsorption.massFlow"
+    valueReference="32"
+    >
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "106" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cA"
+    valueReference="5"
+    description="free or total concentration of connector a"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "107" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cB"
+    valueReference="1"
+    description="free or total concentration of connector b"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "108" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cport_a.c"
+    valueReference="5"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "109" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cport_a.qm"
+    valueReference="117"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "110" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cport_b.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "111" -->
+  <ScalarVariable
+    name="patient.periodicDose.transferFirstOrderNonSym.cport_b.qm"
+    valueReference="31"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "112" -->
+  <ScalarVariable
+    name="patient.peripheral.cport.c"
+    valueReference="8"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "113" -->
+  <ScalarVariable
+    name="patient.peripheralCPort.c"
+    valueReference="8"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "114" -->
+  <ScalarVariable
+    name="patient.transfer.cA"
+    valueReference="1"
+    description="free or total concentration of connector a"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "115" -->
+  <ScalarVariable
+    name="patient.transfer.cB"
+    valueReference="8"
+    description="free or total concentration of connector b"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "116" -->
+  <ScalarVariable
+    name="patient.transfer.cport_a.c"
+    valueReference="1"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "117" -->
+  <ScalarVariable
+    name="patient.transfer.cport_a.qm"
+    valueReference="38"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "118" -->
+  <ScalarVariable
+    name="patient.transfer.cport_b.c"
+    valueReference="8"
+    description="free blood/plasma concentration"
+    >
+    <Real min="-1e-9" unit="kg/m3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "119" -->
+  <ScalarVariable
+    name="patient.transfer.cport_b.qm"
+    valueReference="127"
+    description="mass flow rate"
+    >
+    <Real unit="kg/s"/>
+  </ScalarVariable>
+  <!-- Index of variable = "120" -->
+  <ScalarVariable
+    name="patient.adminCount"
+    valueReference="1"
+    description="number of dose administered (1)"
+    variability="fixed"
+    causality="parameter"
+    >
+    <Integer start="3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "121" -->
+  <ScalarVariable
+    name="patient.periodicDose.doseCount"
+    valueReference="2"
+    description="number of doses, -1 .. unlimitted"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Integer/>
+  </ScalarVariable>
+  <!-- Index of variable = "122" -->
+  <ScalarVariable
+    name="patient.periodicDose.pulse.nperiod"
+    valueReference="3"
+    description="Number of periods (&lt; 0 means infinite number of periods)"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Integer/>
+  </ScalarVariable>
+  <!-- Index of variable = "123" -->
+  <ScalarVariable
+    name="patient.elim.useClInput"
+    valueReference="10"
+    description="true → take clearance from external signal"
+    variability="fixed"
+    causality="calculatedParameter"
+    >
+    <Boolean/>
+  </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Derivatives>
+      <Unknown index="10" dependencies="2" dependenciesKind="dependent" />
+      <Unknown index="11" dependencies="2 6 9" dependenciesKind="dependent dependent dependent" />
+      <Unknown index="12" dependencies="2" dependenciesKind="dependent" />
+      <Unknown index="13" dependencies="2 6" dependenciesKind="dependent dependent" />
+      <Unknown index="14" dependencies="6" dependenciesKind="dependent" />
+      <Unknown index="15" dependencies="2 6" dependenciesKind="dependent dependent" />
+      <Unknown index="16" dependencies="" dependenciesKind="" />
+      <Unknown index="17" dependencies="9" dependenciesKind="dependent" />
+      <Unknown index="18" dependencies="2 9" dependenciesKind="dependent dependent" />
+    </Derivatives>
+    <InitialUnknowns>
+      <Unknown index="2" dependencies="63" dependenciesKind="dependent" />
+      <Unknown index="9" dependencies="89" dependenciesKind="dependent" />
+      <Unknown index="10" dependencies="63" dependenciesKind="dependent" />
+      <Unknown index="11" dependencies="6 63 88 89" dependenciesKind="dependent dependent dependent dependent" />
+      <Unknown index="12" dependencies="63" dependenciesKind="dependent" />
+      <Unknown index="13" dependencies="6 63 88" dependenciesKind="dependent dependent dependent" />
+      <Unknown index="14" dependencies="6" dependenciesKind="dependent" />
+      <Unknown index="15" dependencies="6 63 83 88" dependenciesKind="dependent dependent dependent dependent" />
+      <Unknown index="16" dependencies="83" dependenciesKind="dependent" />
+      <Unknown index="17" dependencies="89" dependenciesKind="dependent" />
+      <Unknown index="18" dependencies="63 89" dependenciesKind="dependent dependent" />
+      <Unknown index="64" dependencies="55" dependenciesKind="dependent" />
+      <Unknown index="66" dependencies="47" dependenciesKind="dependent" />
+      <Unknown index="70" dependencies="52" dependenciesKind="dependent" />
+      <Unknown index="71" dependencies="54" dependenciesKind="dependent" />
+      <Unknown index="72" dependencies="" dependenciesKind="" />
+      <Unknown index="75" dependencies="59" dependenciesKind="dependent" />
+      <Unknown index="76" dependencies="60" dependenciesKind="dependent" />
+      <Unknown index="77" dependencies="61" dependenciesKind="dependent" />
+      <Unknown index="78" dependencies="" dependenciesKind="" />
+      <Unknown index="79" dependencies="" dependenciesKind="" />
+      <Unknown index="80" dependencies="62" dependenciesKind="dependent" />
+      <Unknown index="81" dependencies="69" dependenciesKind="dependent" />
+      <Unknown index="82" dependencies="" dependenciesKind="" />
+      <Unknown index="84" dependencies="" dependenciesKind="" />
+      <Unknown index="85" dependencies="" dependenciesKind="" />
+      <Unknown index="86" dependencies="" dependenciesKind="" />
+      <Unknown index="87" dependencies="" dependenciesKind="" />
+      <Unknown index="90" dependencies="57" dependenciesKind="dependent" />
+      <Unknown index="92" dependencies="67" dependenciesKind="dependent" />
+      <Unknown index="93" dependencies="68" dependenciesKind="dependent" />
+      <Unknown index="121" dependencies="120" dependenciesKind="dependent" />
+      <Unknown index="122" dependencies="" dependenciesKind="" />
+      <Unknown index="123" dependencies="" dependenciesKind="" />
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>

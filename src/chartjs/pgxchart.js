@@ -1,6 +1,5 @@
 import { customElement,useShadowDOM,resolve } from 'aurelia'
 @customElement('dbs-pgxchart')
-@useShadowDOM({ mode: 'open' })
 export class Pgxchart{
 
 

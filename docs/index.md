@@ -30,7 +30,11 @@ Include the script bundle in head of your HTML and use web-component's custom el
 </body>    
 ```
 
-### single bundle with all components
+### Download JS  bundle 
+
+From https://github.com/digital-biosystems/dbs-components/tree/release/dist
+
+### Use single bundle with all components
 
 1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-bundle.js` and copy to your web app location.
 2. include the script that defines behavior of the web component's custom element: 
@@ -39,7 +43,7 @@ Include the script bundle in head of your HTML and use web-component's custom el
 ```   
 3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
 
-### multiple bundles with selected components
+### Use multiple bundles with selected components
 1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-shared.js` and `/dist/dbs-[some-component].js` and copy to your web app location.
 2. include the script that defines behavior of the web component's custom element: 
 ```html

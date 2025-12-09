@@ -50,7 +50,6 @@ export class FmiSimulationController {
           else this.fmi.stepTime = this.fmi.starttime;
           this.fmi.resetBeforeChange = false;
         } else {
-
           if (!this.fmi.isOneshot) //oneshot keeps changes,no need to set it each step
             this.fmi.setInputVariables();
         }
@@ -145,7 +144,8 @@ async shot() {
     console.log('doing reset()');
     this.fmi.stepTime = this.fmi.starttime;
     this.fmi.stepSize = this.fmi.fmuspeed * ((typeof (this.fmi.fstepsize) === 'string') ? parseFloat(this.fmi.fstepsize) : this.fmi.fstepsize);
-    this.fmi.mystep = this.fmi.stepSize;
+    //this.fmi.mystep = this.fmi.stepSize;
+    this.fmi.mystep = 0; //first step after reset is zero to set inputs
     //this.fmi.instance.setupExperiment(); swapped with fmiReset to avoid problems with some FMUs
     this.fmi.fmiReset(this.fmi.fmiinst);
     this.fmi.instance.setupExperiment();
@@ -160,7 +160,8 @@ async shot() {
   softreset() {
     this.fmi.stepTime = this.fmi.starttime;
     this.fmi.stepSize = this.fmi.fmuspeed * ((typeof (this.fmi.fstepsize) === 'string') ? parseFloat(this.fmi.fstepsize) : this.fmi.fstepsize);
-    this.fmi.mystep = this.fmi.stepSize;
+    //this.fmi.mystep = this.fmi.stepSize;
+    this.fmi.mystep = 0; //first step after reset is zero to set inputs
     this.fmi.setInputVariables();
     //let event = new CustomEvent('fmireset');
     //document.getElementById(this.fmi.id).dispatchEvent(event);

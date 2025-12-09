@@ -7,3 +7,5 @@ export { Webllmchat} from 'webllmchat/webllmchat';
 export { Kbsearch } from 'kbsearch/kbsearch';
 export { Fmi } from 'fmi/fmi';
 export { Pgxchart } from 'chartjs/pgxchart';
+export { Pgxchart2c } from 'chartjs/pgxchart2c';
+export { Pgxchartsingle } from 'chartjs/pgxchartsingle';

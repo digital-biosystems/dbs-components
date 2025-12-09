@@ -1,0 +1,32 @@
+<require from="./chartjs3.css"></require>
+<!--require from="../fmi/fmi"></require>
+<require from="./chartjs3"></require-->
+<dbs-fmi id="pgpk"
+    showvalues="false"
+    mode="oneshot"
+    src="PK_2C_generic.js"
+    fminame="PK_2C_generic"
+    tolerance="1e-18"
+    starttime="0"
+    stoptime="86400"
+    fstepsize="80"
+    guid="{60239f00-ff41-4ad5-bd80-55e5b580aea5}"
+    valuereferences="1,19,10,28,46,37"
+    valuelabels="patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C"
+    inputs="dosage,359,1,1000000,t;dosage,522,1,1000000,t;dosage,441,1,1000000,t;
+    period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t"
+    inputLabels="adminDosage[mg];adminPeriod[h]"
+    parentelement.bind="element"
+    >
+</dbs-fmi>
+<dbs-chartjs3 fromid="pgpk" refindex="0-5" maxdata="4096"
+levellabels="therapeutic,toxic" levelvalues="0.01,0.1" 
+therap-level.bind="therapLevel" 
+toxic-level.bind="toxicLevel"></dbs-chartjs3>
+</dbs-chartjs3>
+Drug name: <b>${drugname}</b><br/>
+Therapeutic level:<input type="range" min="0.001" max="0.1" step="0.001" default="0.01"value.bind="therapLevel" class="slider"/>
+Toxic level:<input type="range" min="0.01" max="0.8" step="0.01" default="0.1"value.bind="toxicLevel" class="slider"/><br/>
+
+Drug dose[mg]:<input id="dosage" type="range" min="100" max="1000" step="100" default="400" class="slider" value.bind="adminDose"/> ${adminDose} [mg]
+Admin period[h]:<input id="period" type="range" min="1" max="24" step="0.5" default="8" class="slider" value.bind="adminPeriod"/> ${adminPeriod} [h]<br/
