@@ -1,4 +1,4 @@
-import { customElement ,useShadowDOM,resolve } from 'aurelia'
+import { customElement ,resolve } from 'aurelia'
 @customElement('dbs-pgxchart2c')
 export class Pgxchart2c{
 
