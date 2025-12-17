@@ -6,7 +6,7 @@ nav_order: 3
 
 # `<dbs-pgxchartd>` Web Component
 
-`dbs-pgxchartd` is a customizable web component for rendering interactive pharmacogenomic charts in web applications. Compared to `dbs-pgxchart` it was exported using different toolchain allowing smaller simulation steps.
+`dbs-pgxchartd` is a customizable web component for rendering interactive pharmacogenomic charts in web applications. Compared to `dbs-pgxchart` it was exported using different toolchain allowing better simulation steps and shorter re-simulation time.
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
