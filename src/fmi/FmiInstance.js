@@ -133,7 +133,11 @@ export class FmiInstance {
 
   setupExperiment() {
     this.fmi.resetFmuspeed();
-    this.fmi.fmiSetup(this.fmi.fmiinst, 1, this.fmi.tolerance, this.fmi.starttime, 0);
+    if (this.fmi.isOneshot) {
+      this.fmi.fmiSetup(this.fmi.fmiinst, 1, this.fmi.tolerance, this.fmi.starttime, 1, this.fmi.stoptime);
+    } else{
+      this.fmi.fmiSetup(this.fmi.fmiinst, 1, this.fmi.tolerance, this.fmi.starttime, 0, 0.0);
+    }
     console.log('setupExperiment() fmiinst', this.fmi.fmiinst);
     this.fmi.instantiated = true;
   }

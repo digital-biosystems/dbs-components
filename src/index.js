@@ -10,3 +10,4 @@ export { Pgxchart } from 'chartjs/pgxchart';
 export { Pgxchart2c } from 'chartjs/pgxchart2c';
 export { Pgxchartsingle } from 'chartjs/pgxchartsingle';
 export { Pgxchartd } from 'chartjs/pgxchartd';
+export { Druglist } from 'druglist/druglist';

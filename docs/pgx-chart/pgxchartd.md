@@ -1,20 +1,20 @@
 ---
-title: PGx Chart
+title: PGx Chart 2
 layout: home
-nav_order: 2
+nav_order: 3
 ---
 
-# `<dbs-pgxchart1c>` Web Component
+# `<dbs-pgxchartd>` Web Component
 
-`dbs-pgxchart1c` is a customizable web component for rendering interactive pharmacogenomic charts in web applications. Compared to `dbs-pgxchart1c` it doesn't include PGx part of the model, needs to be calculated and passed in anohter model parameters
+`dbs-pgxchartd` is a customizable web component for rendering interactive pharmacogenomic charts in web applications. Compared to `dbs-pgxchart` it was exported using different toolchain allowing smaller simulation steps.
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
 ## Example
 
-`<dbs-pgxchart1c></dbs-pgxchart1c>`
+`<dbs-pgxchartd></dbs-pgxchartd>`
 
-<dbs-pgxchart1c></dbs-pgxchart1c>
+<dbs-pgxchartd></dbs-pgxchartd>
 
 ## Features
 
@@ -33,10 +33,10 @@ Include the component in your HTML file:
 
 Place the custom element
 ```html
-<dbs-pgxchart1c
+<dbs-pgxchartd
     toxicLevel="0.012"
     therapLevel="0.005">
-</dbs-pgxchart1c>
+</dbs-pgxchartd>
 ```
 
 ## Attributes

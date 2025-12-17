@@ -206,6 +206,9 @@ export class Fmi {
       this.debug = parseInt(this.debug);
     }
     this.variablelabels = this.valuelabels.split(',').map(x => x.trim());
+    if (typeof this.tolerance === 'string') {
+      this.tolerance = parseFloat(this.tolerance);
+    }
 
   }
 

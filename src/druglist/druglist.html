@@ -1,0 +1,6 @@
+select list:
+<input id="drug" type="text" list="drug-list" placeholder="Type drug name…">
+<datalist id="drug-list">
+  <option repeat.for="drug of drugs" value.bind="drug.name">${drug.id}</option>
+  <!-- … up to 50 drugs … -->
+</datalist>
