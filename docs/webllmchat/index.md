@@ -6,7 +6,8 @@ nav_order: 2
 
 # `<dbs-webllmchat>` Web Component
 
-`dbs-webllmchat` is a web component for rendering interactive small in-browser chat application utilizing WebGPU and small LLM models in WebLLM to bring inference reasoning into web application.
+`dbs-webllmchat` is a web component for rendering interactive small in-browser chat application utilizing WebGPU and small LLM models in WebLLM to bring inference reasoning into web application. Small LLM models are within browser capabilities so no cloud/server/remote api is accessed and only resources from the browser computer (CPU and GPU) are utilized. For more information see [https://webllm.mlc.ai/](https://webllm.mlc.ai/)
+
 
 {: .note }
 version: 0.1<br/>The component is in development. Some features may not work or may change.
