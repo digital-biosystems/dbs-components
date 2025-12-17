@@ -6,28 +6,51 @@ This project is bootstrapped by [aurelia/new](https://github.com/aurelia/new).
 
     npm start
 
-Note this web components project comes with a dev-app. The above command starts the dev app in `dev-app/` folder. The web components source code is in `src/` folder.
+Note this web components project comes with a dev-app. The above command starts the dev app in `dev-app/` folder. The web components source code is in `src/` folder. The dev app is visible at `http://localhost:9000/`.
 
 ## Build the production
 
     npm run build
 
-It builds web components into `dist/` directory.
+It builds web components into `dist/` directory. Additionally, copies the JS into `docs` 
 
 Note when you do `npm publish` or `npm pack` to prepare the web components package, it automatically run the above build command by the `prepare` script defined in your package.json `"scripts"` section.
 
 ## Source codes
 In `/src`
 
+Each webcomponent group is in it's own directory.
+
+To create/add new webcomponent:
+1. create a webcomponent directory and add `index.js` with code that registers web component as standard custom-element. See `helloworld/index.js` for example.
+2. create a webcomponent implementation view int `html` file and viewmodel in `js` file.
+3. add webcomponent registration into `src/index.js`, add custom-element into `dev-app/my-app.html` and debug it using dev server.
+4. Edit `webpack.config.js` and add single entry for single webcomponent JS into production config:
+```JS
+  const entry = production
+    ? {
+        ...
+        'dbs-helloworld': './src/helloworld/index.js',
+```
+
+and consider to put the webcomponent also into all-in-one bundle:
+
+```JSON
+'dbs-bundle': [
+    ...
+        './src/helloworld/index.js']
+```
+
+
 ## Documentation
-In `/docs`. Currently - merge changes in `/docs` and `/dist` to `release` branch and push them to external `github` repository at `github.com:digital-biosystems/dbs-components`. Automatic build of just-the-docs template is triggered and public documentation is rendered at https://digital-biosystems.github.io/dbs-components/
+In `/docs`. Currently - merge changes in `/docs` and `/dist` to `release` branch and push them to external `github` repository at `github.com:digital-biosystems/dbs-components`. Automatic build of just-the-docs template is triggered and public documentation is rendered at https://digital-biosystems.github.io/dbs-components/. Use script `sync_release_docs.sh` to publish changes in docs or after a new build is made.
 
 ## Use web components
 
 
 See `test/index.html` file.
 
-Choose prefered method, either using cached JS from CDN or local copy of single JS or multiple JS bundles.
+Choose prefered method, either using cached JS from CDN or local copy of single JS bundle or multiple JS bundles.
 
 ### CDN
 Include the script bundle in head of your HTML and use web-component's custom element anywhare in your web app.
