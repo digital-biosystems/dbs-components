@@ -32,15 +32,13 @@ To create/add new webcomponent:
         ...
         'dbs-helloworld': './src/helloworld/index.js',
 ```
-
 and consider to put the webcomponent also into all-in-one bundle:
-
-```JSON
+```JS
 'dbs-bundle': [
     ...
         './src/helloworld/index.js']
 ```
-
+5. Add web component documentation e.g. as with ideally live example using the web-component. The `dbs-bundle.js` is used in docs build. Use e.g. `docs/helloworld/index.md` as a template.
 
 ## Documentation
 In `/docs`. Currently - merge changes in `/docs` and `/dist` to `release` branch and push them to external `github` repository at `github.com:digital-biosystems/dbs-components`. Automatic build of just-the-docs template is triggered and public documentation is rendered at https://digital-biosystems.github.io/dbs-components/. Use script `sync_release_docs.sh` to publish changes in docs or after a new build is made.
