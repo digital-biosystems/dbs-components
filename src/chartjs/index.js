@@ -23,6 +23,7 @@ import { Pgxchart2c } from './pgxchart2c';
 import { Pgxchartsingle } from './pgxchartsingle';
 import { Pgxchartd } from './pgxchartd';
 import { Fmi} from '../fmi/fmi';
+import {Chartjs4} from './chartjs4';
 
 registry.define('dbs-chartjs3', Chartjs3);
 registry.define('dbs-pgxchart', Pgxchart);
@@ -30,3 +31,4 @@ registry.define('dbs-pgxchart2c', Pgxchart2c);
 registry.define('dbs-pgxchartsingle', Pgxchartsingle);
 registry.define('dbs-pgxchartd', Pgxchartd);
 registry.define('dbs-fmi', Fmi);
+registry.define('dbs-chartjs4',Chartjs4)

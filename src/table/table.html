@@ -1,0 +1,35 @@
+<table class="score-table">
+    <thead>
+      <tr>
+        <th>Model / Lang</th>
+        <th repeat.for="lang of languages"
+            click.trigger="onColumnHeaderClick(lang)"
+            style="cursor: pointer">
+          ${lang}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr repeat.for="row of rows">
+        <!-- row header: model -->
+        <th click.trigger="onRowHeaderClick(row)"
+            style="cursor: pointer">
+          ${row.llm_model}
+          <div repeat.for="label of metricLabels" class="metric-row">
+            <span class="metric-name">${label}:</span>
+          </div>
+        </th>
+
+        <!-- cells: arrays for each language -->
+        <td repeat.for="lang of languages">
+           <!-- fixed labels + values -->
+          <div repeat.for="label of metricLabels" class="metric-row">            
+            <span class="metric-value">
+              ${row[lang][$index].toFixed(3)}
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

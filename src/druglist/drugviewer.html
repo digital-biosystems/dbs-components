@@ -1,0 +1,47 @@
+<!--require from="./drugcard"></require-->
+  <!--require from="../chartjs/chartjs-wrapper"></require-->
+<require from="./drugviewer.css"></require>
+  <div class="drug-viewer">
+    <!-- Filters -->
+    <div class="filters">
+      <input type="text" 
+             value.bind="searchTerm" 
+             placeholder="Search by name, ATC, synonyms..."
+             class="search-input">
+      
+      <select value.bind="selectedAtc">
+        <option value="">All ATC codes</option>
+        <option repeat.for="atc of uniqueAtcs" value.bind="atc">${atc}</option>
+      </select>
+      
+      <button click.trigger="clearFilter()" class="btn-clear">Clear</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <span>Showing ${displayCount} of ${drugs.length} combination drugs</span>
+    </div>
+
+    <!-- PK Chart -->
+    <div class="pk-chart-section" if.bind="pkChartData">
+      <h3>Pharmacokinetics Overview</h3>
+      <!--chartjs-wrapper id="pkChart" 
+                       type="radar"
+                       data.bind="pkChartData"
+                       options="{ responsive: true, scale: { ticks: { beginAtZero: true } } }">
+      </chartjs-wrapper-->
+    </div>
+
+    <!-- Drug Grid -->
+    <div class="drug-grid">
+      <dbs-drugcard repeat.for="drug of filteredDrugs" 
+                 drug.bind="drug" 
+                 click.trigger="selectDrug(drug)">
+      </dbs-drugcard>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" if.bind="filteredDrugs.length === 0">
+      <p>No combination drugs match your filters.</p>
+    </div>
+  </div>

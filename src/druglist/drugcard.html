@@ -1,0 +1,20 @@
+  <div class="drug-card">
+    <div class="card-header">
+      <h4 class="drug-name">${drug.generic_name}</h4>
+      <div class="atc-badge">${drug.atc}</div>
+    </div>
+    
+    <div class="synonyms">      
+      <span repeat.for="syn of drug.synonyms" class="synonym">${syn}</span>
+      <span if.bind="drug.synonyms.length > 3" class="more">${drug.synonyms.length - 3} more...</span>
+    </div>
+    
+    <div class="pk-info">
+      <div class="route">${drug.route}</div>
+      <div class="dose">${drug.pk.dose} ${drug.pk.dose_unit} ${drug.pk.administering_route}</div>
+    </div>
+    
+    <div class="articles-count">
+      ${drug.articles.length} articles
+    </div>
+  </div>

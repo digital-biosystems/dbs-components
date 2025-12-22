@@ -11,3 +11,7 @@ export { Pgxchart2c } from 'chartjs/pgxchart2c';
 export { Pgxchartsingle } from 'chartjs/pgxchartsingle';
 export { Pgxchartd } from 'chartjs/pgxchartd';
 export { Druglist } from 'druglist/druglist';
+export { Table } from 'table/table';
+export { Drugviewer } from 'druglist/drugviewer';
+export { Drugcard } from 'druglist/drugcard';
+export { Chartjs4 } from 'chartjs/chartjs4';
