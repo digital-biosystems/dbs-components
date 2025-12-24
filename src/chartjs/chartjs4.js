@@ -11,6 +11,7 @@ export class Chartjs4 {
     @bindable demodata = true;
     //@bindable labels = "patient, , ,population norm, , ";
     @bindable labelxaxis = "Time [hours]";
+    @bindable pointRadius = 0;
     @bindable labelyaxis = "";
     //@bindable levellabels = "therapeutic,toxic";
     //@bindable levelvalues = "0.005,0.012";
@@ -103,6 +104,7 @@ export class Chartjs4 {
         } else {
             this.timeoperation = x => { return x }; //time operation is identity - no operation on number is performed
         }
+        if (typeof this.pointRadius === 'string') this.pointRadius = parseInt(this.pointRadius, 10); 
     }
     attached() {
         console.log('chartjs attached');
@@ -154,7 +156,7 @@ export class Chartjs4 {
             dataset.push({
                 label:mylabels[i],
                 data:datasetdata,
-                pointRadius: 0,
+                pointRadius: this.pointRadius
             })
         }
         //const dataset
