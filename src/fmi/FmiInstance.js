@@ -26,7 +26,7 @@ export class FmiInstance {
           setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
           window.thisfmi.debounceStep();
         } else if (window.thisfmi.isOneshot) {          
-          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),800);
+          //setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),800);
           console.log('fmi initfmi() calling debounceShot');
           window.thisfmi.debounceShot();
         } else if (this.fmi.startafter>0) {

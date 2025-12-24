@@ -21,7 +21,7 @@ export class Chartjs4 {
     @bindable convertors;
     @bindable timedenom="3600"; //coeficient which will be denominated from time (e.g. 60 => time/60 in minutes 3600 => time/3600 in hours)
     @bindable timedenomfixed = 1;
-    @bindable maxdata = 1024;
+    @bindable maxdata = 2048;
     @bindable type = "line";
 
     labelsRaw = []
@@ -151,7 +151,11 @@ export class Chartjs4 {
         const mylabels = mydata[0];
         for (let i =1;i<mylabels.length;i++){//skip time at position 0
             let datasetdata = mydata.slice(1).map(row => row[i]) 
-            dataset.push({label:mylabels[i],data:datasetdata})
+            dataset.push({
+                label:mylabels[i],
+                data:datasetdata,
+                pointRadius: 0,
+            })
         }
         //const dataset
         let chartlabels;

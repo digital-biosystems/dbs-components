@@ -133,9 +133,11 @@ async shot() {
       // Yield to event loop so UI can update shotinprogress binding
       await 0;  // or await queueMicrotask(() => {});
     }
-    
+    //this.fmi.startstop();
+    //this.fmi.sendStopEvent();
   } finally {
     this.shotInProgress = false;
+    this.fmi.sendStopEvent();
   }
 }
 

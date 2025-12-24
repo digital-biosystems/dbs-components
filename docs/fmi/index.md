@@ -56,16 +56,17 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 
 ## Usage
 
-Include the component in your HTML file:
-
+1. Include the component in your HTML file:
 ```html
 <script src="path/to/dbs-fmi.js"></script>
 ```
-
-Place the custom element
-
+2. (optional) put the model exported FMU JS compiled by e.g. Bodylight.js-FMU-Compiler next to the other static files, or load it explicitly
 ```html
-<dbs-fmi></dbs-fmi>
+<script src="fmi-exported-model.js"></script>
+```
+3.Place the custom element refering the exported model
+```html
+<dbs-fmi src ></dbs-fmi>
 ```
 
 ## Attributes
