@@ -18,42 +18,42 @@ Various types are allowed as implemented by the ChartJS 4.5.1 library via 'type'
 
 ### Default line chart
 
-`<dbs-chartjs4></dbs-chartjs4>`
-<dbs-chartjs4></dbs-chartjs4>
+`<dbs-chartjs4 demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 demodata="true"></dbs-chartjs4>
 
 ### bar chart
 
-`<dbs-chartjs4 type="bar"></dbs-chartjs4>`
-<dbs-chartjs4 type="bar"></dbs-chartjs4>
+`<dbs-chartjs4 type="bar" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="bar" demodata="true"></dbs-chartjs4>
 
 ### bubble chart
-`<dbs-chartjs4 type="bubble"></dbs-chartjs4>`
-<dbs-chartjs4 type="bubble"></dbs-chartjs4>
+`<dbs-chartjs4 type="bubble" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="bubble" demodata="true"></dbs-chartjs4>
 
 ### doughnut chart
 
-`<dbs-chartjs4 type="doughnut"></dbs-chartjs4>`
-<dbs-chartjs4 type="doughnut"></dbs-chartjs4>
+`<dbs-chartjs4 type="doughnut" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="doughnut" demodata="true"></dbs-chartjs4>
 
 ### pie chart
 
-`<dbs-chartjs4 type="pie"></dbs-chartjs4>`
-<dbs-chartjs4 type="pie"></dbs-chartjs4>
+`<dbs-chartjs4 type="pie" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="pie" demodata="true"></dbs-chartjs4>
 
 ### polarArea chart
 
-`<dbs-chartjs4 type="polarArea"></dbs-chartjs4>`
-<dbs-chartjs4 type="polarArea"></dbs-chartjs4>
+`<dbs-chartjs4 type="polarArea" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="polarArea" demodata="true"></dbs-chartjs4>
 
 ### radar chart
 
-`<dbs-chartjs4 type="radar"></dbs-chartjs4>`
-<dbs-chartjs4 type="radar"></dbs-chartjs4>
+`<dbs-chartjs4 type="radar" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="radar" demodata="true"></dbs-chartjs4>
 
 ### scatter chart
 
-`<dbs-chartjs4 type="scatter"></dbs-chartjs4>`
-<dbs-chartjs4 type="scatter"></dbs-chartjs4>
+`<dbs-chartjs4 type="scatter" demodata="true"></dbs-chartjs4>`
+<dbs-chartjs4 type="scatter" demodata="true"></dbs-chartjs4>
 
 ## Usage
 
@@ -77,5 +77,6 @@ Place the custom element
 | `pointRadius` | radius of data points | number | 0 |
 | `fromid` | listen fmi events and data from FMI | String | |
 | `refindex` | indices within array in data sent by FMI, can be comma separated `0,3,4` or range `0-5` | String | |
+| `demodata` | optional if demodata should be used to show | String | "false" |
 
 

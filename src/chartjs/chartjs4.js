@@ -8,15 +8,15 @@ import mydata from './mydata2.json';
 
 @customElement('dbs-chartjs4')
 export class Chartjs4 {    
-    @bindable demodata = true;
+    @bindable demodata = false;
     //@bindable labels = "patient, , ,population norm, , ";
-    @bindable labelxaxis = "Time [hours]";
+    @bindable labelxaxis = "Time [s]";
     @bindable pointRadius = 0;
     @bindable labelyaxis = "";
     //@bindable levellabels = "therapeutic,toxic";
     //@bindable levelvalues = "0.005,0.012";
     @bindable fromid;
-    //@bindable labels;
+    @bindable labels = "data";
     @bindable refindex;// starting  index - if more indices, separate by comma, if range use format start-end
     //@bindable refvalues; //number of values from refindex - only if one refindex is   defined
     @bindable convertors;
@@ -150,7 +150,10 @@ export class Chartjs4 {
         const ctx = this.mychart.getContext('2d');
         //Chart.register(annotationPlugin, ...registerables);
         let dataset = [];
-        const mylabels = mydata[0];
+        let mylabels
+        if (this.demodata) mylabels = mydata[0];
+        else mylabels = this.labelsRaw;
+
         for (let i =1;i<mylabels.length;i++){//skip time at position 0
             let datasetdata = mydata.slice(1).map(row => row[i]) 
             dataset.push({
