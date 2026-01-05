@@ -12,7 +12,8 @@ The `<dbs-fmi>` web component instantiate and execute functional mockup unit exp
 version: 0.1<br/>The component is in development. Some features may not work or may change.
 
 ## Demo
-`<dbs-fmi id="pgpk"
+```html
+<dbs-fmi id="pgpk"
     showvalues="true"
     mode="oneshot"
     src="../pgx-chart/PKPG_2C_generic.js"
@@ -28,7 +29,8 @@ version: 0.1<br/>The component is in development. Some features may not work or 
     period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t"
     inputLabels="adminDosage[mg];adminPeriod[h]"
     >
-</dbs-fmi>`
+</dbs-fmi>
+```
 
 <dbs-fmi id="pgpk"
     showvalues="true"
@@ -57,16 +59,14 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 ## Usage
 
 1. Include the component in your HTML file:
+
 ```html
 <script src="path/to/dbs-fmi.js"></script>
 ```
-2. (optional) put the model exported FMU JS compiled by e.g. Bodylight.js-FMU-Compiler next to the other static files, or load it explicitly
+2.Place the custom element refering the exported model
+
 ```html
-<script src="fmi-exported-model.js"></script>
-```
-3.Place the custom element refering the exported model
-```html
-<dbs-fmi src ></dbs-fmi>
+<dbs-fmi src="fmi-exported-model.js" ...></dbs-fmi>
 ```
 
 ## Attributes
@@ -74,7 +74,7 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 | Attribute | Description                | Type   | Default         |
 |-----------|----------------------------|--------|-----------------|
 | `id` | Unique identifier, can be used by other components    | String |  |
-| `showvalues` | Shows final simulated values of variables | "true|false" | `false` |
+| `showvalues` | Shows final simulated values of variables | Boolean | `false` |
 | `mode` | `continuous` for continuous simulation, `oneshot` for all simulation steps performed from starttime to stoptime, `onestep` for single simulation step performed after each `start` event | String | `continuous` |
 |`src` | link to functional mockup unit translated to JS and WebAssembly | String| |
 | `fminame` | FMI name as it is presented in FMU | String | |
