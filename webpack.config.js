@@ -28,7 +28,7 @@ module.exports = function (env, { analyze }) {
     ? {
       'dbs-helloworld': './src/helloworld/index.js',
       'dbs-chartjsgeo': './src/chartjsgeo/index.js',      
-      'dbs-chartjs': './src/chartjs/index.js',  
+      'dbs-fmi': './src/chartjs/index.js',  
       'dbs-webllmchat': './src/webllmchat/index.js',  
       'dbs-pgxbadge': './src/pgxbadge/index.js',  
       'dbs-kbsearch': './src/kbsearch/index.js',

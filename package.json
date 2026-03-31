@@ -2,10 +2,13 @@
   "name": "dbs-components",
   "description": "An Aurelia 2 plugin.",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
   "files": [
     "dist"
   ],
-  "version": "0.1.0",
+  "keywords": ["web-components","fmu"]
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "???"
