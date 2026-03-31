@@ -286,6 +286,9 @@ export class Fmi {
     this.subscriptions.push(
       this.ea.subscribe('dostep', this.handleStep)
     );
+    this.subscriptions.push(
+      this.ea.subscribe('fmiinput', this.handleValueChange)
+    );
 
     this.dispatchFmiEvent('fmiattached', true);
   }

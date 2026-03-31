@@ -6,12 +6,12 @@ export class FmiEventHandlers {
 
   handleValueChange = (e) => {
     // Logic from Fmi.handleValueChange
-    console.log('fmi handle value change:');
+    console.log('fmi handle value change:',e);
     let targetid;
     if (e.detail && e.detail.id) targetid = e.detail.id;
     else if (e.target.id && e.target.id.length > 0) targetid = e.target.id;
     else targetid = e.target.parentElement && e.target.parentElement.parentElement ? e.target.parentElement.parentElement.id : undefined;
-    let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
+    let targetvalue = (e.detail && e.detail.value !== undefined) ? e.detail.value : e.target.value;
     console.log('fmi handle value change:'+targetvalue,e);
     //if (this.fmi.changeinputs[targetid] && this.fmi.changeinputs[targetid].value === targetvalue) return;
     if (! this.fmi.changeinputs[targetid]) this.fmi.changeinputs[targetid] = []

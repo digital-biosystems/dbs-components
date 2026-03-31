@@ -1,0 +1,113 @@
+.param-slider {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  row-gap: 0.1rem;
+  font-size: 0.5rem;
+  margin-bottom:8px;
+}
+
+.param-slider__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.param-slider__name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.param-slider__value {
+  margin-left: 0.5rem;
+}
+
+/* full‑width slider */
+.param-slider__range {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* basic custom styling for range; extend as needed */
+.param-slider__range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: #ddd;
+}
+.param-slider__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1976d2;
+  cursor: pointer;
+}
+.param-slider__range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1976d2;
+  cursor: pointer;
+}
+
+/* ticks row */
+.param-slider__ticks {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.5rem;
+  color: #666;
+}
+
+/* small vertical markers behind labels */
+.param-slider__ticks::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0.7rem;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(20% - 1px),
+    #aaa calc(20% - 1px),
+    #aaa 20%
+  );
+  opacity: 0.5;
+}
+
+.param-slider__tick {
+  position: absolute;
+  left: calc(var(--tick-pos) * 100%);
+  transform: translateX(-50%);
+}
+
+.param-slider__tick--min {
+  transform: translateX(0);
+}
+.param-slider__tick--max {
+  transform: translateX(-100%);
+}
+
+.param-slider__tick::before {
+  content: '';
+  position: absolute;
+  bottom: 0.75rem; /* align with slider height */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 6px;
+  background: #999;
+}
+
+.param-slider__tick--min::before,
+.param-slider__tick--max::before {
+  height: 8px; /* slightly longer for endpoints */
+  background: #666;
+}
+
+
