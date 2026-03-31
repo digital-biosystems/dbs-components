@@ -16,7 +16,7 @@ export class Chartjs4 {
     //@bindable levellabels = "therapeutic,toxic";
     //@bindable levelvalues = "0.005,0.012";
     @bindable fromid;
-    @bindable labels = "data";
+    @bindable labels = "time,data";
     @bindable refindex;// starting  index - if more indices, separate by comma, if range use format start-end
     //@bindable refvalues; //number of values from refindex - only if one refindex is   defined
     @bindable convertors;

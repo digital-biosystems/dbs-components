@@ -1,0 +1,26 @@
+<div class="param-slider">
+  <div class="param-slider__header">
+    <span class="param-slider__name">${label}</span>
+    <span class="param-slider__value">${value}</span>
+  </div>
+
+  <input
+    class="param-slider__range"
+    type="range"
+    min.bind="min"
+    max.bind="max"
+    step.bind="step"
+    value.bind="value"
+  />
+
+  <div class="param-slider__ticks">
+  <span 
+    repeat.for="tick of ticks" 
+    class="param-slider__tick 
+           ${ $first ? '--min' : '' } 
+           ${ $last ? '--max' : '' }"
+    style="--tick-pos: ${ $index / (ticks.length - 1) };">
+    ${ tick }
+  </span>
+</div>
+</div>

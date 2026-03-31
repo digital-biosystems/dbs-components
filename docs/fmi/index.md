@@ -29,7 +29,8 @@ version: 0.1<br/>The component is in development. Some features may not work or 
     period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t"
     inputLabels="adminDosage[mg];adminPeriod[h]"
     >
-</dbs-fmi>```
+</dbs-fmi>
+```
 
 <dbs-fmi id="pgpk"
     showvalues="true"

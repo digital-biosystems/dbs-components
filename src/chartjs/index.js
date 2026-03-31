@@ -24,6 +24,7 @@ import { Pgxchartsingle } from './pgxchartsingle';
 import { Pgxchartd } from './pgxchartd';
 import { Fmi} from '../fmi/fmi';
 import {Chartjs4} from './chartjs4';
+import {Range} from './range';
 
 registry.define('dbs-chartjs3', Chartjs3);
 registry.define('dbs-pgxchart', Pgxchart);
@@ -32,3 +33,4 @@ registry.define('dbs-pgxchartsingle', Pgxchartsingle);
 registry.define('dbs-pgxchartd', Pgxchartd);
 registry.define('dbs-fmi', Fmi);
 registry.define('dbs-chartjs4',Chartjs4)
+registry.define('dbs-range',Range)

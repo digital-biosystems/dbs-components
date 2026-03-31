@@ -1,7 +1,10 @@
 <p>Chartjs 4 line</p>
-<dbs-chartjs4 fromid="pgpk" refindex="0-5"></dbs-chartjs4>
+<dbs-range id="dosage" label="dosage[mg]" min="0" max="1000" step="100" default="500"></dbs-range>
+<dbs-range id="period" label="period[h]" min="0" max="24" step="0.5" default="8"></dbs-range>
+<dbs-range id="period2" label="period[h]" min="0" max="1" step="0.1" default="0"> </dbs-range>
+<dbs-chartjs4 fromid="pgpk" refindex="0-5" timedenom="3600" labelxaxis = "Time [h]" labels="time,patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C"></dbs-chartjs4>
 <dbs-fmi id="pgpk"
-    showvalues="true"
+    showvalues="false"
     mode="oneshot"
     src="PKPG_2C_generic.js"
     fminame="PKPG_2C_generic"
@@ -11,8 +14,12 @@
     fstepsize="80"
     guid="{25473756-d9b4-4702-ba9c-99538dd6a0e4}"
     valuereferences="1,19,10,28,46,37"
-    valuelabels="patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C">
+    valuelabels="patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C"
+    inputs="dosage,359,1,1000000,t;dosage,522,1,1000000,t;dosage,441,1,1000000,t;
+    period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t"
+    inputLabels="adminDosage[mg];adminPeriod[h]">
 </dbs-fmi>
+
 
 <!--p>Chartjs 4 line</p>
 <dbs-chartjs4></dbs-chartjs4>

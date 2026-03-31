@@ -15,3 +15,4 @@ export { Table } from 'table/table';
 export { Drugviewer } from 'druglist/drugviewer';
 export { Drugcard } from 'druglist/drugcard';
 export { Chartjs4 } from 'chartjs/chartjs4';
+export {Range} from 'chartjs/range';
