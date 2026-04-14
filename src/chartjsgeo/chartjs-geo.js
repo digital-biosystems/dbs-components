@@ -98,8 +98,14 @@ export class ChartjsGeo extends Chartjs3Base {
 //        console.log(this.selected)
     }
 
-    bound(){  
-        super.bound();      
+    bound(){
+        Chart.register(
+            ChoroplethController,
+            GeoFeature,
+            ProjectionScale,
+            ColorScale,
+        );
+        super.bound();
         // Get location of data src from url hash
         this.paramshash = window.location.hash
         this.params = this.paramshash.split('&');
