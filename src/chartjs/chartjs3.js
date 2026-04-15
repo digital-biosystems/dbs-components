@@ -27,6 +27,7 @@ export class Chartjs3 extends Chartjs3Base {
 
     labelsRaw = []
     refindices; // array of indices if multiple indices are defined in refindex separated by comma
+    operation = []; // populated by dbs-convertors attribute
 
     constructor() {
         super();
@@ -62,39 +63,6 @@ export class Chartjs3 extends Chartjs3Base {
             this.refvalues = 1;
             this.refendindex = this.refindex + 1;
         }
-        if (this.convertors) {
-            let convertvalues = this.convertors.split(';');
-            let identity = x => x;
-            this.operation = [];
-            for (let i = 0; i < convertvalues.length; i++) {
-                if (convertvalues[i].includes(',')) {
-                    //convert values are in form numerator,denominator contains comma ','
-                    let convertitems = convertvalues[i].split(',');
-                    if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
-                    else {
-                        const numerator = parseFloat(convertitems[0]);
-                        const denominator = parseFloat(convertitems[1]);
-                        const addend = (convertitems.length > 2) ? parseFloat(convertitems[2]) : 0;
-                        /*console.log('adding operation numerator',numerator);
-                        console.log('adding operation denominator',denominator);
-                        console.log('adding operation addend',addend);*/
-                        this.operation.push(x => ((x * numerator / denominator) + addend));
-                    }
-                } else {
-                    //convert values are in form of expression, do not contain comma
-                    if (convertvalues === '1/x') this.operation.push(x => 1 / x);
-
-                    else {
-                        // for eval() security filter only allowed characters:
-                        // algebraic, digits, e, dot, modulo, parenthesis and 'x' and 'e' is allowed
-                        let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
-                        console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
-                        // eslint-disable-next-line no-eval
-                        this.operation.push(x => eval(expression));
-                    }
-                }
-            }
-        }
         if (typeof this.timedenomfixed === 'string') this.timedenomfixed = parseInt(this.timedenomfixed, 10);
         if (typeof this.timedenom === 'string') {
 
@@ -107,7 +75,6 @@ export class Chartjs3 extends Chartjs3Base {
 
     attached() {
         console.log('chartjs attached');
-
         // Prepare labels and data based on demodata flag
         let labels, data0, data1, data2, data10, data11, data12;
 
