@@ -17,6 +17,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { HelloWorld } from './hello-world';
+import { HelloWorld } from './hello-world.js';
 
 registry.define('dbs-hello-world', HelloWorld);

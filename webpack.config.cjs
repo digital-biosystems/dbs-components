@@ -117,7 +117,8 @@ module.exports = function (env, { analyze }) {
       } : {
         ...getAureliaDevAliases()
         // add your development aliases here
-      }
+      },
+      fullySpecified: false
     },
     devServer: {
       historyApiFallback: true,

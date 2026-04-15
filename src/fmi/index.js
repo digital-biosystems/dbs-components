@@ -15,6 +15,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Fmi } from './fmi';
+import { Fmi } from './fmi.js';
 
 registry.define('dbs-fmi', Fmi);

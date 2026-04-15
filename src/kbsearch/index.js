@@ -17,7 +17,7 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Kbsearch } from './kbsearch';
+import { Kbsearch } from './kbsearch.js';
 
 registry.define('dbs-kbsearch', Kbsearch);
 

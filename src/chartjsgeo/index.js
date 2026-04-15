@@ -15,6 +15,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { ChartjsGeo } from './chartjs-geo';
+import { ChartjsGeo } from './chartjs-geo.js';
 
 registry.define('dbs-chartjs-geo', ChartjsGeo);

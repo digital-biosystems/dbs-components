@@ -1,7 +1,7 @@
 import { customElement, IEventAggregator, resolve, bindable } from 'aurelia';
 //import { bindable } from 'aurelia';
 import kb from './kgl3v3.json';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce.js';
 
 //custom element decorator for use in dev-app
 @customElement('dbs-kbsearch')

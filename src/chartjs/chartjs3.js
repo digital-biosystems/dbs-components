@@ -2,7 +2,7 @@ import { Chart, registerables } from "chart.js/auto";
 import 'chartjs-adapter-date-fns';
 //import annotationPlugin from 'chartjs-plugin-annotation';
 import { bindable, customElement, resolve, IEventAggregator } from "aurelia";
-import { Chartjs3Base } from "./chartjs3-base";
+import { Chartjs3Base } from "./chartjs3-base.js";
 import mydata from './mydata.json';
 
 //Chart.register(...registerables);

@@ -2,7 +2,7 @@ import { Chart, registerables } from "chart.js/auto";
 import { customElement, bindable, observable } from 'aurelia';
 import { geoOrthographic, topojson, ChoroplethController, GeoFeature, ProjectionScale, ColorScale } from "chartjs-chart-geo";
 import { whereAlpha2 } from 'iso-3166-1';
-import { Chartjs3Base } from "../chartjs/chartjs3-base";
+import { Chartjs3Base } from "../chartjs/chartjs3-base.js";
 import countriesData from './countries-50m.json';
 import mydata from './mydata.json';
 

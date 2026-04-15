@@ -17,6 +17,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { PgxBadge } from './pgx-badge';
+import { PgxBadge } from './pgx-badge.js';
 
 registry.define('dbs-pgxbadge', PgxBadge);

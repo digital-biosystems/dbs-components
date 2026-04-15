@@ -17,6 +17,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Webllmchat } from './webllmchat';
+import { Webllmchat } from './webllmchat.js';
 
 registry.define('dbs-webllmchat', Webllmchat);

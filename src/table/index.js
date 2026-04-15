@@ -17,6 +17,6 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Table } from './table';
+import { Table } from './table.js';
 
 registry.define('dbs-table', Table);

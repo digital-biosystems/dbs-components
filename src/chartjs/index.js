@@ -17,14 +17,14 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Chartjs3 } from './chartjs3';
-import { Pgxchart } from './pgxchart';
-import { Pgxchart2c } from './pgxchart2c';
-import { Pgxchartsingle } from './pgxchartsingle';
-import { Pgxchartd } from './pgxchartd';
-import { Fmi} from '../fmi/fmi';
-import {Chartjs4} from './chartjs4';
-import {Range} from './range';
+import { Chartjs3 } from './chartjs3.js';
+import { Pgxchart } from './pgxchart.js';
+import { Pgxchart2c } from './pgxchart2c.js';
+import { Pgxchartsingle } from './pgxchartsingle.js';
+import { Pgxchartd } from './pgxchartd.js';
+import { Fmi} from '../fmi/fmi.js';
+import {Chartjs4} from './chartjs4.js';
+import {Range} from './range.js';
 
 registry.define('dbs-chartjs3', Chartjs3);
 registry.define('dbs-pgxchart', Pgxchart);

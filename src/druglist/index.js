@@ -17,9 +17,9 @@ container.register(StyleConfiguration.shadowDOM({
 }))
 const registry = container.get(WcCustomElementRegistry);
 
-import { Druglist } from './druglist';
-import { Drugviewer } from './drugviewer';
-import { Drugcard } from './drugcard';
+import { Druglist } from './druglist.js';
+import { Drugviewer } from './drugviewer.js';
+import { Drugcard } from './drugcard.js';
 
 registry.define('dbs-druglist', Druglist);
 registry.define('dbs-drugviewer', Drugviewer);
