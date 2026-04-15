@@ -35,11 +35,11 @@ module.exports = function (env, { analyze }) {
       'dbs-table': './src/table/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
-        './src/chartjsgeo/index.js',        
+        //'./src/chartjsgeo/index.js',        
         './src/chartjs/index.js',
-        './src/webllmchat/index.js',
+        //'./src/webllmchat/index.js',
         './src/pgxbadge/index.js',
-        './src/kbsearch/index.js',
+        //'./src/kbsearch/index.js',
         './src/table/index.js'
       ]    
     }

@@ -3,6 +3,7 @@ import babelParser from "@babel/eslint-parser";
 import globals from "globals";
 
 export default [
+  { ignores: ["src/**/_legacy/**"] },
   eslint.configs.recommended,
   {
 

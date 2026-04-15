@@ -1,5 +1,6 @@
 <require from="./chartjs3.css"></require>
-<div class="chartjs3-container">
+<require from="./convertors-attribute.js"></require>
+<div class="chartjs3-container" dbs-convertors.bind="convertors">
     <canvas ref="mychart" class="chartjs3"></canvas>
 </div>
 <!--label for="drug-select">Choose a drug:</label>
