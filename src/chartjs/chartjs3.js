@@ -1,7 +1,7 @@
 import { Chart } from "chart.js/auto";
 import 'chartjs-adapter-date-fns';
 import { bindable, customElement } from "aurelia";
-import { ChartjsTimeBase } from "./chartjs-time-base";
+import { ChartjsTimeBase } from "./chartjs-time-base.js";
 import mydata from './mydata.json';
 
 @customElement('dbs-chartjs3')

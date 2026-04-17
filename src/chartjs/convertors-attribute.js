@@ -1,19 +1,21 @@
-import { customAttribute, bindable, resolve, ICustomElementController } from 'aurelia';
+import { customAttribute, bindable, resolve} from 'aurelia';
+import { Node } from '@aurelia/runtime-html';
 
 @customAttribute('dbs-convertors')
 export class ConvertorsAttribute {
     @bindable value = '';
-
+    element = resolve(INode);
+    
     constructor() {
-        this.hostController = resolve(ICustomElementController);
+        //this.hostController = resolve(ICustomElementController);
     }
 
     bound() {
-        this.hostController.viewModel.operation = this.parse(this.value);
+        this.element.viewModel.operation = this.parse(this.value);
     }
 
     valueChanged(newValue) {
-        this.hostController.viewModel.operation = this.parse(newValue);
+        this.element.viewModel.operation = this.parse(newValue);
     }
 
     parse(convertorsStr) {
