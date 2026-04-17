@@ -1,4 +1,4 @@
-import { customAttribute, bindable, resolve} from 'aurelia';
+import { customAttribute, bindable, resolve, INode} from 'aurelia';
 import { Node } from '@aurelia/runtime-html';
 
 @customAttribute('dbs-convertors')
@@ -11,11 +11,22 @@ export class ConvertorsAttribute {
     }
 
     bound() {
-        this.element.viewModel.operation = this.parse(this.value);
+        //console.log('dbs-convertors: bound with value:' + this.value);
+        // only set the operation if there is a value, otherwise leave it as default (identity) in the chart component
+        //console.log('dbs-convertors: element is:', this.element);
+        //console.log('dbs-convertors: this is:', this);
+        if (this.value)
+            if (this.element.operation) {
+                this.element.operation = this.parse(this.value);
+            } else {
+                console.warn('dbs-convertors: element has no operation property to set, convertors will not work');
+            }
+            //this.element.operation = this.parse(this.value);
     }
 
     valueChanged(newValue) {
-        this.element.viewModel.operation = this.parse(newValue);
+        if (newValue)
+            this.element.operation = this.parse(newValue);
     }
 
     parse(convertorsStr) {
@@ -34,7 +45,7 @@ export class ConvertorsAttribute {
             // for eval() security filter only allowed characters:
             // algebraic, digits, e, dot, modulo, parenthesis, 'x' and 'e'
             const expression = cv.replace(/[^-\d/*+.()%xe]/g, '');
-            console.log('dbs-convertors: evaluating expression:' + cv + ' securely filtered to:' + expression);
+            //console.log('dbs-convertors: evaluating expression:' + cv + ' securely filtered to:' + expression);
             // eslint-disable-next-line no-eval
             return x => eval(expression);
         });

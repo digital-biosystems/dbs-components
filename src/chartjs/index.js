@@ -5,6 +5,16 @@ import { DI, Registration  } from '@aurelia/kernel';
 import { StandardConfiguration, IPlatform } from '@aurelia/runtime-html';
 import {BrowserPlatform} from '@aurelia/platform-browser'
 import { StyleConfiguration } from 'aurelia';
+import { Chartjs3 } from './chartjs3.js';
+import { Pgxchart } from './pgxchart.js';
+import { Pgxchart2c } from './pgxchart2c.js';
+import { Pgxchartsingle } from './pgxchartsingle.js';
+import { Pgxchartd } from './pgxchartd.js';
+import { Fmi} from '../fmi/fmi.js';
+import {Chartjs4} from './chartjs4.js';
+import {Range} from './range.js';
+import { ConvertorsAttribute } from './convertors-attribute.js';
+
 // Create the Aurelia container
 const container = DI.createContainer();
 // Register the platform
@@ -15,17 +25,11 @@ container.register(StandardConfiguration); // This registers core services like 
 container.register(StyleConfiguration.shadowDOM({
   // Configuration options here
 }))
+
+// Register global custom attributes so they are available inside all component templates
+container.register(ConvertorsAttribute);
+
 const registry = container.get(WcCustomElementRegistry);
-
-import { Chartjs3 } from './chartjs3.js';
-import { Pgxchart } from './pgxchart.js';
-import { Pgxchart2c } from './pgxchart2c.js';
-import { Pgxchartsingle } from './pgxchartsingle.js';
-import { Pgxchartd } from './pgxchartd.js';
-import { Fmi} from '../fmi/fmi.js';
-import {Chartjs4} from './chartjs4.js';
-import {Range} from './range.js';
-
 registry.define('dbs-chartjs3', Chartjs3);
 registry.define('dbs-pgxchart', Pgxchart);
 registry.define('dbs-pgxchart2c', Pgxchart2c);
