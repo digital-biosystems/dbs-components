@@ -19,6 +19,7 @@ export class Fmi {
   @bindable guid = '';
   @bindable id;
   @bindable inputs;
+  @bindable initialinputs;
   @bindable otherinputs;
   @bindable valuereferences;
   @bindable ticksToUpdate = 30;
@@ -255,6 +256,10 @@ export class Fmi {
     if (this.inputManager && typeof this.inputManager.registerInputs === 'function') {
       this.inputManager.registerInputs();
     }
+
+    // Prime input values before first simulation step.
+    this.applyInitialInputs();
+
     // FMU script loading/init
     if (this.src && this.src.length > 0) {
       window.thisfmi = this;
@@ -291,6 +296,41 @@ export class Fmi {
     );
 
     this.dispatchFmiEvent('fmiattached', true);
+  }
+
+  resolveInputElementById(inputId) {
+    let dependentEl = document.getElementById(inputId);
+    if (!dependentEl && this.parentelement && this.parentelement.shadowRoot) {
+      dependentEl = this.parentelement.shadowRoot.getElementById(inputId);
+    }
+    return dependentEl;
+  }
+
+  applyInitialInputs() {
+    if (!this.initialinputs || typeof this.initialinputs !== 'string') return;
+
+    const pairs = this.initialinputs
+      .split(';')
+      .map(part => part.trim())
+      .filter(part => part.length > 0);
+
+    for (const pair of pairs) {
+      const parts = pair.split(',');
+      if (parts.length < 2) continue;
+
+      const inputId = parts[0].trim();
+      const rawValue = parts.slice(1).join(',').trim();
+
+      if (!inputId || rawValue.length === 0) continue;
+
+      const inputEl = this.resolveInputElementById(inputId);
+      if (inputEl && 'value' in inputEl) {
+        inputEl.value = rawValue;
+      }
+
+      // Queue the value as if it came from an input event.
+      this.handleValueChange({ detail: { id: inputId, value: rawValue } });
+    }
   }
 
   // Aurelia lifecycle: detached
@@ -372,7 +412,7 @@ export class Fmi {
     console.warn("Simulation took " + timeDiff + " seconds");
   }
 
-  fmuspeedChanged(newValue, oldValue) {
+  fmuspeedChanged(newValue) {
     console.log('Changing simulation speed of ' + this.id + ' from ' + this.fmuspeed + ' to ' + newValue);
     this.fmuspeedalreadychanged = true;
     //this.fmuspeed = newValue;    

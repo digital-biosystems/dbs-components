@@ -1,11 +1,11 @@
-import { customAttribute, bindable, resolve, ICustomElementController } from 'aurelia';
+import { customAttribute, bindable, resolve, IController } from 'aurelia';
 
 @customAttribute('dbs-convertors')
 export class ConvertorsAttribute {
     @bindable value = '';
 
     constructor() {
-        this.hostController = resolve(ICustomElementController);
+        this.hostController = resolve(IController);
     }
 
     bound() {

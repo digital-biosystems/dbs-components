@@ -1,13 +1,14 @@
 import { Chart } from "chart.js/auto";
 import 'chartjs-adapter-date-fns';
 import { bindable, customElement } from "aurelia";
-import { ChartjsTimeBase } from "./chartjs-time-base";
+import { ChartjsTimeBase } from "./chartjs-time-base.js";
 import mydata from './mydata.json';
 
 @customElement('dbs-chartjs3')
 export class Chartjs3 extends ChartjsTimeBase {
     @bindable therapLevel = 0.005;
     @bindable toxicLevel = 0.012;
+    @bindable xvalueunit = 'seconds';
     @bindable labels = "patient, , ,population norm, , ";
     @bindable labelxaxis = "Time [seconds]";
     @bindable levellabels = "therapeutic,toxic";
@@ -15,18 +16,100 @@ export class Chartjs3 extends ChartjsTimeBase {
     @bindable maxdata = 1024;
 
     bound() {
+        const hasExplicitTimeDenom = this.timedenom !== undefined && this.timedenom !== null && this.timedenom !== '';
         super.bound();
         if (typeof this.therapLevel === 'string') this.therapLevel = parseFloat(this.therapLevel);
         if (typeof this.toxicLevel === 'string') this.toxicLevel = parseFloat(this.toxicLevel);
         this.levell = this.levellabels.split(',');
         this.levelv = this.levelvalues.split(',');
+
+        this.hasExplicitTimeDenom = hasExplicitTimeDenom;
+        this.usesAutoXLabel = !this.labelxaxis || this.labelxaxis === 'Time [seconds]' || this.labelxaxis === 'Time';
+
+        this.xvalueunit = this.normalizeTimeUnit(this.xvalueunit);
+        if (!this.hasExplicitTimeDenom) {
+            const divisor = this.getTimeDivisorForUnit(this.xvalueunit);
+            this.timedenom = divisor;
+            this.timeoperation = x => this.formatTimeValue(x / divisor);
+        }
+        if (this.usesAutoXLabel) {
+            this.labelxaxis = this.getTimeAxisLabel(this.xvalueunit);
+        }
+    }
+
+    normalizeTimeUnit(unit) {
+        const normalized = String(unit || 'seconds').trim().toLowerCase();
+        const aliases = {
+            s: 'seconds',
+            sec: 'seconds',
+            second: 'seconds',
+            seconds: 'seconds',
+            m: 'minutes',
+            min: 'minutes',
+            minute: 'minutes',
+            minutes: 'minutes',
+            d: 'days',
+            day: 'days',
+            days: 'days',
+            h: 'hours',
+            hr: 'hours',
+            hour: 'hours',
+            hours: 'hours'
+        };
+        return aliases[normalized] || 'seconds';
+    }
+
+    getTimeDivisorForUnit(unit) {
+        if (unit === 'minutes') return 60;
+        if (unit === 'hours') return 3600;
+        if (unit === 'days') return 86400;
+        return 1;
+    }
+
+    getTimeAxisLabel(unit) {
+        return `Time [${unit}]`;
+    }
+    
+    formatTimeValue(value) {
+        const numeric = Number(value);
+        if (!Number.isFinite(numeric)) return value;
+        return Number.parseFloat(numeric.toPrecision(2));
+    }
+
+    xvalueunitChanged(newVal, oldVal) {
+        const normalizedNew = this.normalizeTimeUnit(newVal);
+        const normalizedOld = this.normalizeTimeUnit(oldVal);
+        this.xvalueunit = normalizedNew;
+
+        if (this.usesAutoXLabel) {
+            this.labelxaxis = this.getTimeAxisLabel(normalizedNew);
+            if (this.chart?.options?.scales?.x?.title) {
+                this.chart.options.scales.x.title.text = this.labelxaxis;
+            }
+        }
+
+        if (!this.hasExplicitTimeDenom) {
+            const oldDivisor = this.getTimeDivisorForUnit(normalizedOld);
+            const newDivisor = this.getTimeDivisorForUnit(normalizedNew);
+            this.timedenom = newDivisor;
+            this.timeoperation = x => this.formatTimeValue(x / newDivisor);
+
+            if (this.chart?.data?.labels && oldDivisor !== newDivisor) {
+                this.chart.data.labels = this.chart.data.labels.map(value => {
+                    const seconds = Number(value) * oldDivisor;
+                    return this.formatTimeValue(seconds / newDivisor);
+                });
+            }
+        }
+
+        if (this.chart) this.chart.update();
     }
 
     attached() {
         let labels, data0, data1, data2, data10, data11, data12;
 
         if (this.demodata) {
-            const rawSeconds = mydata.slice(1).map(row => row[0] * 1000);
+            const rawSeconds = mydata.slice(1).map(row => this.timeoperation(row[0]));
             labels = rawSeconds;
             data0 = mydata.slice(1).map(row => row[1]);
             data1 = mydata.slice(1).map(row => row[2]);

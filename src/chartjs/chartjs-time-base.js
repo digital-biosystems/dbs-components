@@ -1,5 +1,5 @@
 import { bindable, resolve, IEventAggregator } from 'aurelia';
-import { Chartjs3Base } from './chartjs3-base';
+import { Chartjs3Base } from './chartjs3-base.js';
 
 export class ChartjsTimeBase extends Chartjs3Base {
     @bindable fromid;

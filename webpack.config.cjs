@@ -32,6 +32,7 @@ module.exports = function (env, { analyze }) {
       'dbs-webllmchat': './src/webllmchat/index.js',  
       'dbs-pgxbadge': './src/pgxbadge/index.js',  
       'dbs-kbsearch': './src/kbsearch/index.js',
+      'dbs-buttonparams': './src/buttonparams/index.js',
       'dbs-table': './src/table/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
@@ -39,6 +40,7 @@ module.exports = function (env, { analyze }) {
         './src/chartjs/index.js',
         //'./src/webllmchat/index.js',
         './src/pgxbadge/index.js',
+        './src/buttonparams/index.js',
         //'./src/kbsearch/index.js',
         './src/table/index.js'
       ]    
@@ -154,7 +156,20 @@ module.exports = function (env, { analyze }) {
           issuer: /\.html$/,
           use: [cssLoader, postcssLoader]
         },
-        { test: /\.js$/i, use: ['babel-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
+        {
+          test: /\.js$/i,
+          use: [
+            'babel-loader',
+            {
+              loader: '@aurelia/webpack-loader',
+              options: {
+                // Avoid injected `module.hot` code that can break in eval-source-map dev bundles.
+                hmr: false
+              }
+            }
+          ],
+          exclude: /node_modules/
+        },
         {
           test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,
           use: {
