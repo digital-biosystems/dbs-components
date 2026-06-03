@@ -11,6 +11,7 @@ export class Chartjs3 extends ChartjsTimeBase {
     @bindable xvalueunit = 'seconds';
     @bindable labels = "patient, , ,population norm, , ";
     @bindable labelxaxis = "Time [seconds]";
+    @bindable labelyaxis = "Concentration [g/l]";
     @bindable levellabels = "therapeutic,toxic";
     @bindable levelvalues = "0.005,0.012";
     @bindable maxdata = 1024;
@@ -105,6 +106,13 @@ export class Chartjs3 extends ChartjsTimeBase {
         if (this.chart) this.chart.update();
     }
 
+    labelyaxisChanged(newVal) {
+        if (this.chart?.options?.scales?.y?.title) {
+            this.chart.options.scales.y.title.text = newVal;
+            this.chart.update();
+        }
+    }
+
     attached() {
         let labels, data0, data1, data2, data10, data11, data12;
 
@@ -169,6 +177,7 @@ export class Chartjs3 extends ChartjsTimeBase {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 animation: false,
                 animations: { colors: false, x: false },

@@ -23,6 +23,11 @@ const postcssLoader = {
 
 module.exports = function (env, { analyze }) {
   const production = env.production || process.env.NODE_ENV === 'production';
+  const myapp = env.myapp || false;
+
+  if (myapp) {
+    return buildMyApp({ analyze });
+  }
 
   const entry = production
     ? {
@@ -33,6 +38,8 @@ module.exports = function (env, { analyze }) {
       'dbs-pgxbadge': './src/pgxbadge/index.js',  
       'dbs-kbsearch': './src/kbsearch/index.js',
       'dbs-buttonparams': './src/buttonparams/index.js',
+      'dbs-guidedslides': './src/guidedslides/index.js',
+      'dbs-value': './src/value/index.js',
       'dbs-table': './src/table/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
@@ -41,6 +48,8 @@ module.exports = function (env, { analyze }) {
         //'./src/webllmchat/index.js',
         './src/pgxbadge/index.js',
         './src/buttonparams/index.js',
+        './src/guidedslides/index.js',
+        './src/value/index.js',
         //'./src/kbsearch/index.js',
         './src/table/index.js'
       ]    
@@ -199,6 +208,80 @@ module.exports = function (env, { analyze }) {
       analyze && new BundleAnalyzerPlugin()
     ].filter(p => p)
   }
+}
+
+function buildMyApp({ analyze }) {
+  const cssLoader = { loader: 'css-loader' };
+  const postcssLoader = {
+    loader: 'postcss-loader',
+    options: { postcssOptions: { plugins: ['autoprefixer'] } }
+  };
+
+  return {
+    target: 'web',
+    mode: 'production',
+    devtool: undefined,
+    entry: { 'app': './dev-app/main-myapp.js' },
+    output: {
+      clean: true,
+      path: path.resolve(__dirname, 'dist-myapp'),
+      filename: '[name].[contenthash:8].js',
+      environment: {
+        arrowFunction: true, const: true, destructuring: true,
+        forOf: true, dynamicImport: true, optionalChaining: true, templateLiteral: true
+      }
+    },
+    resolve: {
+      extensions: ['.js'],
+      modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'dev-app'), 'node_modules'],
+      fullySpecified: false
+    },
+    optimization: {
+      minimizer: [
+        new TerserPlugin({ terserOptions: { compress: true } })
+      ]
+    },
+    module: {
+      rules: [
+        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
+        { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, type: 'asset' },
+        {
+          test: /\.css$/i,
+          issuer: /[/\\]src[/\\]main\.(js|ts)$/,
+          use: [cssLoader, postcssLoader]
+        },
+        {
+          test: /\.css$/i,
+          issuer: /(?<![/\\]src[/\\]main)\.(js|ts)$/,
+          use: ['style-loader', cssLoader, postcssLoader]
+        },
+        {
+          test: /\.css$/i,
+          issuer: /\.html$/,
+          use: [cssLoader, postcssLoader]
+        },
+        {
+          test: /\.js$/i,
+          use: ['babel-loader', { loader: '@aurelia/webpack-loader', options: { hmr: false } }],
+          exclude: /node_modules/
+        },
+        {
+          test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,
+          use: { loader: '@aurelia/webpack-loader', options: { defaultShadowOptions: { mode: 'open' } } },
+          exclude: /node_modules/
+        }
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({ 
+        template: 'index-myapp.html', 
+        favicon: 'favicon.ico',
+        scriptLoading: 'blocking'
+      }),
+      new Dotenv({ path: './.env.development' }),
+      analyze && new BundleAnalyzerPlugin()
+    ].filter(p => p)
+  };
 }
 
 function getAureliaDevAliases() {

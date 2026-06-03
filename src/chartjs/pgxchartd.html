@@ -1,4 +1,5 @@
 <require from="./chartjs3.css"></require>
+<require from="../w3.css"></require>
 <!--require from="../fmi/fmi"></require>
 <require from="./chartjs3"></require-->
 <dbs-fmi id="pgpk"
@@ -10,31 +11,41 @@
     starttime="0"
     stoptime="432000"
     fstepsize="1200"
-    guid="{153a305b-f52b-4a06-8b16-532b8c2550e7}"
+    guid="{db469876-1954-45ac-877e-a97a85e634f3}"
     valuereferences="1174405475,1174405487,1174405499,1174405439,1174405451,1174405463"
     valuelabels="patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C"
-    inputs="dosage,16777392,1,1000000,t;dosage,16777446,1,1000000,t;dosage,16777500,1,1000000,t;0
-    period,16777391,3600,1,t;period,16777445,3600,1,t;period,16777499,3600,1,t;
-    ka,16777246,1,3600,t;ka,16777300,1,3600,t;ka,16777354,1,3600,t;
-    ka2,16777408,1,3600,t;ka2,16777462,1,3600,t;ka2,16777516,1,3600,t;
-    doseCount,16777231,1,1,t;doseCount,16777285,1,1,t;doseCount,16777339,1,1,t;
-    doseCount,16777393,1,1,t;doseCount,16777447,1,1,t;doseCount,16777501,1,1,t"
+    inputs="dosage,16777393,1,1000000,t;dosage,16777447,1,1000000,t;dosage,16777501,1,1000000,t;0
+    period,16777392,3600,1,t;period,16777446,3600,1,t;period,16777500,3600,1,t;
+    ka,16777247,1,3600,t;ka,16777301,1,3600,t;ka,16777355,1,3600,t;
+    ka2,16777409,1,3600,t;ka2,16777463,1,3600,t;ka2,16777517,1,3600,t;
+    doseCount,16777232,1,1,t;doseCount,16777286,1,1,t;doseCount,16777340,1,1,t;
+    doseCount,16777394,1,1,t;doseCount,16777448,1,1,t;doseCount,16777502,1,1,t;
+    patientfactor,16777220,1,1,t;patientclfactor,16777221,1,1,t;
+    cyp2c19,16777429,1,1,t;cyp2c19,16777483,1,1,t;cyp2c19,16777537,1,1,t;
+    slc22a2,16777417,1,1,t;slc22a2,16777471,1,1,t;slc22a2,16777525,1,1,t"
     inputLabels="adminDosage[mg];adminPeriod[h]"
     initialinputs="ka,1.1;ka2,1.1;doseCount,15"
     parentelement.bind="element"
     >
 </dbs-fmi>
 <dbs-chartjs3 fromid="pgpk" refindex="0-5" maxdata="4096"
-levellabels="therapeutic,toxic" levelvalues="0.010,0.100" 
+levellabels="therapeutic,toxic" levelvalues="0.015,0.100" 
 therap-level.bind="therapLevel" 
 toxic-level.bind="toxicLevel" xvalueunit="d"></dbs-chartjs3>
 </dbs-chartjs3>
+<button class="w3-button w3-blue w3-small" click.trigger="toggleControls()">${showControls ? 'Hide controls' : 'Show controls'}</button>
+<div id="controls" hidden.bind="!showControls">
 Drug name: <b>${drugname}</b><br/>
-Therapeutic level:<input type="range" min="0.01" max="0.1" step="0.01" default="0.01"value.bind="therapLevel" class="slider"/>
+Therapeutic level:<input type="range" min="0.01" max="0.1" step="0.005" default="0.015"value.bind="therapLevel" class="slider"/>
 Toxic level:<input type="range" min="0.01" max="0.8" step="0.01" default="0.1"value.bind="toxicLevel" class="slider"/><br/>
 
 Drug dose[mg]:<input id="dosage" type="range" min="100" max="1000" step="50" default="400" class="slider" value.bind="adminDose"/> ${adminDose} [mg]
 Admin period[h]:<input id="period" type="range" min="1" max="24" step="0.5" default="8" class="slider" value.bind="adminPeriod"/> ${adminPeriod} [h]<br/>
 dose count [1]:<input id="doseCount" type="range" min="-1" max="30" step="1" default="15" class="slider" value.bind="doseCount"/> ${doseCount} [1]
-Absorption rate[h-1]:<input id="ka" type="range" min="0.1" max="2" step="0.1" default="1.1" class="slider" value.bind="ka"/> ${ka} [h-1]<br/>
-Absorption rate 2[h-1]:<input id="ka2" type="range" min="0.1" max="2" step="0.1" default="1.1" class="slider" value.bind="ka2"/> ${ka2} [h-1]<br/>
+Absorption rate[h-1]:<input id="ka" type="range" min="0.01" max="10" step="0.01" default="1.1" class="slider" value.bind="ka"/> ${ka} [h-1]<br/>
+Absorption rate 2[h-1]:<input id="ka2" type="range" min="0.01" max="10" step="0.01" default="1.1" class="slider" value.bind="ka2"/> ${ka2} [h-1]<br/>
+Patient factor [-]:<input id="patientfactor" type="range" min="0.001" max="3" step="0.001" default="1" class="slider" value.bind="patientFactor"/> ${patientFactor} [-]<br/>
+Patient Cl factor [-]:<input id="patientclfactor" type="range" min="0.001" max="3" step="0.001" default="1" class="slider" value.bind="patientFactor"/> ${patientFactor} [-]<br/>
+cyp2c19 phenotype factor:<input id="cyp2c19" type="range" min="0.1" max="2" step="0.1" default="1" class="slider" value.bind="cyp2c19"/> ${cyp2c19} [-]<br/>
+slc22a2 phenotype factor:<input id="slc22a2" type="range" min="0.1" max="2" step="0.1" default="1" class="slider" value.bind="slc22a2"/> ${slc22a2} [-]<br/>
+</div>

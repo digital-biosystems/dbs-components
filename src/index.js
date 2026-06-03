@@ -17,3 +17,6 @@ export { Drugcard } from './druglist/drugcard.js';
 export { Chartjs4 } from './chartjs/chartjs4.js';
 export {Range} from './chartjs/range.js';
 export { ButtonParams } from './buttonparams/button-params.js';
+export { GuidedSlides } from './guidedslides/guided-slides.js';
+export { GuidedSlide } from './guidedslides/guided-slide.js';
+export { Value } from './value/value.js';

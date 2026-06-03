@@ -1,0 +1,23 @@
+<require from="../w3.css"></require>
+<div class="guidedslides-wrapper">
+  <div class="guidedslides-slot" if.bind="!idsMode">
+    <slot></slot>
+  </div>
+
+  <div class="guidedslides-nav" if.bind="shownav">
+    <button class="w3-button w3-blue" disabled.bind="!canGoPrevNav" click.trigger="prev()">${prevlabel}</button>
+    <span class="guidedslides-status">${totalSlides > 0 ? activeIndex + 1 : 0}/${totalSlides}</span>
+    <button class="w3-button w3-blue" if.bind="!isLastSlideNav" disabled.bind="!canGoNextNav" click.trigger="next()">${nextlabel}</button>
+    <button class="w3-button w3-green" if.bind="isLastSlideNav" click.trigger="finish()">${finishlabel}</button>
+  </div>
+
+  <div class="guidedslides-dots" if.bind="showdots && totalSlides > 1">
+    <button
+      repeat.for="i of totalSlides"
+      class="w3-button w3-round guidedslides-dot-btn ${$index === activeIndex ? 'guidedslides-dot-active' : ''}"
+      click.trigger="goTo($index)"
+      title="Slide ${$index + 1}">
+      ${$index + 1}
+    </button>
+  </div>
+</div>

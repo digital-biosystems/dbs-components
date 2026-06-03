@@ -1,0 +1,17 @@
+<require from="../w3.css"></require>
+<require from="../chartjs/convertors-attribute.js"></require>
+<require from="./value.css"></require>
+
+<div class="dbs-value-list" dbs-convertors.bind="convertors">
+  <div
+    repeat.for="item of displayItems"
+    class="w3-padding-small w3-round w3-margin-bottom"
+    class.bind="item.color">
+    <b>${item.label}:</b> ${item.value}
+    <span class="w3-small">(${item.status})</span>
+  </div>
+
+  <div if.bind="displayItems.length === 0" class="w3-small w3-text-grey">
+    No value yet
+  </div>
+</div>
