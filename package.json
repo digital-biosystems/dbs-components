@@ -67,7 +67,7 @@
     "lint": "npm run lint:js && npm run lint:css",
     "pretest": "npm run lint",
     "start": "webpack serve",
-    "build": "webpack --env production;cp dist/* test_integration/;cp dist/dbs-bundle.js docs/assets/js/",
+    "build": "webpack --env production;cp dist/* test_integration/;cp dist/dbs-full-bundle.js docs/assets/js/",
     "build:myapp": "webpack --env myapp && cp static/*.js dist-myapp/",
     "analyze": "webpack --env production --analyze",
     "test": "jest",

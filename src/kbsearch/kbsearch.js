@@ -41,7 +41,7 @@ export class Kbsearch {
 
     get(queryid) {
         let result = kb.knowledge[queryid];
-        this.ea.publish('kbget:result', result);
+        this.ea.publish('kbsearch:result', result);
     }
 
     search() {
