@@ -34,12 +34,21 @@ Include the script bundle in head of your HTML and use web-component's custom el
 
 From https://github.com/digital-biosystems/dbs-components/tree/release/dist
 
-### Use single bundle with all components
+### Use single bundle with basic DBS components (1MB)
 
 1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-bundle.js` and copy to your web app location.
 2. include the script that defines behavior of the web component's custom element: 
 ```html
 <script src="dbs-bundle.js"></script>
+```   
+3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
+
+### Use single bundle with all DBS components (includes webllm,geochart,kbsearch) (8MB)
+
+1. download release of web components https://github.com/digital-biosystems/dbs-components/releases and find `/dist/dbs-full-bundle.js` and copy to your web app location.
+2. include the script that defines behavior of the web component's custom element: 
+```html
+<script src="dbs-full-bundle.js"></script>
 ```   
 3. use the web components custom element in the HTML body in Markdown e.g.: `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
 
