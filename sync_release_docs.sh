@@ -15,6 +15,7 @@ git checkout master -- dist docs
 git add dist docs
 git commit -m "Sync dist and docs from master"
 git push origin release
+git push github release
 
 # Switch back to master
 git checkout master

@@ -348,6 +348,15 @@ export class Fmi {
     if (window.editorapi && typeof window.editorapi.removeScriptById === 'function') {
       window.editorapi.removeScriptById(this.src, 'fmiobj-' + this.src);
     }
+    // A: release global thisfmi reference so this instance can be GC'd
+    if (window.thisfmi === this) window.thisfmi = null;
+    // B: remove entry from global fmiinst registry
+    if (window.fmiinst?.[this.fminame]) delete window.fmiinst[this.fminame];
+    // C: free the Emscripten indirect-function-table slot allocated by addFunction()
+    if (this.inst && typeof this.inst.removeFunction === 'function' && this.consoleLoggerPtr) {
+      this.inst.removeFunction(this.consoleLoggerPtr);
+      this.consoleLoggerPtr = null;
+    }
   }
   /**
      * Implements a rudimentary browser console logger for the FMU.

@@ -1,6 +1,7 @@
 import * as webllm from '@mlc-ai/web-llm';
 import { customElement, bindable } from 'aurelia';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 @customElement('dbs-webllmchat')
 export class Webllmchat {
@@ -12,6 +13,7 @@ export class Webllmchat {
 
     /*************** WebLLM logic ***************/
     messages = []; availableModels = []; selectedModel = "";
+    chatMessages = [];
 
     bound() {
         this.placeholder = "Type a message..."
@@ -39,7 +41,7 @@ export class Webllmchat {
         this.engine.setAppConfig(myAppConfig);
         this.isdisabled = true;
         if (typeof this.temperature === 'string') { this.temperature = parseFloat(this.temperature); }
-        if (typeof this.topP === 'string') { this.temperature = parseFloat(this.topP); }
+        if (typeof this.topP === 'string') { this.topP = parseFloat(this.topP); }
 
     }
 
@@ -54,16 +56,6 @@ export class Webllmchat {
     }
 
 
-    attached() {
-        /*************** UI binding ***************/
-        this.availableModels.forEach((modelId) => {
-            const option = document.createElement("option");
-            option.value = modelId;
-            option.textContent = modelId;
-            this.modelSelection.appendChild(option);
-        });
-        //document.getElementById("model-selection").value = selectedModel;
-    }
     // Callback function for initializing progress
     updateEngineInitProgressCallback(report) {
         //this.reportText = report.text;
@@ -205,35 +197,21 @@ export class Webllmchat {
     }
 
     appendMessage(message) {
-        //this.chatbox = document.getElementById("chat-box");
-        const container = document.createElement("div");
-        container.classList.add("message-container");
-        const newMessage = document.createElement("div");
-        newMessage.classList.add("message");
-        newMessage.textContent = message.content;
-
-        if (message.role === "user") {
-            container.classList.add("user");
-        } else {
-            container.classList.add("assistant");
-        }
-
-        container.appendChild(newMessage);
-        this.chatbox.appendChild(container);
-        this.chatbox.scrollTop = this.chatbox.scrollHeight; // Scroll to the latest message
+        const html = message.role === 'user'
+            ? DOMPurify.sanitize(message.content, { ALLOWED_TAGS: [] })
+            : message.content;
+        this.chatMessages.push({ role: message.role, html });
+        queueMicrotask(() => { this.chatbox.scrollTop = this.chatbox.scrollHeight; });
     }
 
     updateLastMessage(content) {
-        const messageDoms = this.chatbox
-            .querySelectorAll(".message");
-        const lastMessageDom = messageDoms[messageDoms.length - 1];
-        //lastMessageDom.textContent = content;
-        //marked parsing with custom think tag handling
         const enhancedContent = content.replace(/<think>([\s\S]*?)<\/think>/g,
             (_, inner) => `<div class="reasoning-block">${inner}</div>`
         );
-        lastMessageDom.innerHTML = marked.parse(enhancedContent);
-
+        const html = DOMPurify.sanitize(marked.parse(enhancedContent));
+        const idx = this.chatMessages.length - 1;
+        this.chatMessages.splice(idx, 1, { ...this.chatMessages[idx], html });
+        queueMicrotask(() => { this.chatbox.scrollTop = this.chatbox.scrollHeight; });
     }
 
 

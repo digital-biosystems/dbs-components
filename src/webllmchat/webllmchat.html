@@ -2,24 +2,28 @@
 <require from="../w3.css"></require>
 
 <div class="download-container">
-      <select ref="modelSelection" value.bind="selectedModel"></select>
-      <button id="download" click.trigger="clickDownload" class="w3-button w3-round w3-blue">
+    <select value.bind="selectedModel">
+        <option repeat.for="m of availableModels" value.bind="m">${m}</option>
+    </select>
+    <button id="download" click.trigger="clickDownload" class="w3-button w3-round w3-blue">
         Download
-      </button>
+    </button>
 </div>
 <div class="progress-container">
-  <div class="progress-bar" width.style="progressPercent+'%'"></div>
-  <p id="download-status"
-     class.bind="dsclass"
-     style="white-space: nowrap;">
-    ${reporttext}
-  </p>
+    <div class="progress-bar" width.style="progressPercent+'%'"></div>
+    <p id="download-status" class.bind="dsclass" style="white-space: nowrap;">
+        ${reporttext}
+    </p>
 </div>
 <div class="chat-container w3-small">
-      <div ref="chatbox" class="chat-box"></div>
-      <div ref="chatstats" class.bind="chatclass">${statsText}</div>
-      <div class="chat-input-container">
+    <div ref="chatbox" class="chat-box">
+        <div repeat.for="msg of chatMessages" class="message-container ${msg.role}">
+            <div class="message" innerhtml.bind="msg.html"></div>
+        </div>
+    </div>
+    <div ref="chatstats" class.bind="chatclass">${statsText}</div>
+    <div class="chat-input-container">
         <input type="text" value.bind="userinput" placeholder.bind="placeholder" class="w3-input"/>
         <button id="send" disabled.bind="isdisabled" click.trigger="clickSend" class="w3-button w3-round w3-blue">Send</button>
-      </div>
+    </div>
 </div>

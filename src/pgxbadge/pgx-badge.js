@@ -17,20 +17,19 @@ export class PgxBadge {
 
     bound(){
         if (typeof this.state === 'string') this.internalstate = parseInt(this.state);
-        else this.internalstate = this.state;        
-        this.color = this.colors[this.internalstate];
-        this.description = this.descriptions[this.internalstate];
-        this.fullprefix = this.fullprefixes[this.internalstate];
-        this.fullsuffix = this.fullsuffixes[this.internalstate];
-        this.fulldescription = this.fullprefix+": "+this.description+" "+this.fullsuffix;
+        else this.internalstate = this.state;
+        this._applyState();
     }
 
-    stateChanged(newVal, oldVal) {
-        console.log('Value changed from'+ oldVal+' to '+newVal);
+    stateChanged(newVal) {
         if (typeof newVal === 'string') this.internalstate = parseInt(newVal);
-        else this.internalstate = newVal;        
+        else this.internalstate = newVal;
+        this._applyState();
+    }
+
+    _applyState() {
         this.color = this.colors[this.internalstate];
-        this.description = this.descriptions[this.internalstate]
+        this.description = this.descriptions[this.internalstate];
         this.fullprefix = this.fullprefixes[this.internalstate];
         this.fullsuffix = this.fullsuffixes[this.internalstate];
         this.fulldescription = this.fullprefix+": "+this.description+" "+this.fullsuffix;

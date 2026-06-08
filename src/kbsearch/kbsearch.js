@@ -40,8 +40,10 @@ export class Kbsearch {
     }
 
     get(queryid) {
-        let result = kb.knowledge[queryid];
-        this.ea.publish('kbsearch:result', result);
+        const result = kb.knowledge[queryid];
+        if (result !== undefined) {
+            this.ea.publish('kbsearch:result', result);
+        }
     }
 
     search() {
@@ -51,7 +53,7 @@ export class Kbsearch {
         }
         
         const lower = this.caseSensitive ? this.query : this.query.toLowerCase();
-        console.log("Searching for:", this.lower);
+        console.log("Searching for:", lower);
         console.log("knowledge:", kb);
         this.result = Object.entries(kb.knowledge)
             .filter(([key, value]) =>

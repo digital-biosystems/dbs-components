@@ -58,26 +58,18 @@ export class FmiInputManager {
   }
 
   deregisterInputs() {
-    // Logic moved from Fmi.deregisterInputs
-    console.warn('deregistering inputs');
     window.animateranges = [];
     if (this.fmi.inputs) {
-      let inputparts = this.fmi.inputs.split(';');
-      for (let inputpart of inputparts) {
-        let myinputs = inputpart.split(',');
-        try {
-          document.getElementById(myinputs[0]).removeEventListener(this.fmi.eventlisten, this.fmi.handleValueChange);
-        } catch (e) { 
-          console.log('could not deregister input for element id:', myinputs[0], e);
-        }
+      for (const inputpart of this.fmi.inputs.split(';')) {
+        const inputId = inputpart.split(',')[0].trim();
+        const el = this.fmi.resolveInputElementById(inputId);
+        if (el) el.removeEventListener(this.fmi.eventlisten, this.fmi.handleValueChange);
       }
     }
     if (this.fmi.otherinputs) {
-      let otherinputtargets = this.fmi.otherinputs.split(';');
-      for (let target of otherinputtargets) {
-        try {
-          document.getElementById(target).removeEventListener('fmiinput', this.fmi.handleDetailChange);
-        } catch (e) { }
+      for (const target of this.fmi.otherinputs.split(';')) {
+        const el = document.getElementById(target);
+        if (el) el.removeEventListener('fmiinput', this.fmi.handleDetailChange);
       }
     }
   }
