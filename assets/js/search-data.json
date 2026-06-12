@@ -1,0 +1,436 @@
+{"0": {
+    "doc": "Ibuprofen",
+    "title": "Ibuprofen",
+    "content": " ",
+    "url": "/dbs-components/pgx-chart/ibuprofen.html",
+    
+    "relUrl": "/pgx-chart/ibuprofen.html"
+  },"1": {
+    "doc": "Ibuprofen",
+    "title": "Simulator",
+    "content": " ",
+    "url": "/dbs-components/pgx-chart/ibuprofen.html#simulator",
+    
+    "relUrl": "/pgx-chart/ibuprofen.html#simulator"
+  },"2": {
+    "doc": "Knowledge Base Search",
+    "title": "&lt;dbs-kbsearch&gt; Web Component",
+    "content": "dbs-kbsearch is a customizable web component for searching in knowledge base. Knowledge base is embedded within the component from deliverable D2.2 of oncoscreen project https://oncoscreen.health/. Future version may add customized knowledge via attribute. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/kbsearch/#dbs-kbsearch-web-component",
+    
+    "relUrl": "/kbsearch/#dbs-kbsearch-web-component"
+  },"3": {
+    "doc": "Knowledge Base Search",
+    "title": "Example",
+    "content": "&lt;dbs-kbsearch showinput=\"true\"&gt;&lt;/dbs-kbsearch&gt; . ",
+    "url": "/dbs-components/kbsearch/#example",
+    
+    "relUrl": "/kbsearch/#example"
+  },"4": {
+    "doc": "Knowledge Base Search",
+    "title": "Features",
+    "content": " ",
+    "url": "/dbs-components/kbsearch/#features",
+    
+    "relUrl": "/kbsearch/#features"
+  },"5": {
+    "doc": "Knowledge Base Search",
+    "title": "Usage",
+    "content": "Include the component JS in your HTML file, e.g. head section: . &lt;head&gt; &lt;script src=\"path/to/dbs-shared.js\"&gt;&lt;/script&gt; &lt;script src=\"path/to/dbs-kbsearch.js\"&gt;&lt;/script&gt; ... &lt;/head&gt; . Place the custom element with optional input query bar that can be used to place input . &lt;dbs-kbsearch showinput=\"true\"&gt; &lt;/dbs-kbsearch&gt; . The event bus to publish query and subscribe for results is exposed as global window.DbsKbsearch. The query string can be submitted to ‘kbsearch:query’ channel by calling window.DbsKbsearch.publish('kbsearch:query', somequerystring); . e.g. // Publish query to KBSearch component window.DbsKbsearch.publish('kbsearch:query', 'lapatinib'); . Results are returned via ‘kbsearch:result’ channel. It can be listened e.g. by registering listener method: . // Subscribe to KBSearch result events window.DbsKbsearch.subscribe('kbsearch:result', (data) =&gt; { console.log('Got KBSearch response:', data); }); . ",
+    "url": "/dbs-components/kbsearch/#usage",
+    
+    "relUrl": "/kbsearch/#usage"
+  },"6": {
+    "doc": "Knowledge Base Search",
+    "title": "Attributes",
+    "content": "showinput default \"false\". If ‘true’ Renders input bar in component view, and simple list of results, user can type query. If ‘false’, component is invisible and visualisation and sending query is upon other components via the custom events. src default \"\". Gets knowledge base JSON from the URL. ",
+    "url": "/dbs-components/kbsearch/#attributes",
+    
+    "relUrl": "/kbsearch/#attributes"
+  },"7": {
+    "doc": "Knowledge Base Search",
+    "title": "Events",
+    "content": ". | kbsearch:query | kbsearch:result | . ",
+    "url": "/dbs-components/kbsearch/#events",
+    
+    "relUrl": "/kbsearch/#events"
+  },"8": {
+    "doc": "Knowledge Base Search",
+    "title": "Knowledge Base Search",
+    "content": " ",
+    "url": "/dbs-components/kbsearch/",
+    
+    "relUrl": "/kbsearch/"
+  },"9": {
+    "doc": "ChartJS GEO",
+    "title": "&lt;dbs-chartjs-geo&gt; Web Component",
+    "content": "&lt;dbs-chartjs-geo&gt; is a web component that integrates Chart.js with geographical data visualization. It enables rendering interactive maps and geo-based charts in web applications. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/chartjs-geo/#dbs-chartjs-geo-web-component",
+    
+    "relUrl": "/chartjs-geo/#dbs-chartjs-geo-web-component"
+  },"10": {
+    "doc": "ChartJS GEO",
+    "title": "Example",
+    "content": "&lt;dbs-chartjs-geo&gt;&lt;/dbs-chartjs-geo&gt; . ",
+    "url": "/dbs-components/chartjs-geo/#example",
+    
+    "relUrl": "/chartjs-geo/#example"
+  },"11": {
+    "doc": "ChartJS GEO",
+    "title": "Features",
+    "content": ". | Supports GeoJSON data | Renders maps with Chart.js | Customizable styles and tooltips | Responsive and interactive | . ",
+    "url": "/dbs-components/chartjs-geo/#features",
+    
+    "relUrl": "/chartjs-geo/#features"
+  },"12": {
+    "doc": "ChartJS GEO",
+    "title": "Usage",
+    "content": "Include the component in your HTML file: . &lt;script src=\"path/to/chartjs-geo.js\"&gt;&lt;/script&gt; . Place the web component whenever a geochart is needed to be rendered . &lt;dbs-chartjs-geo geojson=\"path/to/data.geojson\" type=\"choropleth\" width=\"600\" height=\"400\"&gt; &lt;/dbs-chartjs-geo&gt; . ",
+    "url": "/dbs-components/chartjs-geo/#usage",
+    
+    "relUrl": "/chartjs-geo/#usage"
+  },"13": {
+    "doc": "ChartJS GEO",
+    "title": "Attributes",
+    "content": "| Attribute | Description | Example | . | geojson | URL or object of GeoJSON | data.geojson | . | type | Chart type (choropleth, bubble) | choropleth | . | width | Canvas width | 600 | . | height | Canvas height | 400 | . ",
+    "url": "/dbs-components/chartjs-geo/#attributes",
+    
+    "relUrl": "/chartjs-geo/#attributes"
+  },"14": {
+    "doc": "ChartJS GEO",
+    "title": "Events",
+    "content": ". | chart-ready: Fired when the chart is initialized. | feature-click: Fired when a map feature is clicked. | . ",
+    "url": "/dbs-components/chartjs-geo/#events",
+    
+    "relUrl": "/chartjs-geo/#events"
+  },"15": {
+    "doc": "ChartJS GEO",
+    "title": "Example",
+    "content": "&lt;dbs-chartjs-geo geojson=\"countries.geojson\" type=\"choropleth\" width=\"800\" height=\"500\"&gt; &lt;/dbs-chartjs-geo&gt; . ",
+    "url": "/dbs-components/chartjs-geo/#example-1",
+    
+    "relUrl": "/chartjs-geo/#example-1"
+  },"16": {
+    "doc": "ChartJS GEO",
+    "title": "Resources",
+    "content": ". | Chart.js Documentation | GeoJSON Specification | chartjs-geo GitHub | . ",
+    "url": "/dbs-components/chartjs-geo/#resources",
+    
+    "relUrl": "/chartjs-geo/#resources"
+  },"17": {
+    "doc": "ChartJS GEO",
+    "title": "ChartJS GEO",
+    "content": " ",
+    "url": "/dbs-components/chartjs-geo/",
+    
+    "relUrl": "/chartjs-geo/"
+  },"18": {
+    "doc": "Hello world",
+    "title": "&lt;dbs-hello-world&gt; Web Component",
+    "content": "The &lt;dbs-hello-world&gt; web component displays a simple greeting message. It can be used to quickly add a customizable “Hello, World!” message to your web application. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/helloworld/#dbs-hello-world-web-component",
+    
+    "relUrl": "/helloworld/#dbs-hello-world-web-component"
+  },"19": {
+    "doc": "Hello world",
+    "title": "Demo",
+    "content": "&lt;dbs-hello-world message='from just-the-docs MD'&gt;&lt;/dbs-hello-world&gt; . ",
+    "url": "/dbs-components/helloworld/#demo",
+    
+    "relUrl": "/helloworld/#demo"
+  },"20": {
+    "doc": "Hello world",
+    "title": "Features",
+    "content": ". | Customizable greeting text | Lightweight and easy to use | Compatible with all modern browsers | . ",
+    "url": "/dbs-components/helloworld/#features",
+    
+    "relUrl": "/helloworld/#features"
+  },"21": {
+    "doc": "Hello world",
+    "title": "Usage",
+    "content": "Include the component in your HTML file: . &lt;script src=\"path/to/hello-world.js\"&gt;&lt;/script&gt; . Place the custom element . &lt;dbs-hello-world message=\"Welcome to DBS Components!\"&gt;&lt;/dbs-hello-world&gt; . ",
+    "url": "/dbs-components/helloworld/#usage",
+    
+    "relUrl": "/helloworld/#usage"
+  },"22": {
+    "doc": "Hello world",
+    "title": "Attributes",
+    "content": "| Attribute | Description | Type | Default | . | message | The greeting to display | String | “Hello, World!” | . ",
+    "url": "/dbs-components/helloworld/#attributes",
+    
+    "relUrl": "/helloworld/#attributes"
+  },"23": {
+    "doc": "Hello world",
+    "title": "Methods",
+    "content": "No public methods are exposed. ",
+    "url": "/dbs-components/helloworld/#methods",
+    
+    "relUrl": "/helloworld/#methods"
+  },"24": {
+    "doc": "Hello world",
+    "title": "Events",
+    "content": "No custom events are emitted. ",
+    "url": "/dbs-components/helloworld/#events",
+    
+    "relUrl": "/helloworld/#events"
+  },"25": {
+    "doc": "Hello world",
+    "title": "Styling",
+    "content": "You can style the component using standard CSS: . hello-world { color: #0078d4; font-size: 1.2em; } . ",
+    "url": "/dbs-components/helloworld/#styling",
+    
+    "relUrl": "/helloworld/#styling"
+  },"26": {
+    "doc": "Hello world",
+    "title": "Hello world",
+    "content": " ",
+    "url": "/dbs-components/helloworld/",
+    
+    "relUrl": "/helloworld/"
+  },"27": {
+    "doc": "FMI",
+    "title": "&lt;dbs-fmi&gt; Web Component",
+    "content": "The &lt;dbs-fmi&gt; web component instantiate and execute functional mockup unit exported from modeling environment. Via standardized API calls it can make a simulation step, set values of input variables or parameters and get values of model variables, states. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/fmi/#dbs-fmi-web-component",
+    
+    "relUrl": "/fmi/#dbs-fmi-web-component"
+  },"28": {
+    "doc": "FMI",
+    "title": "Demo",
+    "content": "&lt;dbs-fmi id=\"pgpk\" showvalues=\"true\" mode=\"oneshot\" src=\"../pgx-chart/PKPG_2C_generic.js\" fminame=\"PKPG_2C_generic\" tolerance=\"1e-9\" starttime=\"0\" stoptime=\"3600\" fstepsize=\"80\" guid=\"{25473756-d9b4-4702-ba9c-99538dd6a0e4}\" valuereferences=\"1,19,10,28,46,37\" valuelabels=\"patient.central.C,patient_low.central.C,patient_high.central.C,ref.central.C,ref_low.central.C,ref_high.central.C\" inputs=\"dosage,359,1,1000000,t;dosage,522,1,1000000,t;dosage,441,1,1000000,t; period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t\" inputLabels=\"adminDosage[mg];adminPeriod[h]\" &gt; &lt;/dbs-fmi&gt; . ",
+    "url": "/dbs-components/fmi/#demo",
+    
+    "relUrl": "/fmi/#demo"
+  },"29": {
+    "doc": "FMI",
+    "title": "Features",
+    "content": ". | Standard FMU - in browser simulation | Lightweight and easy to use | Compatible with all modern browsers | . ",
+    "url": "/dbs-components/fmi/#features",
+    
+    "relUrl": "/fmi/#features"
+  },"30": {
+    "doc": "FMI",
+    "title": "Usage",
+    "content": ". | Include the component in your HTML file: | . &lt;script src=\"path/to/dbs-fmi.js\"&gt;&lt;/script&gt; . 2.Place the custom element refering the exported model . &lt;dbs-fmi src=\"fmi-exported-model.js\" ...&gt;&lt;/dbs-fmi&gt; . ",
+    "url": "/dbs-components/fmi/#usage",
+    
+    "relUrl": "/fmi/#usage"
+  },"31": {
+    "doc": "FMI",
+    "title": "Attributes",
+    "content": "| Attribute | Description | Type | Default | . | id | Unique identifier, can be used by other components | String |   | . | showvalues | Shows final simulated values of variables | Boolean | false | . | mode | continuous for continuous simulation, oneshot for all simulation steps performed from starttime to stoptime, onestep for single simulation step performed after each start event | String | continuous | . | src | link to functional mockup unit translated to JS and WebAssembly | String |   | . | fminame | FMI name as it is presented in FMU | String |   | . | tolerance | optional parameter, may not be taken into account |   |   | . | starttime |   |   | 0 | . | stoptime | if defined, simulation will stop at this time |   |   | . | fstepsize | size of simulation step |   |   | . | guid | FMI guid as it is presented in FMU | String |   | . | valuereferences | comma separated numbers of variable’s references that will be exposed at each simulation step, this values can be visualised in chart or in a table | String |   | . | valuelabels | optional comma separated names of variables |   |   | . | inputs | list of input variables and link to DOM where it can be changed in form DOM id,value reference, numerator, denominator, addent, t/f |   |   | . | inputLabels | optional comma separated names of input variables |   |   | . ",
+    "url": "/dbs-components/fmi/#attributes",
+    
+    "relUrl": "/fmi/#attributes"
+  },"32": {
+    "doc": "FMI",
+    "title": "FMI",
+    "content": " ",
+    "url": "/dbs-components/fmi/",
+    
+    "relUrl": "/fmi/"
+  },"33": {
+    "doc": "Web LLM Chat",
+    "title": "&lt;dbs-webllmchat&gt; Web Component",
+    "content": "dbs-webllmchat is a web component for rendering interactive small in-browser chat application utilizing WebGPU and small LLM models in WebLLM to bring inference reasoning into web application. Small LLM models are within browser capabilities so no cloud/server/remote api is accessed and only resources from the browser computer (CPU and GPU) are utilized. For more information see https://webllm.mlc.ai/ . version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/webllmchat/#dbs-webllmchat-web-component",
+    
+    "relUrl": "/webllmchat/#dbs-webllmchat-web-component"
+  },"34": {
+    "doc": "Web LLM Chat",
+    "title": "Example",
+    "content": "&lt;dbs-webllmchat&gt;&lt;/dbs-webllmchat&gt; . ",
+    "url": "/dbs-components/webllmchat/#example",
+    
+    "relUrl": "/webllmchat/#example"
+  },"35": {
+    "doc": "Web LLM Chat",
+    "title": "Usage",
+    "content": "If you use full bundle, its. included, otherwise include the component in your HTML file: . &lt;script src=\"path/to/dbs-webllmchat.js\"&gt;&lt;/script&gt; . Place the custom element . &lt;dbs-webllmchat model-class=\"\"&gt; &lt;/dbs-webllmchat&gt; . ",
+    "url": "/dbs-components/webllmchat/#usage",
+    
+    "relUrl": "/webllmchat/#usage"
+  },"36": {
+    "doc": "Web LLM Chat",
+    "title": "Attributes",
+    "content": "| Attribute | Type | Description | . | model-class | string | optional model class filter to be allowed, e.g. ‘Qwen’, default ‘’ | . | temperature | number | optional Randomness scaler T≥0 increases variability and creativity, T=0 typically means greedy decoding, default 0.5 | . | top-p | number | optional Nucleus sampling threshold 1≥p&gt;0, default 0.9 | . | system-prompt | string | optional system prompt to set the AI agent context | . User then should . | select LLM model and click Download. | After several seconds or minutes the LLM model is downloaded into browser’s cache and instantiated. Progress bar shows status. | Type a message and click ‘Send’ button. | . ",
+    "url": "/dbs-components/webllmchat/#attributes",
+    
+    "relUrl": "/webllmchat/#attributes"
+  },"37": {
+    "doc": "Web LLM Chat",
+    "title": "Future development",
+    "content": "Currently the generic models are available. Qwen3-* models are recommended for their small size and still reasonable quality of responses. Custom embedding via custom attribute is planned to be done to enhance LLM capabilities with domain specific focused answers and reasoning. ",
+    "url": "/dbs-components/webllmchat/#future-development",
+    
+    "relUrl": "/webllmchat/#future-development"
+  },"38": {
+    "doc": "Web LLM Chat",
+    "title": "Web LLM Chat",
+    "content": " ",
+    "url": "/dbs-components/webllmchat/",
+    
+    "relUrl": "/webllmchat/"
+  },"39": {
+    "doc": "ChartJS 4",
+    "title": "&lt;dbs-chartjs4&gt; Web Component",
+    "content": "The &lt;dbs-chartjs4&gt; web component displays a chart from data in dataset. It uses ChartJS 4.5.1 library to render various charts. It can listen fmidata channel to draw data from external simulation (fmi component) . version: 0.1The component is in development. Some features may not work or may change. Various types are allowed as implemented by the ChartJS 4.5.1 library via ‘type’ attribute: bar,bubble,doughnut,pie,line,polarArea,radar,scatter. See the types below. ",
+    "url": "/dbs-components/chartjs/#dbs-chartjs4-web-component",
+    
+    "relUrl": "/chartjs/#dbs-chartjs4-web-component"
+  },"40": {
+    "doc": "ChartJS 4",
+    "title": "Demo",
+    "content": "Default line chart . &lt;dbs-chartjs4 demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . bar chart . &lt;dbs-chartjs4 type=\"bar\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . bubble chart . &lt;dbs-chartjs4 type=\"bubble\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . doughnut chart . &lt;dbs-chartjs4 type=\"doughnut\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . pie chart . &lt;dbs-chartjs4 type=\"pie\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . polarArea chart . &lt;dbs-chartjs4 type=\"polarArea\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . radar chart . &lt;dbs-chartjs4 type=\"radar\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . scatter chart . &lt;dbs-chartjs4 type=\"scatter\" demodata=\"true\"&gt;&lt;/dbs-chartjs4&gt; . ",
+    "url": "/dbs-components/chartjs/#demo",
+    
+    "relUrl": "/chartjs/#demo"
+  },"41": {
+    "doc": "ChartJS 4",
+    "title": "Usage",
+    "content": "Include the component in your HTML file: . &lt;script src=\"path/to/dbs-chartjs.js\"&gt;&lt;/script&gt; . Place the custom element . &lt;dbs-chartjs4&gt;&lt;dbs-chartjs4&gt; . ",
+    "url": "/dbs-components/chartjs/#usage",
+    
+    "relUrl": "/chartjs/#usage"
+  },"42": {
+    "doc": "ChartJS 4",
+    "title": "Attributes",
+    "content": "| Attribute | Description | Type | Default | . | type | The type of chart. Can be bar,bubble,doughnut,pie,line,polarArea,radar,scatter | String | “line” | . | pointRadius | radius of data points | number | 0 | . | fromid | listen fmi events and data from FMI | String |   | . | refindex | indices within array in data sent by FMI, can be comma separated 0,3,4 or range 0-5 | String |   | . | demodata | optional if demodata should be used to show | String | “false” | . ",
+    "url": "/dbs-components/chartjs/#attributes",
+    
+    "relUrl": "/chartjs/#attributes"
+  },"43": {
+    "doc": "ChartJS 4",
+    "title": "ChartJS 4",
+    "content": " ",
+    "url": "/dbs-components/chartjs/",
+    
+    "relUrl": "/chartjs/"
+  },"44": {
+    "doc": "PGx Chart",
+    "title": "&lt;dbs-pgxchart&gt; Web Component",
+    "content": "dbs-pgxchart is a customizable web component for rendering interactive pharmacogenomic charts in web applications. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/pgx-chart/#dbs-pgxchart-web-component",
+    
+    "relUrl": "/pgx-chart/#dbs-pgxchart-web-component"
+  },"45": {
+    "doc": "PGx Chart",
+    "title": "Example",
+    "content": "&lt;dbs-pgxchart&gt;&lt;/dbs-pgxchart&gt; . ",
+    "url": "/dbs-components/pgx-chart/#example",
+    
+    "relUrl": "/pgx-chart/#example"
+  },"46": {
+    "doc": "PGx Chart",
+    "title": "Features",
+    "content": ". | Responsive design | Customizable colors and labels | Data binding via attributes or properties | . ",
+    "url": "/dbs-components/pgx-chart/#features",
+    
+    "relUrl": "/pgx-chart/#features"
+  },"47": {
+    "doc": "PGx Chart",
+    "title": "Usage",
+    "content": "Include the component in your HTML file: . &lt;script src=\"path/to/dbs-pgxchart.js\"&gt;&lt;/script&gt; . Place the custom element . &lt;dbs-pgxchart toxicLevel=\"0.012\" therapLevel=\"0.005\"&gt; &lt;/dbs-pgxchart&gt; . ",
+    "url": "/dbs-components/pgx-chart/#usage",
+    
+    "relUrl": "/pgx-chart/#usage"
+  },"48": {
+    "doc": "PGx Chart",
+    "title": "Attributes",
+    "content": "| Attribute | Type | Description | . | toxicLevel | string | toxic level 0.012 | . | therapLevel | string | therapeutic level 0.005 | . ",
+    "url": "/dbs-components/pgx-chart/#attributes",
+    
+    "relUrl": "/pgx-chart/#attributes"
+  },"49": {
+    "doc": "PGx Chart",
+    "title": "Events",
+    "content": ". | chart-click: Fired when a chart element is clicked. | . ",
+    "url": "/dbs-components/pgx-chart/#events",
+    
+    "relUrl": "/pgx-chart/#events"
+  },"50": {
+    "doc": "PGx Chart",
+    "title": "Methods",
+    "content": ". | updateData(data): Updates chart data dynamically. | . ",
+    "url": "/dbs-components/pgx-chart/#methods",
+    
+    "relUrl": "/pgx-chart/#methods"
+  },"51": {
+    "doc": "PGx Chart",
+    "title": "PGx Chart",
+    "content": " ",
+    "url": "/dbs-components/pgx-chart/",
+    
+    "relUrl": "/pgx-chart/"
+  },"52": {
+    "doc": "DBS Web components",
+    "title": "DBS Web Components - Introduction",
+    "content": "This site includes reusable web components to visualise scientific data. The web components are static, don’t need server. You can host the web components in your web application. All web components define custom element with prefix dbs-. version: 0.1Note that the components are in heavy development stage thus some of the feature may not work or may change, while the static URL should remain . ",
+    "url": "/dbs-components/#dbs-web-components---introduction",
+    
+    "relUrl": "/#dbs-web-components---introduction"
+  },"53": {
+    "doc": "DBS Web components",
+    "title": "Usage",
+    "content": "The web components are framework agnostic. They introduce standard custom elements that enhance HTML vocabulary. CDN . Include the script bundle in head of your HTML and use web-component’s custom element anywhare in your web app. &lt;head&gt; ... &lt;script src=\"https://cdn.jsdelivr.net/gh/digital-biosystems/dbs-components@release/dist/dbs-bundle.js \"&gt;&lt;/script&gt; &lt;/head&gt; &lt;body&gt; ... &lt;dbs-hello-world message='DBS web components'&gt;&lt;/dbs-hello-world&gt; ... &lt;/body&gt; . Download JS bundle . From https://github.com/digital-biosystems/dbs-components/tree/release/dist . Use single bundle with basic DBS components (1MB) . | download release of web components https://github.com/digital-biosystems/dbs-components/releases and find /dist/dbs-bundle.js and copy to your web app location. | include the script that defines behavior of the web component’s custom element: &lt;script src=\"dbs-bundle.js\"&gt;&lt;/script&gt; . | use the web components custom element in the HTML body in Markdown e.g.: &lt;dbs-hello-world message='from just-the-docs MD'&gt;&lt;/dbs-hello-world&gt; | . Use single bundle with all DBS components (includes webllm,geochart,kbsearch) (8MB) . | download release of web components https://github.com/digital-biosystems/dbs-components/releases and find /dist/dbs-full-bundle.js and copy to your web app location. | include the script that defines behavior of the web component’s custom element: &lt;script src=\"dbs-full-bundle.js\"&gt;&lt;/script&gt; . | use the web components custom element in the HTML body in Markdown e.g.: &lt;dbs-hello-world message='from just-the-docs MD'&gt;&lt;/dbs-hello-world&gt; | . Use multiple bundles with selected components . | download release of web components https://github.com/digital-biosystems/dbs-components/releases and find /dist/dbs-shared.js and /dist/dbs-[some-component].js and copy to your web app location. | include the script that defines behavior of the web component’s custom element: &lt;script src=\"dbs-shared.js\"&gt;&lt;/script&gt; &lt;script src=\"dbs-[some-component].js\"&gt;&lt;/script&gt; . | use the web components custom element in the HTML body in Markdown e.g.: &lt;dbs-hello-world message='from just-the-docs MD'&gt;&lt;/dbs-hello-world&gt; | . ",
+    "url": "/dbs-components/#usage",
+    
+    "relUrl": "/#usage"
+  },"54": {
+    "doc": "DBS Web components",
+    "title": "Live examples",
+    "content": "See component documentation on live examples. ",
+    "url": "/dbs-components/#live-examples",
+    
+    "relUrl": "/#live-examples"
+  },"55": {
+    "doc": "DBS Web components",
+    "title": "DBS Web components",
+    "content": " ",
+    "url": "/dbs-components/",
+    
+    "relUrl": "/"
+  },"56": {
+    "doc": "PGx Chart 2",
+    "title": "&lt;dbs-pgxchartd&gt; Web Component",
+    "content": "dbs-pgxchartd is a customizable web component for rendering interactive pharmacogenomic charts in web applications. Compared to dbs-pgxchart it was exported using different toolchain allowing better simulation steps and shorter re-simulation time. version: 0.1The component is in development. Some features may not work or may change. ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html#dbs-pgxchartd-web-component",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html#dbs-pgxchartd-web-component"
+  },"57": {
+    "doc": "PGx Chart 2",
+    "title": "Example",
+    "content": "&lt;dbs-pgxchartd&gt;&lt;/dbs-pgxchartd&gt; . ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html#example",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html#example"
+  },"58": {
+    "doc": "PGx Chart 2",
+    "title": "Features",
+    "content": ". | Responsive design | Customizable colors and labels | Data binding via attributes or properties | . ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html#features",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html#features"
+  },"59": {
+    "doc": "PGx Chart 2",
+    "title": "Usage",
+    "content": "Include the component in your HTML file: . &lt;script src=\"path/to/dbs-pgxchart.js\"&gt;&lt;/script&gt; . Place the custom element . &lt;dbs-pgxchartd toxicLevel=\"0.012\" therapLevel=\"0.005\"&gt; &lt;/dbs-pgxchartd&gt; . ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html#usage",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html#usage"
+  },"60": {
+    "doc": "PGx Chart 2",
+    "title": "Attributes",
+    "content": "| Attribute | Type | Description | . | toxicLevel | string | toxic level 0.012 | . | therapLevel | string | therapeutic level 0.005 | . ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html#attributes",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html#attributes"
+  },"61": {
+    "doc": "PGx Chart 2",
+    "title": "PGx Chart 2",
+    "content": " ",
+    "url": "/dbs-components/pgx-chart/pgxchartd.html",
+    
+    "relUrl": "/pgx-chart/pgxchartd.html"
+  }
+}
