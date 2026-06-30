@@ -40,6 +40,7 @@ module.exports = function (env, { analyze }) {
       'dbs-buttonparams': './src/buttonparams/index.js',
       'dbs-guidedslides': './src/guidedslides/index.js',
       'dbs-value': './src/value/index.js',
+      'dbs-summary': './src/summary/index.js',
       'dbs-table': './src/table/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
@@ -50,6 +51,7 @@ module.exports = function (env, { analyze }) {
         './src/buttonparams/index.js',
         './src/guidedslides/index.js',
         './src/value/index.js',
+        './src/summary/index.js',
         //'./src/kbsearch/index.js',
         './src/table/index.js'
       ],
@@ -62,6 +64,7 @@ module.exports = function (env, { analyze }) {
         './src/buttonparams/index.js',
         './src/guidedslides/index.js',
         './src/value/index.js',
+        './src/summary/index.js',
         './src/kbsearch/index.js',
         './src/table/index.js'
       ]    

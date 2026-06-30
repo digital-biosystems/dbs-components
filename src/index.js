@@ -20,3 +20,4 @@ export { ButtonParams } from './buttonparams/button-params.js';
 export { GuidedSlides } from './guidedslides/guided-slides.js';
 export { GuidedSlide } from './guidedslides/guided-slide.js';
 export { Value } from './value/value.js';
+export { Summary } from './summary/summary.js';

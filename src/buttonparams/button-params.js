@@ -5,6 +5,8 @@ export class ButtonParams {
   @bindable title = 'Apply Parameters';
   @bindable idvalues = '';
   @bindable targetid = '';
+  @bindable group = '';
+  @bindable label = '';
   element = resolve(Element);
 
   findElementByIdAcrossRoots(id) {
@@ -98,5 +100,21 @@ export class ButtonParams {
       target.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
       target.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     }
+
+    this.emitChoice();
+  }
+
+  emitChoice() {
+    if (!this.group) return;
+
+    const label = this.label !== '' && this.label !== undefined && this.label !== null
+      ? this.label
+      : this.title;
+
+    this.element.dispatchEvent(new CustomEvent('dbs-choice', {
+      bubbles: true,
+      composed: true,
+      detail: { group: this.group, label, scope: this.targetid }
+    }));
   }
 }

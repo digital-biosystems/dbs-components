@@ -12,7 +12,9 @@
   You were recommended a common pain killer: <b>IBUPROFEN</b></p>
 <p>On the left side you see simulation of probable concentration of the drug within your body. But we need more information for precision therapy recomendation ...</p>
 <div id="chosenvalues" class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-round w3-small">
-  <b>Chosen values:</b> ${chosenValuesText}  
+  <b>Chosen values:</b>
+  <dbs-summary scopeid="pgxdemo" placeholder="-"
+    template="weight: {weight}, renal/liver function: {renalliver}, PGx: SLA22CA2 {slc22a2}, CYP2C19 {cyp2c19}; dosage: {dosage}"></dbs-summary>
 </div>
 <div class="w3-small">
 <dbs-value fromid="pgpk" refindex="0" min="0.015" max="0.07" lowtext="consider higher dosage" oktext="OK" hightext="consider lower dosage/change regimen or different drug" labels="drug concentration"></dbs-value>
@@ -20,38 +22,38 @@
 <div id="step-a" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
   <h3>1. What is your weight?</h3> 
 <p>Choose the nearest option</p>
-  <dbs-buttonparams title="40kg" targetid="pgxdemo" idvalues="patientfactor,0.6;ka2,1.5;patientclfactor,0.6" click.trigger="chooseWeight('40kg')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="50kg" targetid="pgxdemo" idvalues="patientfactor,0.7;ka2,1.3;patientclfactor,0.7" click.trigger="chooseWeight('50kg')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="60kg" targetid="pgxdemo" idvalues="patientfactor,0.8;ka2,1.2;patientclfactor,0.8" click.trigger="chooseWeight('60kg')"></dbs-buttonparams><br/>
-  <dbs-buttonparams title="70kg" targetid="pgxdemo" idvalues="patientfactor,0.9;ka2,1.1;patientclfactor,0.9" click.trigger="chooseWeight('70kg')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="80kg" targetid="pgxdemo" idvalues="patientfactor,1.0;ka2,1;patientclfactor,1" click.trigger="chooseWeight('80kg')"></dbs-buttonparams>&nbsp;
-    <dbs-buttonparams title="90kg" targetid="pgxdemo" idvalues="patientfactor,1.2;ka2,0.9;patientclfactor,1.2" click.trigger="chooseWeight('90kg')"></dbs-buttonparams><br/>
-  <dbs-buttonparams title="100kg" targetid="pgxdemo" idvalues="patientfactor,2;ka2,0.9;patientclfactor,1.3" click.trigger="chooseWeight('100kg')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="120kg" targetid="pgxdemo" idvalues="patientfactor,3;ka2,0.8;patientclfactor,1.5" click.trigger="chooseWeight('120kg')"></dbs-buttonparams>
+  <dbs-buttonparams title="40kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,0.6;ka2,1.5;patientclfactor,0.6"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="50kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,0.7;ka2,1.3;patientclfactor,0.7"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="60kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,0.8;ka2,1.2;patientclfactor,0.8"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="70kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,0.9;ka2,1.1;patientclfactor,0.9"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="80kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,1.0;ka2,1;patientclfactor,1"></dbs-buttonparams>&nbsp;
+    <dbs-buttonparams title="90kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,1.2;ka2,0.9;patientclfactor,1.2"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="100kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,2;ka2,0.9;patientclfactor,1.3"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="120kg" targetid="pgxdemo" group="weight" idvalues="patientfactor,3;ka2,0.8;patientclfactor,1.5"></dbs-buttonparams>
   
 </div>
 <div id="step-b" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
   <h3>2. What is your renal / liver function?</h3>
   <p>If you don't know or if normal, continue to next page:</p>
  
-  <dbs-buttonparams title="intermediate impairment (CKD2)" targetid="pgxdemo" idvalues="patientclfactor,0.5" click.trigger="chooseRenalLiver('intermediate impairment (CKD2)')"></dbs-buttonparams><br/>
-  <dbs-buttonparams title="severe impairment (CKD3)" targetid="pgxdemo" idvalues="patientclfactor,0.3" click.trigger="chooseRenalLiver('severe impairment (CKD3)')"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="intermediate impairment (CKD2)" targetid="pgxdemo" group="renalliver" idvalues="patientclfactor,0.5"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="severe impairment (CKD3)" targetid="pgxdemo" group="renalliver" idvalues="patientclfactor,0.3"></dbs-buttonparams><br/>
 </div>
 <div id="step-c" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
   <h3>3. Pharmacogenetic test</h3>
   <p>Pharmacogenetic test and report may reveal rare mutation that may affect how certain drugs behave in your body. Choose mutation:</p>
-  <dbs-buttonparams title="SLA22CA2 (*1) normal" targetid="pgxdemo" idvalues="slc22a2,1" click.trigger="chooseSlc22a2('normal')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="SLA22CA2 (808T) poor metabolizer" targetid="pgxdemo" idvalues="slc22a2,0.5" click.trigger="chooseSlc22a2('poor metabolizer')"></dbs-buttonparams><br/>
-  <dbs-buttonparams title="CYP2C19 (*1) normal" targetid="pgxdemo" idvalues="cyp2c19,1" click.trigger="chooseCyp2c19('normal')"></dbs-buttonparams>&nbsp;
-  <dbs-buttonparams title="CYP2C19 (*2) poor metabolizer" targetid="pgxdemo" idvalues="cyp2c19,0.5" click.trigger="chooseCyp2c19('poor metabolizer')"></dbs-buttonparams><br/>
-  <dbs-buttonparams title="CYP2C19 (*17) rapid metabolizer" targetid="pgxdemo" idvalues="cyp2c19,2" click.trigger="chooseCyp2c19('rapid metabolizer')"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="SLA22CA2 (*1) normal" targetid="pgxdemo" group="slc22a2" label="normal" idvalues="slc22a2,1"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="SLA22CA2 (808T) poor metabolizer" targetid="pgxdemo" group="slc22a2" label="poor metabolizer" idvalues="slc22a2,0.5"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="CYP2C19 (*1) normal" targetid="pgxdemo" group="cyp2c19" label="normal" idvalues="cyp2c19,1"></dbs-buttonparams>&nbsp;
+  <dbs-buttonparams title="CYP2C19 (*2) poor metabolizer" targetid="pgxdemo" group="cyp2c19" label="poor metabolizer" idvalues="cyp2c19,0.5"></dbs-buttonparams><br/>
+  <dbs-buttonparams title="CYP2C19 (*17) rapid metabolizer" targetid="pgxdemo" group="cyp2c19" label="rapid metabolizer" idvalues="cyp2c19,2"></dbs-buttonparams><br/>
 </div>
 <div id="step-d" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
   <h3>4. Choose right dosage</h3>
   <p>Choose the dosage so it will be above the therapeutic level, below the toxic level, and close to the blue — the ideal profile.</p>
-  <dbs-buttonparams title="200mg every 8 hours" targetid="pgxdemo" idvalues="ka,1.0;dosage,200" click.trigger="chooseDosage('200mg')"></dbs-buttonparams>
-  <dbs-buttonparams title="400mg every 8 hours" targetid="pgxdemo" idvalues="ka,1.0;dosage,400" click.trigger="chooseDosage('400mg')"></dbs-buttonparams>
-  <dbs-buttonparams title="600mg every 8 hours" targetid="pgxdemo" idvalues="ka,1.0;dosage,600" click.trigger="chooseDosage('600mg')"></dbs-buttonparams>
+  <dbs-buttonparams title="200mg every 8 hours" targetid="pgxdemo" group="dosage" label="200mg" idvalues="ka,1.0;dosage,200"></dbs-buttonparams>
+  <dbs-buttonparams title="400mg every 8 hours" targetid="pgxdemo" group="dosage" label="400mg" idvalues="ka,1.0;dosage,400"></dbs-buttonparams>
+  <dbs-buttonparams title="600mg every 8 hours" targetid="pgxdemo" group="dosage" label="600mg" idvalues="ka,1.0;dosage,600"></dbs-buttonparams>
 </div>
 <div id="step-e" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom w3-medium">
     <h3>Summary</h3>
