@@ -1,15 +1,8 @@
----
-title: Hello world
-layout: home
-nav_order: 2
----
-
 # `<dbs-hello-world>` Web Component
 
 The `<dbs-hello-world>` web component displays a simple greeting message. It can be used to quickly add a customizable "Hello, World!" message to your web application.
 
-{: .note }
-version: 0.1<br/>The component is in development. Some features may not work or may change.
+?> version: 0.1<br/>The component is in development. Some features may not work or may change.
 
 ## Demo
 `<dbs-hello-world message='from just-the-docs MD'></dbs-hello-world>`
