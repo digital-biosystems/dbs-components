@@ -42,6 +42,15 @@ module.exports = function (env, { analyze }) {
         './src/pgxbadge/index.js',
         //'./src/kbsearch/index.js',
         './src/table/index.js'
+      ],
+      'dbs-full-bundle': [
+        './src/helloworld/index.js',
+        './src/chartjsgeo/index.js',        
+        './src/chartjs/index.js',
+        './src/webllmchat/index.js',
+        './src/pgxbadge/index.js',
+        './src/kbsearch/index.js',
+        './src/table/index.js'
       ]    
     }
     : {
@@ -69,7 +78,7 @@ module.exports = function (env, { analyze }) {
  splitChunks: {
     chunks: chunk => {
       // Exclude the 'bundle' chunk from splitChunks processing
-      if (chunk.name === 'dbs-bundle') {
+      if (chunk.name === 'dbs-bundle' || chunk.name === 'dbs-full-bundle') {
         return false; // exclude 'bundle' chunk
       }
       return true; // include other chunks
@@ -81,7 +90,7 @@ module.exports = function (env, { analyze }) {
       vendors: false,
       common: {
         name: 'dbs-shared',
-        chunks: chunk => chunk.name !== 'dbs-bundle',
+        chunks: chunk => chunk.name !== 'dbs-bundle' && chunk.name !== 'dbs-full-bundle'  ,
         minChunks: 2,
         priority: 10,
         reuseExistingChunk: true,

@@ -1,6 +1,7 @@
 # Ignore site output
 _site/
 site/
+vendor/
 
 # OS/system files
 .DS_Store
