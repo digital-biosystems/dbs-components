@@ -8,7 +8,8 @@
   - [ChartJS GEO](/chartjs-geo/index.md)
   - [FMI](/fmi/index.md)
   - [PGx Chart](/pgx-chart/index.md)
-  - [PGx Chart D](/pgx-chart/pgxchartd.md)
+    - [PGx Chart D](/pgx-chart/pgxchartd.md)
+    - [Ibuprofen demo](/pgx-chart/ibuprofen.md)
   - [Knowledge Base Search](/kbsearch/index.md)
   - [Web LLM Chat](/webllmchat/index.md)
 
