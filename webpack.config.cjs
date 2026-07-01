@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
@@ -94,7 +95,7 @@ module.exports = function (env, { analyze }) {
  splitChunks: {
     chunks: chunk => {
       // Exclude the 'bundle' chunk from splitChunks processing
-      if (chunk.name === 'dbs-bundle') {
+      if (chunk.name === 'dbs-bundle' || chunk.name === 'dbs-full-bundle') {
         return false; // exclude 'bundle' chunk
       }
       if (chunk.name === 'dbs-full-bundle') {
@@ -213,13 +214,16 @@ module.exports = function (env, { analyze }) {
         }
       ]
     },
-    externalsPresets: { node: production },
+    externalsPresets: { node: false },
     externals: production ? undefined : [
       // Skip npm dependencies in plugin build.
       production && nodeExternals()
     ].filter(p => p),
     plugins: [
       !production && new HtmlWebpackPlugin({ template: 'index.html', favicon: 'favicon.ico' }),
+      production && new webpack.DefinePlugin({
+        'module.hot': 'false'
+      }),
       new Dotenv({
         path: `./.env${production ? '' : '.' + (process.env.NODE_ENV || 'development')}`,
       }),

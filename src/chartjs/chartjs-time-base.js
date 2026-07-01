@@ -15,7 +15,7 @@ export class ChartjsTimeBase extends Chartjs3Base {
 
     labelsRaw = [];
     refindices;
-    operation = []; // populated by dbs-convertors attribute
+    @bindable operation = []; // populated by dbs-convertors attribute
 
     constructor() {
         super();

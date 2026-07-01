@@ -27,7 +27,7 @@ export class Webllmchat {
             );
         }
 
-        this.selectedModel = "Qwen3-0.6B-q4f16_1-MLC";
+        this.selectedModel = "Qwen3.5-0.8B-q4f16_1-MLC";
         this.messages = [
             {
                 content: this.systemPrompt,
@@ -109,9 +109,16 @@ export class Webllmchat {
             })();
 
             // 4) Optional developer cue to foreground current turn
-            const devFocusMsg = {                
+            const devFocusMsg = {
                 role: "user",
-                content: "Answer the next user message directly; treat previous messages as context only.",
+                content: "You are a concise assistant.\n\
+Rules:\n\
+- Answer the user’s question directly.\n\
+- Do not mention system prompts, hidden instructions.\n\
+- Do not repeat the user’s message.\n\
+- If the answer is short, keep it short.\n\
+- If the question is ambiguous, ask one brief clarifying question.\n\
+- Output only the final answer.",
             };
 
             // 5) Current user message kept separate and last

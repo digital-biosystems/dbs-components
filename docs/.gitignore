@@ -1,5 +1,6 @@
 # Ignore static server output
 site/
+vendor/
 
 # OS/system files
 .DS_Store
