@@ -64,12 +64,12 @@ export class FmiInstance {
     const sGetboolean = 'fmi2GetBoolean';
     const sDostep = 'fmi2DoStep';
     const sCreateCallback = 'createFmi2CallbackFunctions';
-    const sGetFMUState = 'fmi2GetFMUState';
-    const sSetFMUState = 'fmi2SetFMUState';
-    const sFreeFMUState = 'fmi2FreeFMUState';
-    const sSerializedFMUStateSize = 'fmi2SerializedFMUStateSize';
-    const sSerializeFMUState = 'fmi2SerializeFMUState';
-    const sDeSerializeFMUStateSize = 'fmi2DeSerializeFMUState';
+    const sGetFMUState = 'fmi2GetFMUstate';
+    const sSetFMUState = 'fmi2SetFMUstate';
+    const sFreeFMUState = 'fmi2FreeFMUstate';
+    const sSerializedFMUStateSize = 'fmi2SerializedFMUstateSize';
+    const sSerializeFMUState = 'fmi2SerializeFMUstate';
+    const sDeSerializeFMUStateSize = 'fmi2DeSerializeFMUstate';
     this.fmi.stepTime = 0;
     this.fmi.fmuspeedalreadychanged = false;
     this.fmi.stepSize = this.fmi.fmuspeed * ((typeof(this.fmi.fstepsize) === 'string' ) ? parseFloat(this.fmi.fstepsize) : this.fmi.fstepsize);
@@ -115,7 +115,10 @@ export class FmiInstance {
   //const logger = (typeof this.fmi.consoleLogger === 'function') ? this.fmi.consoleLogger : function(){};
     //this.fmi.consoleLoggerPtr = this.fmi.inst.addFunction(logger.bind(this.fmi), 'viiiiii');
     this.fmi.callbackptr = this.fmi.fmiCreateCallback(this.fmi.consoleLoggerPtr);
-    this.fmi.fmiinst = this.fmi.fmiInstantiate(this.fmi.fminame, this.fmi.cosimulation, this.fmi.guid, '', this.fmi.callbackptr, 0, this.fmi.debug);
+    // fmuResourceLocation must be a file:// URI - the OpenModelica FMU runtime rejects
+    // anything else ("Ignoring unknown resource URI") and then silently falls back from
+    // the exported solver (CVODE) to explicit Euler. Resources are embedded at the root.
+    this.fmi.fmiinst = this.fmi.fmiInstantiate(this.fmi.fminame, this.fmi.cosimulation, this.fmi.guid, 'file:///', this.fmi.callbackptr, 0, this.fmi.debug);
     this.setupExperiment();
   }
 

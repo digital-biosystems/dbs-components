@@ -43,6 +43,7 @@ module.exports = function (env, { analyze }) {
       'dbs-value': './src/value/index.js',
       'dbs-summary': './src/summary/index.js',
       'dbs-table': './src/table/index.js',
+      'dbs-fmusim': './src/fmusim/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
         //'./src/chartjsgeo/index.js',        

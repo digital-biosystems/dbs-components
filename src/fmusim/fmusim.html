@@ -1,0 +1,39 @@
+<require from="./fmusim.css"></require>
+
+<div class="fmusim">
+  <h2 if.bind="title">${title}</h2>
+
+  <div class="panel">
+    <h3>Reference check — browser result vs the FMPy peak recorded for this record</h3>
+    <table class="ref">
+      <tr><th>observable</th><th>browser peak <span>(model SI units)</span></th><th>FMPy reference</th><th>difference</th><th>verdict</th></tr>
+      <tr repeat.for="row of refRows">
+        <td>${row.o}</td>
+        <td class="num">${row.peak}</td>
+        <td class="num">${row.ref}</td>
+        <td class="num">${row.diff}</td>
+        <td class="${row.cls}">${row.verdict}</td>
+      </tr>
+    </table>
+    <div class="note">
+      Compares the simulation against the extracted reference peak. Press
+      <b>Reset to extracted values</b> to return every control to the record's own values.
+    </div>
+    <div class="status ${statusErr ? 'err' : ''}">${statusText}</div>
+  </div>
+
+  <div class="panel">
+    <h3>Concentration–time curve</h3>
+    <canvas ref="plotCanvas" width="1800" height="680"></canvas>
+    <div class="note">${plotNote}</div>
+  </div>
+
+  <div class="panel">
+    <h3>Editable parameters &amp; dosing</h3>
+    <div class="grid" ref="controlsBox"></div>
+    <div class="row">
+      <button click.trigger="run()" disabled.bind="!ready">Re-run simulation</button>
+      <button click.trigger="reset()" disabled.bind="!ready" class="ghost">Reset to extracted values</button>
+    </div>
+  </div>
+</div>
