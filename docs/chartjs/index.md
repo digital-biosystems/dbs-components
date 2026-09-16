@@ -1,15 +1,8 @@
----
-title: ChartJS 4
-layout: home
-nav_order: 3
----
-
 # `<dbs-chartjs4>` Web Component
 
 The `<dbs-chartjs4>` web component displays a chart from data in dataset. It uses [ChartJS 4.5.1](https://www.chartjs.org/docs/4.5.1/) library to render various charts. It can listen fmidata channel to draw data from external simulation (fmi component)
 
-{: .note }
-version: 0.1<br/>The component is in development. Some features may not work or may change.
+?> version: 0.1<br/>The component is in development. Some features may not work or may change.
 
 Various types are allowed as implemented by the ChartJS 4.5.1 library via 'type' attribute:
 `bar`,`bubble`,`doughnut`,`pie`,`line`,`polarArea`,`radar`,`scatter`. See the types below.

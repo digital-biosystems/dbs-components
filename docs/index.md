@@ -1,16 +1,9 @@
----
-title: DBS Web components
-layout: home
-nav_order: 1
----
-
 # DBS Web Components - Introduction
 
 
 This site includes reusable web components to visualise scientific data. The web components are static, don't need server. You can host the web components in your web application. All web components define custom element with prefix `dbs-`.
 
-{: .note }
-version: 0.1<br/>Note that the components are in heavy development stage thus some of the feature may not work or may change, while the static URL should remain
+?> version: 0.1<br/>Note that the components are in heavy development stage thus some of the feature may not work or may change, while the static URL should remain
 
 ## Usage
 

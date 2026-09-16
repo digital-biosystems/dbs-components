@@ -1,15 +1,8 @@
----
-title: ChartJS GEO
-layout: home
-nav_order: 2
----
-
 # `<dbs-chartjs-geo>` Web Component
 
 `<dbs-chartjs-geo>` is a web component that integrates Chart.js with geographical data visualization. It enables rendering interactive maps and geo-based charts in web applications.
 
-{: .note }
-version: 0.1<br/>The component is in development. Some features may not work or may change.
+?> version: 0.1<br/>The component is in development. Some features may not work or may change.
 
 ## Example
 
