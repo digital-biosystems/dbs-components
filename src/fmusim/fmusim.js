@@ -179,17 +179,25 @@ export class Fmusim {
       // the start value INTO them here is what makes a seconds-valued default like 28800 s
       // land at 8 h on the slider instead of clamping to the display-unit max.
       const startDisplay = c.mult ? 1 : start * c.scale;
-      // A <input type=range> clamps an assigned value to [min,max] — silently, with no error.
-      // controlDefs is data (default-controls.json, or a page's own controlsurl), authored
-      // without knowing every record it will ever be pointed at; a record whose own value
-      // falls outside the configured range would otherwise boot already "edited": cur would
-      // diverge from base before any reader touched a slider, and isPristine() would never be
-      // true, permanently withholding the reference verdict. Widening here guarantees the
-      // record's own value is always exactly reachable, so "Reset to extracted values" means
-      // what it says regardless of how the range was tuned.
-      inp.min = Math.min(c.min, startDisplay);
+      // A <input type=range> SANITISES an assigned value — silently, with no error — in two
+      // ways, and both would make a record boot already "edited": cur would diverge from base
+      // before any reader touched a slider, isPristine() would never be true, the reference
+      // verdict would be withheld forever, AND the first simulation would run a value the
+      // paper never reported. controlDefs is data, authored without knowing every record it
+      // will be pointed at, so the range must adapt to the record, not the other way round:
+      //
+      //  1. It clamps to [min, max]. Widen the range to include the record's own value.
+      //  2. It snaps onto the STEP GRID, which is anchored at `min`. A lag of 846 s is
+      //     14.1 min; with step=1 the browser rounds it to 14 — a 6 s change to the model
+      //     that shows up as a 0.6 % error against the FMPy reference on a page nobody has
+      //     edited. So `min` is lowered by whatever fraction of a step puts the record's
+      //     value exactly on the grid: start = min + n·step for integer n.
+      const step = Number(c.step) > 0 ? Number(c.step) : 1;
+      const lo = Math.min(c.min, startDisplay);
+      const n = Math.ceil((startDisplay - lo) / step - 1e-9);
+      inp.min = startDisplay - n * step;
       inp.max = Math.max(c.max, startDisplay);
-      inp.step = c.step;
+      inp.step = step;
       inp.value = startDisplay;
 
       const show = () => {
@@ -237,10 +245,13 @@ export class Fmusim {
   simulate(p) {
     const M = this.M, fmi = this.fmi, meta = this.meta;
     const stop = p.stop_time || 86400;
-    // Same rule as the FMPy driver (export/fmu.py): the dose is a rectangular pulse
+    // A SWEEP payload (x_axis set — the PD exposure-response templates) has no dose pulse:
+    // simulated time IS the swept exposure, so the step only has to draw the curve. A PK
+    // payload keeps the FMPy driver's rule (export/fmu.py): the dose is a rectangular pulse
     // adminDuration wide, so the communication step must resolve it.
+    const sweep = p.x_axis && p.x_axis.variable ? p.x_axis.variable : null;
     const adminDuration = p.parameters.adminDuration != null ? p.parameters.adminDuration : 600;
-    const step = Math.min(30, Math.max(0.02, adminDuration / 50));
+    const step = sweep ? stop / 1000 : Math.min(30, Math.max(0.02, adminDuration / 50));
 
     const inst = fmi.instantiate(meta.model_identifier, 1, meta.guid, 'file:///', this.cb, 0, 0);
     if (!inst) throw new Error('fmi2Instantiate failed');
@@ -269,32 +280,45 @@ export class Fmusim {
     fmi.enterInit(inst); fmi.exitInit(inst);
 
     const outs = p.observables.filter(o => o in meta.vr);
-    const q = this.alloc(outs.map(o => meta.vr[o]), Uint32Array);
-    const vp = M._malloc(outs.length * 8);
+    // The swept variable is read beside the observables so the plot can use it as x, but it
+    // is not an observable: no peak, no reference row.
+    const qvars = (sweep && sweep in meta.vr && outs.indexOf(sweep) < 0) ? outs.concat([sweep]) : outs;
+    const q = this.alloc(qvars.map(o => meta.vr[o]), Uint32Array);
+    const vp = M._malloc(qvars.length * 8);
     freeLater.push(q, vp);
     const peak = {}, series = {};
-    outs.forEach(o => { peak[o] = 0; series[o] = []; });
+    qvars.forEach(o => { peak[o] = 0; series[o] = []; });
     const times = [];
 
     const t0 = performance.now();
     let t = 0, n = 0;
     // Plot at most ~1200 points; the solver still steps at `step`.
     const every = Math.max(1, Math.round((stop / step) / 1200));
+    // The state at t = 0 is a sample too: for a sweep it is the exposure-0 point (the
+    // baseline the first reference row checks), and a curve that starts at its first STEP
+    // hides where it came from.
+    fmi.getReal(inst, q, qvars.length, vp);
+    {
+      const v0 = new Float64Array(M.HEAPU8.buffer, vp, qvars.length);
+      times.push(0);
+      qvars.forEach((o, i) => { series[o].push(v0[i]); if (v0[i] > peak[o]) peak[o] = v0[i]; });
+    }
     while (t < stop) {
       const h = Math.min(step, stop - t);
       if (fmi.doStep(inst, t, h, 1) !== 0) throw new Error(`fmi2DoStep failed at t=${t}`);
       t += h; n++;
-      fmi.getReal(inst, q, outs.length, vp);
-      const v = new Float64Array(M.HEAPU8.buffer, vp, outs.length);
-      outs.forEach((o, i) => { if (v[i] > peak[o]) peak[o] = v[i]; });
+      fmi.getReal(inst, q, qvars.length, vp);
+      const v = new Float64Array(M.HEAPU8.buffer, vp, qvars.length);
+      qvars.forEach((o, i) => { if (v[i] > peak[o]) peak[o] = v[i]; });
       if (n % every === 0) {
         times.push(t);
-        outs.forEach((o, i) => series[o].push(v[i]));
+        qvars.forEach((o, i) => series[o].push(v[i]));
       }
     }
     fmi.free(inst);
     freeLater.forEach(ptr => M._free(ptr));
-    return { peak, series, times, outs, steps: n, ms: performance.now() - t0, step, stop };
+    const xs = sweep && series[sweep] ? series[sweep] : times;
+    return { peak, series, times, xs, sweep, outs, steps: n, ms: performance.now() - t0, step, stop };
   }
 
   // ── reference check ────────────────────────────────────────────────────────────────────────
@@ -311,7 +335,37 @@ export class Fmusim {
     });
   }
 
+  // For a sweep the reference is not a peak but POINTS: reference_points maps a swept
+  // exposure (SI) to the response the record's own closed form gives there (exposure 0 →
+  // baseline, EC50 → half the effect term …). The browser's curve is read at the nearest
+  // sample and compared the same way a peak is.
+  renderRefPoints(res) {
+    const pristine = this.isPristine();
+    const o = res.outs[0], ys = res.series[o], xs = res.xs;
+    const xa = this.base.x_axis || {}, ya = this.base.y_axis || {};
+    const xf = xa.factor ? 1 / xa.factor : 1, yf = ya.factor ? 1 / ya.factor : 1;
+    this.refRows = Object.keys(this.base.reference_points).map(k => {
+      const x = Number(k), ref = Number(this.base.reference_points[k]);
+      let bi = 0;
+      xs.forEach((xx, i) => { if (Math.abs(xx - x) < Math.abs(xs[bi] - x)) bi = i; });
+      const got = ys[bi];
+      const scale = Math.max(Math.abs(ref), 1e-12);
+      const rel = pristine ? Math.abs(got - ref) / scale : null;
+      let verdict, cls = '';
+      if (!pristine) { verdict = 'n/a — parameters edited'; }
+      else { verdict = rel <= this.tolerance ? 'OK' : 'FAIL'; cls = rel <= this.tolerance ? 'ok' : 'fail'; }
+      const at = `${o} @ ${(x * xf).toPrecision(3)} ${xa.display_unit || ''}`.trim();
+      return {
+        o: at, cls, verdict,
+        peak: (got * yf).toPrecision(4) + (ya.display_unit ? ` ${ya.display_unit}` : ''),
+        ref: (ref * yf).toPrecision(4) + (ya.display_unit ? ` ${ya.display_unit}` : ''),
+        diff: rel != null ? `${(100 * rel).toFixed(2)} %` : '-',
+      };
+    });
+  }
+
   renderRef(res) {
+    if (res.sweep && this.base.reference_points) return this.renderRefPoints(res);
     const pristine = this.isPristine();
     this.refRows = res.outs.map(o => {
       const ref = this.base.reference_peaks ? this.base.reference_peaks[o] : null;
@@ -354,30 +408,42 @@ export class Fmusim {
     const W = cv.width, H = cv.height, L = 190, R = 40, T = 26, B = 104;
     g.clearRect(0, 0, W, H);
     const o = res.outs[0];
-    const ys = res.series[o], xs = res.times;
+    const ys = res.series[o], xs = res.xs || res.times;
     if (!ys || !ys.length) return;
 
-    const xmaxSec = xs[xs.length - 1];
-    const useDays = xmaxSec / 3600 > 48;
-    const xf = useDays ? 1 / 86400 : 1 / 3600;
-    const xUnit = useDays ? 'd' : 'h';
-    const xmax = xmaxSec * xf;
+    // Axes. A PK run is concentration over time (h or d, mg/L or µg/L picked from the peak).
+    // A sweep is response over exposure, both in the record's own display units: the payload
+    // carries x_axis / y_axis {display_unit, factor} with factor = SI per display unit.
+    const xa = res.sweep ? (this.base.x_axis || {}) : null;
+    const ya = res.sweep ? (this.base.y_axis || {}) : null;
+    const xmaxRaw = xs[xs.length - 1];
+    const useDays = !xa && xmaxRaw / 3600 > 48;
+    const xf = xa ? (xa.factor ? 1 / xa.factor : 1) : (useDays ? 1 / 86400 : 1 / 3600);
+    const xUnit = xa ? (xa.display_unit || '') : (useDays ? 'd' : 'h');
+    const xLabel = xa ? `${xa.variable || 'exposure'}${xUnit ? ` (${xUnit})` : ''}` : `time (${xUnit})`;
+    const xmax = xmaxRaw * xf;
 
-    const cu = this.pickConcUnit(Math.max.apply(null, ys));
+    const cu = ya ? { unit: ya.display_unit || '', factor: ya.factor ? 1 / ya.factor : 1 }
+                  : this.pickConcUnit(Math.max.apply(null, ys));
+    const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}` : `concentration (${cu.unit})`;
     const ymaxRaw = Math.max.apply(null, ys) * cu.factor;
-    const ystep = this.niceStep(ymaxRaw || 1, 5);
-    const ymax = Math.ceil((ymaxRaw || 1) / ystep) * ystep;
+    // A sweep can go NEGATIVE (an inhibition from a baseline of 0: 0 → −0.076); the axis
+    // starts at the curve's minimum then, not at 0.
+    const yminRaw = Math.min(0, Math.min.apply(null, ys) * cu.factor);
+    const ystep = this.niceStep((ymaxRaw - yminRaw) || 1, 5);
+    const ymax = Math.ceil((ymaxRaw || (yminRaw ? 0 : 1)) / ystep) * ystep;
+    const ymin = Math.floor(yminRaw / ystep) * ystep;
     const xstep = this.niceStep(xmax || 1, 6);
 
     const X = t => L + (W - L - R) * (t / xmax);
-    const Y = v => H - B - (H - T - B) * (v / ymax);
+    const Y = v => H - B - (H - T - B) * ((v - ymin) / (ymax - ymin || 1));
 
     g.font = '22px sans-serif';
     g.fillStyle = '#6b7280';
     g.strokeStyle = '#e3e7eb';
     g.lineWidth = 2;
 
-    for (let v = 0; v <= ymax + ystep * 1e-9; v += ystep) {
+    for (let v = ymin; v <= ymax + ystep * 1e-9; v += ystep) {
       const y = Y(v);
       g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
       g.textAlign = 'right'; g.textBaseline = 'middle';
@@ -392,12 +458,12 @@ export class Fmusim {
     g.fillStyle = '#374151';
     g.font = '600 24px sans-serif';
     g.textAlign = 'center'; g.textBaseline = 'top';
-    g.fillText(`time (${xUnit})`, L + (W - L - R) / 2, H - B + 54);
+    g.fillText(xLabel, L + (W - L - R) / 2, H - B + 54);
     g.save();
     g.translate(38, T + (H - T - B) / 2);
     g.rotate(-Math.PI / 2);
     g.textBaseline = 'top';
-    g.fillText(`concentration (${cu.unit})`, 0, 0);
+    g.fillText(yLabel, 0, 0);
     g.restore();
 
     g.strokeStyle = '#0074d9'; g.lineWidth = 3; g.beginPath();
@@ -407,6 +473,12 @@ export class Fmusim {
     });
     g.stroke();
 
+    if (xa) {
+      const last = ys[ys.length - 1] * cu.factor;
+      this.plotNote = `${o} ${last.toPrecision(4)} ${cu.unit} at ${xmax.toPrecision(3)} ${xUnit}`
+        + ` (end of sweep)  \u00b7  ${res.steps} points in ${res.ms.toFixed(0)} ms.`;
+      return;
+    }
     const peakDisp = res.peak[o] * cu.factor;
     this.plotNote = `Peak ${peakDisp.toPrecision(4)} ${cu.unit} (${o})  \u00b7  `
       + `${res.steps} solver steps (h = ${res.step} s) over ${(res.stop / 3600).toFixed(0)} h `
