@@ -42,6 +42,13 @@ export class Fmusim {
   baseline = null;
   showBaseline = true;
   edited = false;
+  // How eagerly a slider re-simulates. A 24 h run is a few ms and can follow the drag; a
+  // record whose own horizon is three weeks (a weekly GLP-1 analogue) is several hundred ms,
+  // and re-running it on every 'input' event makes the slider itself feel stuck. So the
+  // reader picks: 'live' = every frame of the drag, 'release' = once the mouse is let go,
+  // 'manual' = only when the button is pressed. The choice is remembered per browser.
+  simMode = Fmusim.loadMode();
+  pending = false;                 // an edit the current mode has not simulated yet
 
   // ── boot ────────────────────────────────────────────────────────────────────────────────
   // meta is fetched first, on its own: it carries model_identifier, the name the WASM
@@ -250,8 +257,18 @@ export class Fmusim {
       // re-simulate at most once per animation frame so a drag stays smooth (a run is a few
       // hundred solver steps — cheap, but not free at 60 Hz). 'change' fires once when the
       // drag ends, which is the authoritative run.
-      inp.addEventListener('input', () => { show(); this.scheduleRun(); });
-      inp.addEventListener('change', () => { show(); this.run(); });
+      // The readout ALWAYS tracks the slider, in every mode — it is the value the reader is
+      // choosing, not a simulation result. Only the run is deferred.
+      inp.addEventListener('input', () => {
+        show();
+        if (this.simMode === 'live') this.scheduleRun();
+        else this.pending = true;
+      });
+      inp.addEventListener('change', () => {
+        show();
+        if (this.simMode === 'manual') this.pending = true;
+        else this.run();
+      });
       show();
       wrap.appendChild(lab); wrap.appendChild(inp);
       box.appendChild(wrap);
@@ -601,6 +618,7 @@ export class Fmusim {
   }
 
   run() {
+    this.pending = false;
     let res;
     try {
       res = this.simulate(this.cur);
@@ -621,6 +639,23 @@ export class Fmusim {
       console.error('[dbs-fmusim] plot failed (reference check above is unaffected):', e);
     }
     this.setStatus(`${res.steps} steps in ${res.ms.toFixed(0)} ms`);
+  }
+
+  // localStorage is per-origin and may throw (private mode, blocked site data), so every
+  // access is guarded and an unreadable store simply means the default.
+  static loadMode() {
+    try {
+      const m = localStorage.getItem('dbs-fmusim.simMode');
+      return m === 'release' || m === 'manual' ? m : 'live';
+    } catch (e) { return 'live'; }
+  }
+
+  setSimMode(mode) {
+    this.simMode = mode;
+    try { localStorage.setItem('dbs-fmusim.simMode', mode); } catch (e) { /* not stored */ }
+    // Switching to a less manual mode settles whatever the reader already moved, so the
+    // curve on screen always matches the sliders under it.
+    if (mode !== 'manual' && this.pending) this.run();
   }
 
   toggleBaseline() {

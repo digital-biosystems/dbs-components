@@ -90,6 +90,23 @@
   border-color: #cbd5e1;
 }
 
+/* The selected re-simulate mode is a state, not an action: it stays readable as a button but
+   reads as pressed. aria is not enough on its own — the label is the same three words either
+   way, so the selection has to be visible. */
+.fmusim button.ghost.on {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+/* Only shown while an edit is waiting to be simulated, so it is the one call to action in
+   the row. */
+.fmusim button.rerun {
+  background: var(--blue);
+  color: #fff;
+  margin-left: auto;
+}
+
 .fmusim button[disabled] {
   opacity: 0.5;
   cursor: default;

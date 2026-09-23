@@ -20,7 +20,19 @@
         ${showBaseline ? 'Hide' : 'Show'} the first run
       </button>
       <button click.trigger="reset()" disabled.bind="!ready" class="ghost">Reset to extracted values</button>
-      <span class="hint">a slider re-runs the simulation</span>
+    </div>
+    <div class="row">
+      <span class="hint">Re-simulate</span>
+      <button click.trigger="setSimMode('live')" class="ghost ${simMode === 'live' ? 'on' : ''}"
+              title="Every frame of the drag. Smoothest, but a long-horizon model can lag.">while dragging</button>
+      <button click.trigger="setSimMode('release')" class="ghost ${simMode === 'release' ? 'on' : ''}"
+              title="Once, when the slider is released.">on release</button>
+      <button click.trigger="setSimMode('manual')" class="ghost ${simMode === 'manual' ? 'on' : ''}"
+              title="Only when you press Re-run.">manually</button>
+      <!-- Only in manual mode: on release a pending edit settles by itself when the mouse is
+           let go, so a button flickering through every drag would be noise. -->
+      <button click.trigger="run()" if.bind="pending && simMode === 'manual'" disabled.bind="!ready"
+              class="rerun">Re-run simulation</button>
     </div>
   </div>
 

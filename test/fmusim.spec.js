@@ -110,6 +110,9 @@ async function mountFmusim(referencePeak) {
 describe('dbs-fmusim', () => {
   afterEach(() => {
     delete window.FakeFactoryFmusimTest;
+    // The re-simulate mode is remembered per browser, and jsdom keeps one localStorage for
+    // the whole file: a test that picks a mode must not decide the next test's default.
+    try { localStorage.removeItem('dbs-fmusim.simMode'); } catch (e) { /* ignore */ }
   });
 
   it('reports OK when the browser peak matches the recorded reference', async () => {
@@ -175,6 +178,64 @@ describe('dbs-fmusim', () => {
     expect(runs).toBe(0);                       // nothing runs synchronously during the drag
     await new Promise(r => setTimeout(r, 40));
     expect(runs).toBe(1);                       // one run for the whole burst
+  });
+
+  // ── re-simulate modes ──────────────────────────────────────────────────────────────────
+  // A three-week horizon is several hundred ms per run, so re-simulating on every 'input'
+  // event of a drag makes the slider itself feel stuck. The reader chooses how eager it is.
+  it('on release, a drag does not simulate until the slider is let go', async () => {
+    const { vm } = await mountFmusim(0.5);
+    vm.setSimMode('release');
+    let runs = 0;
+    const real = vm.run.bind(vm);
+    vm.run = () => { runs += 1; real(); };
+
+    const slider = vm.controlsBox.querySelector('input[type=range]');
+    for (let i = 0; i < 5; i++) {
+      slider.value = String(Number(slider.value) + Number(slider.step || 1));
+      slider.dispatchEvent(new Event('input'));
+    }
+    await new Promise(r => setTimeout(r, 40));
+    expect(runs).toBe(0);                       // nothing ran during the whole drag
+    expect(vm.pending).toBe(true);              // but the edit is known to be unsimulated
+
+    slider.dispatchEvent(new Event('change'));  // mouse released
+    expect(runs).toBe(1);
+    expect(vm.pending).toBe(false);
+  });
+
+  it('manually, only the button simulates', async () => {
+    const { vm } = await mountFmusim(0.5);
+    vm.setSimMode('manual');
+    let runs = 0;
+    const real = vm.run.bind(vm);
+    vm.run = () => { runs += 1; real(); };
+
+    const slider = vm.controlsBox.querySelector('input[type=range]');
+    slider.value = String(Number(slider.value) * 2);
+    slider.dispatchEvent(new Event('input'));
+    slider.dispatchEvent(new Event('change'));
+    await new Promise(r => setTimeout(r, 40));
+    expect(runs).toBe(0);                       // release does not run either
+    expect(vm.pending).toBe(true);              // the Re-run button is what shows up
+    expect(vm.isPristine()).toBe(false);        // the value did reach cur; only the run waits
+
+    vm.run();
+    expect(runs).toBe(1);
+    expect(vm.pending).toBe(false);
+  });
+
+  it('leaving manual mode settles the edit already made', async () => {
+    const { vm } = await mountFmusim(0.5);
+    vm.setSimMode('manual');
+    const slider = vm.controlsBox.querySelector('input[type=range]');
+    slider.value = String(Number(slider.value) * 2);
+    slider.dispatchEvent(new Event('change'));
+    expect(vm.pending).toBe(true);
+
+    vm.setSimMode('live');                      // the curve must not stay stale under the sliders
+    expect(vm.pending).toBe(false);
+    expect(vm.refRows[0].verdict).toBe('n/a — parameters edited');
   });
 
   it('keeps the first run as the baseline and never overwrites it with an edited one', async () => {
