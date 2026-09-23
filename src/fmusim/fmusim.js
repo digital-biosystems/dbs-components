@@ -413,10 +413,16 @@ export class Fmusim {
     const pristine = this.isPristine();
     this.refRows = res.outs.map(o => {
       const ref = this.base.reference_peaks ? this.base.reference_peaks[o] : null;
-      const rel = (ref && pristine) ? Math.abs(res.peak[o] - ref) / ref : null;
+      // A peak can only be compared by a run that reaches it. Semaglutide peaks at 3.4 DAYS:
+      // a 24 h run reports the rising limb (1.63e-3 against a recorded 5.86e-3) and calling
+      // that FAIL blames the model for the horizon. Withhold the verdict instead.
+      const tPeak = (this.base.reference_peak_times || {})[o];
+      const tooShort = Number.isFinite(tPeak) && res.stop < tPeak;
+      const rel = (ref && pristine && !tooShort) ? Math.abs(res.peak[o] - ref) / ref : null;
       let verdict, cls = '';
       if (!ref) { verdict = 'no reference'; }
       else if (!pristine) { verdict = 'n/a — parameters edited'; }
+      else if (tooShort) { verdict = 'n/a — run ends before the reference peak'; }
       else { verdict = rel <= this.tolerance ? 'OK' : 'FAIL'; cls = rel <= this.tolerance ? 'ok' : 'fail'; }
       return {
         o, cls, verdict,

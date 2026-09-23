@@ -200,6 +200,22 @@ describe('dbs-fmusim', () => {
     expect(vm.showBaseline).toBe(true);
   });
 
+  it('withholds the verdict when the run ends before the recorded peak', async () => {
+    const { vm } = await mountFmusim(0.5);
+    expect(vm.refRows[0].verdict).toBe('OK');
+
+    // the recorded peak is later than this run can reach
+    vm.base.reference_peak_times = { 'central.C': vm.cur.stop_time * 10 };
+    vm.run();
+    expect(vm.refRows[0].verdict).toBe('n/a — run ends before the reference peak');
+    expect(vm.refRows[0].cls).toBe('');
+
+    // a run that does reach it is judged again
+    vm.base.reference_peak_times = { 'central.C': vm.cur.stop_time / 2 };
+    vm.run();
+    expect(vm.refRows[0].verdict).toBe('OK');
+  });
+
   it('builds one slider per control the record or the template can seed, and skips the rest', async () => {
     const { vm } = await mountFmusim(0.5);
     // adminMass, Cl (record), adminPeriod (template fallback), stop_time (sim) = 4 rendered;
