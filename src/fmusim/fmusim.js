@@ -63,6 +63,7 @@ export class Fmusim {
       this.bindFmi();
       this.setStatus(`Loaded ${this.meta.model || this.meta.model_identifier} (${this.meta.generation_tool || 'FMI 2.0'}).`);
       this.reset();
+      this.observeResize();
       this.ready = true;
     }).catch(e => {
       this.setStatus(`Could not start: ${e.message} — this component must be served over HTTP, not file://`, true);
@@ -70,7 +71,25 @@ export class Fmusim {
     });
   }
 
+  // The canvas takes its pixel size from its CSS box, so a window (or panel) resize has to
+  // repaint — otherwise the last bitmap is stretched again, which is the artefact this all
+  // replaced. Repaint from the LAST RESULT; never re-simulate on a resize.
+  observeResize() {
+    if (typeof ResizeObserver !== 'function' || this.ro) return;
+    let w = 0;
+    this.ro = new ResizeObserver(() => {
+      const nw = this.plotCanvas ? this.plotCanvas.clientWidth : 0;
+      if (!nw || nw === w) return;
+      w = nw;
+      if (this.lastRes) {
+        try { this.plot(this.lastRes); } catch { /* a repaint failure must not break the page */ }
+      }
+    });
+    this.ro.observe(this.plotCanvas);
+  }
+
   detaching() {
+    if (this.ro) { this.ro.disconnect(); this.ro = null; }
     // Free the indirect-function-table slot the FMI logger callback occupies. Everything
     // else (malloc'd FMU buffers) is freed inside simulate() itself, per call.
     if (this.M && this.loggerPtr != null) {
@@ -419,9 +438,29 @@ export class Fmusim {
   // The current run in the theme blue, the first run (the record's own values) behind it in
   // a light blue, on the SAME axes — the axes are sized to cover both, so a parameter that
   // halves the peak visibly halves it instead of rescaling the picture.
+  // Size the backing store to the element's CSS box times the device pixel ratio, then draw
+  // in CSS pixels. The canvas used to be a fixed 1800x680 bitmap stretched to width:100%, so
+  // every label was a RESIZED BITMAP: 22px type rendered at whatever scale the window
+  // happened to impose, fuzzy on one screen and huge on another. Now the type is 11-12px and
+  // stays 11-12px, and the curve is crisp on a HiDPI display.
+  sizeCanvas() {
+    const cv = this.plotCanvas;
+    const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+    const W = Math.max(320, Math.round(cv.clientWidth || cv.parentElement?.clientWidth || 900));
+    const H = Math.max(220, Math.min(420, Math.round(W * 0.42)));
+    cv.style.height = `${H}px`;
+    const bw = Math.round(W * dpr), bh = Math.round(H * dpr);
+    if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+    const g = cv.getContext('2d');
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { g, W, H };
+  }
+
   plot(res) {
-    const cv = this.plotCanvas, g = cv.getContext('2d');
-    const W = cv.width, H = cv.height, L = 190, R = 40, T = 26, B = 104;
+    this.lastRes = res;
+    const cv = this.plotCanvas;
+    const { g, W, H } = this.sizeCanvas();
+    const L = 58, R = 16, T = 14, B = 42;
     g.clearRect(0, 0, W, H);
     const o = res.outs[0];
     const ys = res.series[o], xs = res.xs || res.times;
@@ -462,43 +501,43 @@ export class Fmusim {
     const X = t => L + (W - L - R) * (t / xmax);
     const Y = v => H - B - (H - T - B) * ((v - ymin) / (ymax - ymin || 1));
 
-    g.font = '22px sans-serif';
+    g.font = '10px system-ui, sans-serif';
     g.fillStyle = '#6b7280';
     g.strokeStyle = '#e3e7eb';
-    g.lineWidth = 2;
+    g.lineWidth = 1;
 
     for (let v = ymin; v <= ymax + ystep * 1e-9; v += ystep) {
       const y = Y(v);
       g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
       g.textAlign = 'right'; g.textBaseline = 'middle';
-      g.fillText(this.fmtTick(v, ystep), L - 14, y);
+      g.fillText(this.fmtTick(v, ystep), L - 6, y);
     }
     for (let t = 0; t <= xmax + xstep * 1e-9; t += xstep) {
       const x = X(t);
       g.textAlign = 'center'; g.textBaseline = 'top';
-      g.fillText(this.fmtTick(t, xstep), x, H - B + 14);
+      g.fillText(this.fmtTick(t, xstep), x, H - B + 6);
     }
 
     g.fillStyle = '#374151';
-    g.font = '600 24px sans-serif';
+    g.font = '600 11px system-ui, sans-serif';
     g.textAlign = 'center'; g.textBaseline = 'top';
-    g.fillText(xLabel, L + (W - L - R) / 2, H - B + 54);
+    g.fillText(xLabel, L + (W - L - R) / 2, H - B + 22);
     g.save();
-    g.translate(38, T + (H - T - B) / 2);
+    g.translate(13, T + (H - T - B) / 2);
     g.rotate(-Math.PI / 2);
     g.textBaseline = 'top';
     g.fillText(yLabel, 0, 0);
     g.restore();
 
     if (bl) {
-      g.strokeStyle = '#9ec9f0'; g.lineWidth = 6; g.beginPath();
+      g.strokeStyle = '#9ec9f0'; g.lineWidth = 3; g.beginPath();
       bxs.forEach((tt, i) => {
         const px = X(tt * xf), py = Y(bys[i] * cu.factor);
         i ? g.lineTo(px, py) : g.moveTo(px, py);
       });
       g.stroke();
     }
-    g.strokeStyle = '#0074d9'; g.lineWidth = 3; g.beginPath();
+    g.strokeStyle = '#0074d9'; g.lineWidth = 1.75; g.beginPath();
     xs.forEach((tt, i) => {
       const px = X(tt * xf), py = Y(ys[i] * cu.factor);
       i ? g.lineTo(px, py) : g.moveTo(px, py);
@@ -506,15 +545,15 @@ export class Fmusim {
     g.stroke();
     if (bl) {
       // legend, top-right of the plot area
-      const lx = W - R - 300, ly = T + 10;
-      g.lineWidth = 6; g.strokeStyle = '#9ec9f0';
-      g.beginPath(); g.moveTo(lx, ly + 10); g.lineTo(lx + 46, ly + 10); g.stroke();
-      g.lineWidth = 3; g.strokeStyle = '#0074d9';
-      g.beginPath(); g.moveTo(lx, ly + 44); g.lineTo(lx + 46, ly + 44); g.stroke();
-      g.fillStyle = '#6b7280'; g.font = '20px sans-serif';
+      const lx = W - R - 168, ly = T + 4;
+      g.lineWidth = 3; g.strokeStyle = '#9ec9f0';
+      g.beginPath(); g.moveTo(lx, ly + 5); g.lineTo(lx + 22, ly + 5); g.stroke();
+      g.lineWidth = 1.75; g.strokeStyle = '#0074d9';
+      g.beginPath(); g.moveTo(lx, ly + 21); g.lineTo(lx + 22, ly + 21); g.stroke();
+      g.fillStyle = '#6b7280'; g.font = '10px system-ui, sans-serif';
       g.textAlign = 'left'; g.textBaseline = 'middle';
-      g.fillText('extracted values (first run)', lx + 58, ly + 10);
-      g.fillText('current parameters', lx + 58, ly + 44);
+      g.fillText('extracted values (first run)', lx + 28, ly + 5);
+      g.fillText('current parameters', lx + 28, ly + 21);
     }
 
     if (xa) {

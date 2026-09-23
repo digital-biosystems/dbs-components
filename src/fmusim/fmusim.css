@@ -95,6 +95,8 @@
   cursor: default;
 }
 
+/* The height is set by sizeCanvas() from the element's own width; the declaration here is
+   only what the browser uses before the first paint. */
 .fmusim canvas {
   width: 100%;
   height: 340px;
