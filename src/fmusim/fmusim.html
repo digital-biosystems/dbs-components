@@ -3,30 +3,11 @@
 <div class="fmusim">
   <h2 if.bind="title">${title}</h2>
 
+  <!-- Curve first, then the controls that change it, then the check that says whether the
+       untouched run reproduces the paper. That is the reading order: see the model, drive
+       it, then verify it — the verdict is about the run, so it comes after the run. -->
   <div class="panel">
-    <h3>Reference check — browser result vs the FMPy peak recorded for this record</h3>
-    <table class="ref">
-      <tr><th>observable</th><th>browser peak <span>(model SI units)</span></th><th>FMPy reference</th><th>difference</th><th>verdict</th></tr>
-      <tr repeat.for="row of refRows">
-        <td>${row.o}</td>
-        <td class="num">${row.peak}</td>
-        <td class="num">${row.ref}</td>
-        <td class="num">${row.diff}</td>
-        <td class="${row.cls}">${row.verdict}</td>
-      </tr>
-    </table>
-    <div class="note">
-      Compares the simulation against the extracted reference peak. Moving a slider re-runs
-      the simulation immediately; press <b>Reset to extracted values</b> to return every
-      control to the record's own values.
-    </div>
-    <div class="status ${statusErr ? 'err' : ''}">${statusText}</div>
-  </div>
-
-  <div class="panel">
-    <h3>Concentration–time curve</h3>
-    <div class="note" if.bind="baseline && showBaseline">The pale curve is the first run — the
-      record's own extracted values — kept for comparison while you move the sliders.</div>
+    <h3>Concentration simulated by the PK model</h3>
     <canvas ref="plotCanvas"></canvas>
     <div class="note">${plotNote}</div>
   </div>
@@ -39,7 +20,22 @@
         ${showBaseline ? 'Hide' : 'Show'} the first run
       </button>
       <button click.trigger="reset()" disabled.bind="!ready" class="ghost">Reset to extracted values</button>
-      <span class="hint" if.bind="edited">moving a slider re-runs the simulation</span>
+      <span class="hint">a slider re-runs the simulation</span>
     </div>
+  </div>
+
+  <div class="panel">
+    <h3>Reference check — browser vs the recorded FMPy result</h3>
+    <table class="ref">
+      <tr><th>observable</th><th>browser peak <span>(model SI units)</span></th><th>FMPy reference</th><th>difference</th><th>verdict</th></tr>
+      <tr repeat.for="row of refRows">
+        <td>${row.o}</td>
+        <td class="num">${row.peak}</td>
+        <td class="num">${row.ref}</td>
+        <td class="num">${row.diff}</td>
+        <td class="${row.cls}">${row.verdict}</td>
+      </tr>
+    </table>
+    <div class="status ${statusErr ? 'err' : ''}">${statusText}</div>
   </div>
 </div>

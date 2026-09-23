@@ -61,7 +61,7 @@ export class Fmusim {
       this.controlDefs = controlDefs;
       this.M = M;
       this.bindFmi();
-      this.setStatus(`Loaded ${this.meta.model || this.meta.model_identifier} (${this.meta.generation_tool || 'FMI 2.0'}).`);
+      this.setStatus(`${this.meta.model || this.meta.model_identifier} \u00b7 ${this.meta.generation_tool || 'FMI 2.0'}`);
       this.reset();
       this.observeResize();
       this.ready = true;
@@ -559,13 +559,12 @@ export class Fmusim {
     if (xa) {
       const last = ys[ys.length - 1] * cu.factor;
       this.plotNote = `${o} ${last.toPrecision(4)} ${cu.unit} at ${xmax.toPrecision(3)} ${xUnit}`
-        + ` (end of sweep)  \u00b7  ${res.steps} points in ${res.ms.toFixed(0)} ms.`;
+        + `  \u00b7  ${res.steps} points  \u00b7  ${res.ms.toFixed(0)} ms`;
       return;
     }
     const peakDisp = res.peak[o] * cu.factor;
     this.plotNote = `Peak ${peakDisp.toPrecision(4)} ${cu.unit} (${o})  \u00b7  `
-      + `${res.steps} solver steps (h = ${res.step} s) over ${(res.stop / 3600).toFixed(0)} h `
-      + `in ${res.ms.toFixed(0)} ms.`;
+      + `${res.steps} steps \u00d7 ${res.step} s  \u00b7  ${res.ms.toFixed(0)} ms`;
   }
 
   // ── public actions (bound to the template's buttons) ───────────────────────────────────────
@@ -603,7 +602,7 @@ export class Fmusim {
     } catch (e) {
       console.error('[dbs-fmusim] plot failed (reference check above is unaffected):', e);
     }
-    this.setStatus(`Simulation finished: ${res.steps} steps in ${res.ms.toFixed(0)} ms.`);
+    this.setStatus(`${res.steps} steps in ${res.ms.toFixed(0)} ms`);
   }
 
   toggleBaseline() {
