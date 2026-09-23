@@ -147,6 +147,59 @@ describe('dbs-fmusim', () => {
     expect(vm.refRows[0].verdict).toBe('OK');
   });
 
+  // ── live re-run + the first-run curve ───────────────────────────────────────────────────
+  it('a slider re-runs the simulation on change — no button press', async () => {
+    const { vm } = await mountFmusim(0.5);
+    const before = vm.refRows[0].verdict;
+    expect(before).toBe('OK');
+
+    const slider = vm.controlsBox.querySelector('input[type=range]');
+    slider.value = String(Number(slider.value) * 2);
+    slider.dispatchEvent(new Event('change'));
+
+    // the edit reached cur AND a run happened: the verdict is withheld without any button
+    expect(vm.edited).toBe(true);
+    expect(vm.refRows[0].verdict).toBe('n/a — parameters edited');
+  });
+
+  it('dragging coalesces its runs into one per frame', async () => {
+    const { vm } = await mountFmusim(0.5);
+    let runs = 0;
+    const real = vm.run.bind(vm);
+    vm.run = () => { runs += 1; real(); };
+    const slider = vm.controlsBox.querySelector('input[type=range]');
+    for (let i = 0; i < 5; i++) {
+      slider.value = String(Number(slider.value) + Number(slider.step || 1));
+      slider.dispatchEvent(new Event('input'));
+    }
+    expect(runs).toBe(0);                       // nothing runs synchronously during the drag
+    await new Promise(r => setTimeout(r, 40));
+    expect(runs).toBe(1);                       // one run for the whole burst
+  });
+
+  it('keeps the first run as the baseline and never overwrites it with an edited one', async () => {
+    const { vm } = await mountFmusim(0.5);
+    const first = vm.baseline;
+    expect(first).not.toBeNull();
+
+    vm.cur.parameters.Cl *= 2;
+    vm.run();
+    expect(vm.baseline).toBe(first);            // still the record's own run
+
+    vm.reset();
+    expect(vm.baseline).not.toBe(first);        // a reset re-establishes it
+    expect(vm.baseline).not.toBeNull();
+  });
+
+  it('the first-run curve can be hidden and shown again', async () => {
+    const { vm } = await mountFmusim(0.5);
+    expect(vm.showBaseline).toBe(true);
+    vm.toggleBaseline();
+    expect(vm.showBaseline).toBe(false);
+    vm.toggleBaseline();
+    expect(vm.showBaseline).toBe(true);
+  });
+
   it('builds one slider per control the record or the template can seed, and skips the rest', async () => {
     const { vm } = await mountFmusim(0.5);
     // adminMass, Cl (record), adminPeriod (template fallback), stop_time (sim) = 4 rendered;

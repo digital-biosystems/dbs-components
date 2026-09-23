@@ -16,14 +16,17 @@
       </tr>
     </table>
     <div class="note">
-      Compares the simulation against the extracted reference peak. Press
-      <b>Reset to extracted values</b> to return every control to the record's own values.
+      Compares the simulation against the extracted reference peak. Moving a slider re-runs
+      the simulation immediately; press <b>Reset to extracted values</b> to return every
+      control to the record's own values.
     </div>
     <div class="status ${statusErr ? 'err' : ''}">${statusText}</div>
   </div>
 
   <div class="panel">
     <h3>Concentration–time curve</h3>
+    <div class="note" if.bind="baseline && showBaseline">The pale curve is the first run — the
+      record's own extracted values — kept for comparison while you move the sliders.</div>
     <canvas ref="plotCanvas" width="1800" height="680"></canvas>
     <div class="note">${plotNote}</div>
   </div>
@@ -32,8 +35,11 @@
     <h3>Editable parameters &amp; dosing</h3>
     <div class="grid" ref="controlsBox"></div>
     <div class="row">
-      <button click.trigger="run()" disabled.bind="!ready">Re-run simulation</button>
+      <button click.trigger="toggleBaseline()" disabled.bind="!ready || !baseline" class="ghost">
+        ${showBaseline ? 'Hide' : 'Show'} the first run
+      </button>
       <button click.trigger="reset()" disabled.bind="!ready" class="ghost">Reset to extracted values</button>
+      <span class="hint" if.bind="edited">moving a slider re-runs the simulation</span>
     </div>
   </div>
 </div>

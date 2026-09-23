@@ -35,6 +35,13 @@ export class Fmusim {
   statusErr = false;
   plotNote = '';
   ready = false;
+  // The FIRST run — the record's own extracted values — is kept so every later run is drawn
+  // against it. Without it a reader moving a slider sees a new curve with nothing to compare
+  // it to, which is the whole question a simulator on a record page answers: what does this
+  // parameter do to the paper's own model?
+  baseline = null;
+  showBaseline = true;
+  edited = false;
 
   // ── boot ────────────────────────────────────────────────────────────────────────────────
   // meta is fetched first, on its own: it carries model_identifier, the name the WASM
@@ -207,7 +214,13 @@ export class Fmusim {
         out.textContent = this.fmtSI(c.mult ? v * c.scale : shown, c.unit)
           + (c.mult ? `  (${shown.toFixed(2)}\u00d7)` : '');
       };
-      inp.addEventListener('input', show);
+      // A slider that needs a button pressed afterwards is a slider whose effect nobody
+      // sees. 'input' fires continuously while dragging: update the readout every time, and
+      // re-simulate at most once per animation frame so a drag stays smooth (a run is a few
+      // hundred solver steps — cheap, but not free at 60 Hz). 'change' fires once when the
+      // drag ends, which is the authoritative run.
+      inp.addEventListener('input', () => { show(); this.scheduleRun(); });
+      inp.addEventListener('change', () => { show(); this.run(); });
       show();
       wrap.appendChild(lab); wrap.appendChild(inp);
       box.appendChild(wrap);
@@ -403,6 +416,9 @@ export class Fmusim {
     return v.toFixed(Math.min(dec, 6));
   }
 
+  // The current run in the theme blue, the first run (the record's own values) behind it in
+  // a light blue, on the SAME axes — the axes are sized to cover both, so a parameter that
+  // halves the peak visibly halves it instead of rescaling the picture.
   plot(res) {
     const cv = this.plotCanvas, g = cv.getContext('2d');
     const W = cv.width, H = cv.height, L = 190, R = 40, T = 26, B = 104;
@@ -410,13 +426,19 @@ export class Fmusim {
     const o = res.outs[0];
     const ys = res.series[o], xs = res.xs || res.times;
     if (!ys || !ys.length) return;
+    // the first run, when it is a different run and the reader has not hidden it
+    const bl = (this.showBaseline && this.baseline && this.baseline !== res
+                && this.baseline.series && this.baseline.series[o]
+                && this.baseline.series[o].length) ? this.baseline : null;
+    const bys = bl ? bl.series[o] : null;
+    const bxs = bl ? (bl.xs || bl.times) : null;
 
     // Axes. A PK run is concentration over time (h or d, mg/L or µg/L picked from the peak).
     // A sweep is response over exposure, both in the record's own display units: the payload
     // carries x_axis / y_axis {display_unit, factor} with factor = SI per display unit.
     const xa = res.sweep ? (this.base.x_axis || {}) : null;
     const ya = res.sweep ? (this.base.y_axis || {}) : null;
-    const xmaxRaw = xs[xs.length - 1];
+    const xmaxRaw = Math.max(xs[xs.length - 1], bxs ? bxs[bxs.length - 1] : 0);
     const useDays = !xa && xmaxRaw / 3600 > 48;
     const xf = xa ? (xa.factor ? 1 / xa.factor : 1) : (useDays ? 1 / 86400 : 1 / 3600);
     const xUnit = xa ? (xa.display_unit || '') : (useDays ? 'd' : 'h');
@@ -426,10 +448,12 @@ export class Fmusim {
     const cu = ya ? { unit: ya.display_unit || '', factor: ya.factor ? 1 / ya.factor : 1 }
                   : this.pickConcUnit(Math.max.apply(null, ys));
     const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}` : `concentration (${cu.unit})`;
-    const ymaxRaw = Math.max.apply(null, ys) * cu.factor;
+    const ymaxRaw = Math.max(Math.max.apply(null, ys),
+                             bys ? Math.max.apply(null, bys) : -Infinity) * cu.factor;
     // A sweep can go NEGATIVE (an inhibition from a baseline of 0: 0 → −0.076); the axis
     // starts at the curve's minimum then, not at 0.
-    const yminRaw = Math.min(0, Math.min.apply(null, ys) * cu.factor);
+    const yminRaw = Math.min(0, Math.min.apply(null, ys) * cu.factor,
+                             bys ? Math.min.apply(null, bys) * cu.factor : 0);
     const ystep = this.niceStep((ymaxRaw - yminRaw) || 1, 5);
     const ymax = Math.ceil((ymaxRaw || (yminRaw ? 0 : 1)) / ystep) * ystep;
     const ymin = Math.floor(yminRaw / ystep) * ystep;
@@ -466,12 +490,32 @@ export class Fmusim {
     g.fillText(yLabel, 0, 0);
     g.restore();
 
+    if (bl) {
+      g.strokeStyle = '#9ec9f0'; g.lineWidth = 6; g.beginPath();
+      bxs.forEach((tt, i) => {
+        const px = X(tt * xf), py = Y(bys[i] * cu.factor);
+        i ? g.lineTo(px, py) : g.moveTo(px, py);
+      });
+      g.stroke();
+    }
     g.strokeStyle = '#0074d9'; g.lineWidth = 3; g.beginPath();
     xs.forEach((tt, i) => {
       const px = X(tt * xf), py = Y(ys[i] * cu.factor);
       i ? g.lineTo(px, py) : g.moveTo(px, py);
     });
     g.stroke();
+    if (bl) {
+      // legend, top-right of the plot area
+      const lx = W - R - 300, ly = T + 10;
+      g.lineWidth = 6; g.strokeStyle = '#9ec9f0';
+      g.beginPath(); g.moveTo(lx, ly + 10); g.lineTo(lx + 46, ly + 10); g.stroke();
+      g.lineWidth = 3; g.strokeStyle = '#0074d9';
+      g.beginPath(); g.moveTo(lx, ly + 44); g.lineTo(lx + 46, ly + 44); g.stroke();
+      g.fillStyle = '#6b7280'; g.font = '20px sans-serif';
+      g.textAlign = 'left'; g.textBaseline = 'middle';
+      g.fillText('extracted values (first run)', lx + 58, ly + 10);
+      g.fillText('current parameters', lx + 58, ly + 44);
+    }
 
     if (xa) {
       const last = ys[ys.length - 1] * cu.factor;
@@ -489,6 +533,17 @@ export class Fmusim {
   // simulate() failures are fatal — there is nothing to show. plot() failures are not: they
   // are a rendering concern (e.g. no 2D canvas context available) and must not hide a correct
   // reference-check verdict, which is the whole point of this component.
+  // A drag fires 'input' dozens of times a second. Coalesce those into one run per frame so
+  // the curve follows the slider without queueing simulations the reader will never see; the
+  // 'change' at the end of the drag runs unthrottled and has the last word.
+  scheduleRun() {
+    if (this.runQueued) return;
+    this.runQueued = true;
+    const go = () => { this.runQueued = false; this.run(); };
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(go);
+    else setTimeout(go, 16);
+  }
+
   run() {
     let res;
     try {
@@ -498,6 +553,11 @@ export class Fmusim {
       console.error('[dbs-fmusim]', e);
       return;
     }
+    // The first run of the record's own values IS the baseline every later run is drawn
+    // against. isPristine() decides it, so a reset re-establishes it and an edited run never
+    // overwrites it.
+    if (this.isPristine()) this.baseline = res;
+    this.edited = !this.isPristine();
     this.renderRef(res);
     try {
       this.plot(res);
@@ -507,8 +567,14 @@ export class Fmusim {
     this.setStatus(`Simulation finished: ${res.steps} steps in ${res.ms.toFixed(0)} ms.`);
   }
 
+  toggleBaseline() {
+    this.showBaseline = !this.showBaseline;
+    this.run();
+  }
+
   reset() {
     this.cur = JSON.parse(JSON.stringify(this.base));
+    this.baseline = null;            // the next run is pristine and becomes the new baseline
     this.buildControls();
     this.run();
   }
