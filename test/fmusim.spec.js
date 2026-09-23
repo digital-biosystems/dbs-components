@@ -215,6 +215,25 @@ describe('dbs-fmusim', () => {
     expect(hint.title).toMatch(/adminPeriod/);
   });
 
+  it("a control's own default_s starts it, when neither the record nor the template pins it", async () => {
+    const { vm } = await mountFmusim(0.5);
+    // adminPeriod is a template fallback in the fixture; a default_s must win over it, since
+    // it is chosen for the record's own time scale (a weekly schedule on a 3-week run).
+    const c = vm.controlDefs.find(x => x.key === 'adminPeriod');
+    expect(c).toBeDefined();
+    const tpl = vm.startValue(c);
+    const withDefault = vm.startValue({ ...c, default_s: 604800 });
+    expect(withDefault).toBe(604800);
+    expect(withDefault).not.toBe(tpl);
+  });
+
+  it('default_s never overrides a value the record actually pins', async () => {
+    const { vm } = await mountFmusim(0.5);
+    const c = vm.controlDefs.find(x => x.key === 'Cl');
+    expect(c).toBeDefined();
+    expect(vm.startValue({ ...c, default_s: 999 })).toBe(vm.base.parameters.Cl);
+  });
+
   it('falls back to the bundled default-controls.json when no controls are given', async () => {
     window.FakeFactoryFmusimTest = () => makeFakeModule(0.5);
     global.fetch = mockFetch({

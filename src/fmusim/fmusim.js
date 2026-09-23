@@ -156,7 +156,15 @@ export class Fmusim {
   startValue(c) {
     if (c.sim) return this.base.stop_time || 86400;
     if (c.key in this.base.parameters) return this.base.parameters[c.key];
-    if (c.fallback && this.meta.parameters && c.key in this.meta.parameters) return this.meta.parameters[c.key];
+    // `default_s` is the control's own starting value in SI, used when NEITHER the record
+    // nor the template pins the parameter — a dosing interval on a weeks-long run, where the
+    // template's 8 h is not a plausible schedule for the drug being simulated. It never
+    // overrides a value that was actually extracted.
+    if (c.fallback && this.meta.parameters && c.key in this.meta.parameters) {
+      const tpl = this.meta.parameters[c.key];
+      return (c.default_s != null && Number.isFinite(c.default_s)) ? c.default_s : tpl;
+    }
+    if (c.default_s != null && Number.isFinite(c.default_s)) return c.default_s;
     return null;
   }
 
@@ -174,6 +182,10 @@ export class Fmusim {
   }
 
   fallbackHint(c) {
+    if (c.default_s != null) {
+      return `This record does not pin ${c.key}; the value is a schedule chosen for this `
+        + `model's time scale, not an extracted one.`;
+    }
     return `This record does not pin ${c.key}; the value is the template's own default.`;
   }
 
