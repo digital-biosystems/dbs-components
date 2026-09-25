@@ -367,7 +367,10 @@ export class Fmusim {
     while (t < stop) {
       const h = Math.min(step, stop - t);
       if (fmi.doStep(inst, t, h, 1) !== 0) throw new Error(`fmi2DoStep failed at t=${t}`);
-      t += h; n++;
+      // Time as n*step, not t += h: summed, 57,000 steps of 0.02 s land at 1139.99999999925 s,
+      // just before a dose edge at 1140 s, and the dose pulse is then held one step too long
+      // (+2 % at adminDuration/50). FMPy — which produced reference_peaks — computes n*step.
+      n++; t = Math.min(n * step, stop);
       fmi.getReal(inst, q, qvars.length, vp);
       const v = new Float64Array(M.HEAPU8.buffer, vp, qvars.length);
       qvars.forEach((o, i) => { if (v[i] > peak[o]) peak[o] = v[i]; });
