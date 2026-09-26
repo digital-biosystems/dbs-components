@@ -1,14 +1,14 @@
-import { HelloWorld } from '../src/hello-world';
+import { HelloWorld } from '../src/helloworld/hello-world.js';
 import { createFixture } from '@aurelia/testing';
 
-describe('my-app', () => {
+describe('hello-world', () => {
   it('should render message', async () => {
     const { assertText } = await createFixture(
-      '<hello-world message="message"></hello-world>',
+      '<dbs-hello-world message.bind="message"></dbs-hello-world>',
       { message: "foo" },
       [HelloWorld],
     ).started;
 
-    assertText('Hello World! foo', { compact: true });
+    assertText('Hello World DBS! foo', { compact: true });
   });
 });

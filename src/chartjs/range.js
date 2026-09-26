@@ -13,7 +13,6 @@ export class Range {
     @bindable tickstep = 0.5;
     @bindable default = 0.1;
 
-    ticks = [];
     constructor(){
             this.ea = resolve(IEventAggregator);
         

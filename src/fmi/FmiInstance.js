@@ -1,4 +1,3 @@
-import _ from 'lodash';
 // Encapsulates FMU instantiation, initialization, and API bindings
 export class FmiInstance {
   constructor(fmi) {

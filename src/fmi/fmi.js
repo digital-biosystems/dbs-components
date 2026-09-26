@@ -376,7 +376,6 @@ export class Fmi {
       return ptr;
     };
 
-    // eslint-disable-next-line new-cap
     console.log('FMU(' + this.inst.UTF8ToString(instanceName) +
       ' status:' + status +
       ' cat:' + this.inst.UTF8ToString(category) +
