@@ -303,6 +303,28 @@ export class Fmusim {
     return p;
   }
 
+  // The step must resolve the dose pulse (adminDuration/50) AND put every dose edge on the
+  // grid: the first dose starts at adminTime (+ Tlag on an enteral template, whose lag shifts
+  // the schedule), and clopidogrel's Tlag = 705.6 s landed between 12 s steps — every peak
+  // read 2 % high. Search adminDuration/n (n = 50, 100, …) for a step that divides the first
+  // dose time and the period as well; fall back to adminDuration/50. Same rule as
+  // scripts/docs/check-wasm-fmu.mjs in pharmacolibrary-dev.
+  pickStep(p) {
+    const tp = (this.meta && this.meta.parameters) || {};
+    const pick = (k, d) => (p[k] != null ? p[k] : (tp[k] != null ? tp[k] : d));
+    const dur = pick('adminDuration', 600);
+    const first = pick('adminTime', 60) + pick('Tlag', 0);
+    const period = pick('adminPeriod', 0);
+    const count = pick('adminCount', 1);
+    const onGrid = (x, h) => Math.abs(x / h - Math.round(x / h)) < 1e-6;
+    for (let n = 50; n <= 5000; n += 50) {
+      const h = dur / n;
+      if (h < 0.02) break;
+      if (onGrid(first, h) && (count === 1 || !period || onGrid(period, h))) return Math.min(30, h);
+    }
+    return Math.min(30, Math.max(0.02, dur / 50));
+  }
+
   simulate(p) {
     const M = this.M, fmi = this.fmi, meta = this.meta;
     const stop = p.stop_time || 86400;
@@ -311,8 +333,7 @@ export class Fmusim {
     // payload keeps the FMPy driver's rule (export/fmu.py): the dose is a rectangular pulse
     // adminDuration wide, so the communication step must resolve it.
     const sweep = p.x_axis && p.x_axis.variable ? p.x_axis.variable : null;
-    const adminDuration = p.parameters.adminDuration != null ? p.parameters.adminDuration : 600;
-    const step = sweep ? stop / 1000 : Math.min(30, Math.max(0.02, adminDuration / 50));
+    const step = sweep ? stop / 1000 : this.pickStep(p.parameters);
 
     const inst = fmi.instantiate(meta.model_identifier, 1, meta.guid, 'file:///', this.cb, 0, 0);
     if (!inst) throw new Error('fmi2Instantiate failed');
@@ -522,10 +543,18 @@ export class Fmusim {
     const xLabel = xa ? `${xa.variable || 'exposure'}${xUnit ? ` (${xUnit})` : ''}` : `time (${xUnit})`;
     const xmax = xmaxRaw * xf;
 
+    // A parent–metabolite model (PK_3M_*) observes several molecules. Each gets a line; when
+    // their peaks differ by more than 20x (clopidogrel's carboxylic acid is ~800x the parent)
+    // a linear axis would flatten all but one, so the axis goes logarithmic.
+    const multi = !xa && res.outs.length > 1;
+    const outPeaks = res.outs.map(k => Math.max.apply(null, res.series[k] || [0]));
+    const allMax = Math.max.apply(null, outPeaks);
+    const posPeaks = outPeaks.filter(v => v > 0);
+    const logY = multi && posPeaks.length > 1 && allMax / Math.min.apply(null, posPeaks) > 20;
     const cu = ya ? { unit: ya.display_unit || '', factor: ya.factor ? 1 / ya.factor : 1 }
-                  : this.pickConcUnit(Math.max.apply(null, ys));
+                  : this.pickConcUnit(multi ? allMax : Math.max.apply(null, ys));
     const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}` : `concentration (${cu.unit})`;
-    const ymaxRaw = Math.max(Math.max.apply(null, ys),
+    const ymaxRaw = Math.max(multi ? allMax : Math.max.apply(null, ys),
                              bys ? Math.max.apply(null, bys) : -Infinity) * cu.factor;
     // A sweep can go NEGATIVE (an inhibition from a baseline of 0: 0 → −0.076); the axis
     // starts at the curve's minimum then, not at 0.
@@ -537,14 +566,29 @@ export class Fmusim {
     const xstep = this.niceStep(xmax || 1, 6);
 
     const X = t => L + (W - L - R) * (t / xmax);
-    const Y = v => H - B - (H - T - B) * ((v - ymin) / (ymax - ymin || 1));
+    // log axis: whole decades from 1e-4 of the highest peak up to it
+    const dTop = logY ? Math.ceil(Math.log10(ymaxRaw)) : 0;
+    const dBot = logY ? Math.min(Math.floor(Math.log10(Math.min.apply(null, posPeaks) * cu.factor)) - 1,
+                                 dTop - 1) : 0;
+    const dLow = logY ? Math.max(dBot, dTop - 6) : 0;
+    const Y = logY
+      ? v => { const lv = Math.log10(Math.max(v, Math.pow(10, dLow)));
+               return H - B - (H - T - B) * ((lv - dLow) / (dTop - dLow || 1)); }
+      : v => H - B - (H - T - B) * ((v - ymin) / (ymax - ymin || 1));
 
     g.font = '10px system-ui, sans-serif';
     g.fillStyle = '#6b7280';
     g.strokeStyle = '#e3e7eb';
     g.lineWidth = 1;
 
-    for (let v = ymin; v <= ymax + ystep * 1e-9; v += ystep) {
+    if (logY) {
+      for (let d = dLow; d <= dTop; d++) {
+        const v = Math.pow(10, d), y = Y(v);
+        g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
+        g.textAlign = 'right'; g.textBaseline = 'middle';
+        g.fillText(v >= 0.01 && v < 1e4 ? String(+v.toPrecision(1)) : v.toExponential(0), L - 6, y);
+      }
+    } else for (let v = ymin; v <= ymax + ystep * 1e-9; v += ystep) {
       const y = Y(v);
       g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
       g.textAlign = 'right'; g.textBaseline = 'middle';
@@ -564,7 +608,7 @@ export class Fmusim {
     g.translate(13, T + (H - T - B) / 2);
     g.rotate(-Math.PI / 2);
     g.textBaseline = 'top';
-    g.fillText(yLabel, 0, 0);
+    g.fillText(logY ? `${yLabel}, log scale` : yLabel, 0, 0);
     g.restore();
 
     if (bl) {
@@ -575,12 +619,29 @@ export class Fmusim {
       });
       g.stroke();
     }
-    g.strokeStyle = '#0074d9'; g.lineWidth = 1.75; g.beginPath();
-    xs.forEach((tt, i) => {
-      const px = X(tt * xf), py = Y(ys[i] * cu.factor);
-      i ? g.lineTo(px, py) : g.moveTo(px, py);
+    const PALETTE = ['#0074d9', '#d95f02', '#1b9e77'];
+    (multi ? res.outs : [o]).forEach((k, j) => {
+      const sy = res.series[k];
+      if (!sy || !sy.length) return;
+      g.strokeStyle = PALETTE[j % PALETTE.length]; g.lineWidth = 1.75; g.beginPath();
+      xs.forEach((tt, i) => {
+        const px = X(tt * xf), py = Y(sy[i] * cu.factor);
+        i ? g.lineTo(px, py) : g.moveTo(px, py);
+      });
+      g.stroke();
     });
-    g.stroke();
+    if (multi) {
+      // legend: which molecule each colour is (the record's own names when the payload has them)
+      const labels = this.base.observable_labels || {};
+      const lx = L + 10, ly = T + 4;
+      g.font = '10px system-ui, sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle';
+      res.outs.forEach((k, j) => {
+        g.lineWidth = 2; g.strokeStyle = PALETTE[j % PALETTE.length];
+        g.beginPath(); g.moveTo(lx, ly + 5 + 16 * j); g.lineTo(lx + 22, ly + 5 + 16 * j); g.stroke();
+        g.fillStyle = '#374151';
+        g.fillText(labels[k] ? `${labels[k]} (${k})` : k, lx + 28, ly + 5 + 16 * j);
+      });
+    }
     if (bl) {
       // legend, top-right of the plot area
       const lx = W - R - 168, ly = T + 4;
