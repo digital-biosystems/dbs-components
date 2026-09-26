@@ -10,6 +10,12 @@
     <h3>Concentration simulated by the PK model</h3>
     <canvas ref="plotCanvas"></canvas>
     <div class="note">${plotNote}</div>
+    <div class="row">
+      <button click.trigger="toggleScale()" disabled.bind="!ready || (base && base.x_axis)" class="ghost"
+              title="Linear shows the peak; logarithmic shows the decline and the metabolites next to the parent.">
+        ${logActive ? 'Linear' : 'Logarithmic'} scale
+      </button>
+    </div>
   </div>
 
   <div class="panel">

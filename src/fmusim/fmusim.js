@@ -41,6 +41,10 @@ export class Fmusim {
   // parameter do to the paper's own model?
   baseline = null;
   showBaseline = true;
+  // y axis: 'auto' (log for a parent–metabolite plot whose peaks differ > 20x, else linear),
+  // or the reader's choice from the scale button. logActive is what the last plot used.
+  yScale = 'auto';
+  logActive = false;
   edited = false;
   // How eagerly a slider re-simulates. A 24 h run is a few ms and can follow the drag; a
   // record whose own horizon is three weeks (a weekly GLP-1 analogue) is several hundred ms,
@@ -550,7 +554,9 @@ export class Fmusim {
     const outPeaks = res.outs.map(k => Math.max.apply(null, res.series[k] || [0]));
     const allMax = Math.max.apply(null, outPeaks);
     const posPeaks = outPeaks.filter(v => v > 0);
-    const logY = multi && posPeaks.length > 1 && allMax / Math.min.apply(null, posPeaks) > 20;
+    const autoLog = multi && posPeaks.length > 1 && allMax / Math.min.apply(null, posPeaks) > 20;
+    const logY = !xa && (this.yScale === 'log' || (this.yScale === 'auto' && autoLog));
+    this.logActive = logY;
     const cu = ya ? { unit: ya.display_unit || '', factor: ya.factor ? 1 / ya.factor : 1 }
                   : this.pickConcUnit(multi ? allMax : Math.max.apply(null, ys));
     const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}` : `concentration (${cu.unit})`;
@@ -566,11 +572,20 @@ export class Fmusim {
     const xstep = this.niceStep(xmax || 1, 6);
 
     const X = t => L + (W - L - R) * (t / xmax);
-    // log axis: whole decades from 1e-4 of the highest peak up to it
-    const dTop = logY ? Math.ceil(Math.log10(ymaxRaw)) : 0;
-    const dBot = logY ? Math.min(Math.floor(Math.log10(Math.min.apply(null, posPeaks) * cu.factor)) - 1,
-                                 dTop - 1) : 0;
-    const dLow = logY ? Math.max(dBot, dTop - 6) : 0;
+    // Log axis, whole decades: from the decade BELOW the trough to the decade ABOVE the peak —
+    // Cmax 1e2 and Ctrough 1e-3 give 1e-4 … 1e3. The trough is the lowest END-of-run value
+    // over the drawn curves (a concentration of 0, like the first sample, has no logarithm),
+    // floored at Cmax·1e-6 so a curve that decays to numerical dust does not drag the axis
+    // down twenty decades.
+    let dTop = 0, dLow = 0;
+    if (logY) {
+      const drawn = (multi ? res.outs : [o]).map(k => res.series[k] || []).concat(bys ? [bys] : []);
+      const vmax = ymaxRaw > 0 ? ymaxRaw : 1;
+      const ends = drawn.map(sy => (sy.length ? sy[sy.length - 1] * cu.factor : 0)).filter(v => v > 0);
+      const trough = Math.max(ends.length ? Math.min.apply(null, ends) : vmax * 1e-3, vmax * 1e-6);
+      dTop = Math.floor(Math.log10(vmax)) + 1;
+      dLow = Math.min(Math.floor(Math.log10(trough)) - 1, dTop - 1);
+    }
     const Y = logY
       ? v => { const lv = Math.log10(Math.max(v, Math.pow(10, dLow)));
                return H - B - (H - T - B) * ((lv - dLow) / (dTop - dLow || 1)); }
@@ -720,6 +735,11 @@ export class Fmusim {
     // Switching to a less manual mode settles whatever the reader already moved, so the
     // curve on screen always matches the sliders under it.
     if (mode !== 'manual' && this.pending) this.run();
+  }
+
+  toggleScale() {
+    this.yScale = this.logActive ? 'lin' : 'log';
+    if (this.lastRes) this.plot(this.lastRes);      // a redraw — the simulation is unchanged
   }
 
   toggleBaseline() {
