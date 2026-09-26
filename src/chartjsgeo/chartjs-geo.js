@@ -1,4 +1,4 @@
-import { Chart, registerables } from "chart.js/auto";
+import { Chart } from "chart.js/auto";
 import { customElement, bindable, observable } from 'aurelia';
 import { geoOrthographic, topojson, ChoroplethController, GeoFeature, ProjectionScale, ColorScale } from "chartjs-chart-geo";
 import { whereAlpha2 } from 'iso-3166-1';
@@ -15,10 +15,9 @@ const removeFirstHash = str => str.startsWith('#') ? str.slice(1) : str;
 export class ChartjsGeo extends Chartjs3Base {
     @bindable datasrc = '';
     @bindable countriessrc = '';
-    @bindable continent;
+    @bindable continent = ''; //initial continent to show
     //@bindable selected = {};
     geochart;
-    continent=''; //initial continent to show
     countryDataDesc = {};
     projecturls = [];
     projections = ['azimuthalEqualArea',
@@ -449,9 +448,6 @@ export class ChartjsGeo extends Chartjs3Base {
         this.switchProjection('equalEarth');this.switchToWorld()
     }
 
-    animate() {
-        
-    }
     isAnimating = false;
     toggleAnimation() {
         if (this.currentProjection == 'orthographic') {

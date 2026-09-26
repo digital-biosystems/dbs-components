@@ -1,0 +1,44 @@
+<div class="game-container" ref="containerEl">
+
+  <!-- INTRO SCREEN -->
+  <div class="screen-intro" if.bind="mode === 'intro'">
+    <h1>QUADRIS</h1>
+    <p style="color:#aaa;font-size:clamp(0.9rem,2.5vw,1.2rem);margin:0;">A classic block-falling game</p>
+    <button class="btn-start" click.trigger="startGame()">START GAME</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div class="screen-game" if.bind="mode === 'playing'">
+    <div class="canvas-wrapper">
+      <canvas ref="boardCanvas"></canvas>
+    </div>
+    <div class="side-panel">
+      <div>
+        <h3>Score</h3>
+        <div class="score-value">${score}</div>
+      </div>
+      <div>
+        <h3>Level</h3>
+        <div class="level-value">${level}</div>
+      </div>
+      <div>
+        <div class="next-label">Next</div>
+        <canvas class="next-canvas" ref="nextCanvas"></canvas>
+      </div>
+      <div class="keyboard-hint">
+        ← → Move<br>
+        ↑ Rotate<br>
+        ↓ Soft drop<br>
+        Space Hard drop
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME OVER SCREEN -->
+  <div class="screen-gameover" if.bind="mode === 'gameover'">
+    <h1>GAME OVER</h1>
+    <div class="final-score">Your score: <span>${score}</span></div>
+    <button class="btn-restart" click.trigger="goToIntro()">PLAY AGAIN</button>
+  </div>
+
+</div>

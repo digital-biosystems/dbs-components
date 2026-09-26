@@ -12,7 +12,6 @@ export function parseConvertors(convertorsStr) {
         }
         if (cv === '1/x') return x => 1 / x;
         const expression = cv.replace(/[^-\d/*+.()%xe]/g, '');
-        // eslint-disable-next-line no-new-func
         const compiled = new Function('x', `return ${expression}`);
         return x => compiled(x);
     });

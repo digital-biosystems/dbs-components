@@ -1,4 +1,4 @@
-import { customAttribute, bindable, resolve, IController } from 'aurelia';
+import { customAttribute, bindable, resolve, IController, INode } from 'aurelia';
 import { parseConvertors } from '../utils/convertors.js';
 
 @customAttribute('dbs-convertors')

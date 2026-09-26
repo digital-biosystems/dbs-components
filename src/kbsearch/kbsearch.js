@@ -56,7 +56,7 @@ export class Kbsearch {
         console.log("Searching for:", lower);
         console.log("knowledge:", kb);
         this.result = Object.entries(kb.knowledge)
-            .filter(([key, value]) =>
+            .filter(([, value]) =>
                 value.name && (this.caseSensitive ? value.name.includes(lower) : value.name.toLowerCase().includes(lower))
             )
             /*.map(([key, value]) => ({
