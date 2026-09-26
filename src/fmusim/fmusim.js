@@ -45,6 +45,11 @@ export class Fmusim {
   // or the reader's choice from the scale button. logActive is what the last plot used.
   yScale = 'auto';
   logActive = false;
+  // Mass (mg/L) or molar (µmol/L) concentration. Molar needs every drawn molecule's molar mass,
+  // which the payload carries as molar_masses {observable: kg/mol} only when the record's
+  // molecules have one (DrugBank / the paper / PubChem) — never a guess, so no toggle without.
+  molar = Fmusim.loadMolar();
+  molarAvailable = false;
   edited = false;
   // How eagerly a slider re-simulates. A 24 h run is a few ms and can follow the drag; a
   // record whose own horizon is three weeks (a weekly GLP-1 analogue) is several hundred ms,
@@ -69,6 +74,7 @@ export class Fmusim {
       ]);
     }).then(([base, controlDefs, M]) => {
       this.base = base;
+      this.molarAvailable = this.hasMolar;
       this.controlDefs = controlDefs;
       this.M = M;
       this.bindFmi();
@@ -487,6 +493,19 @@ export class Fmusim {
     return (mg >= 0.1) ? { unit: 'mg/L', factor: 1e3 } : { unit: '\u00b5g/L', factor: 1e6 };
   }
 
+  // The same for a molar curve: mol/m^3 is mmol/L; shown in µmol/L, or nmol/L when dilute.
+  pickMolarUnit(peakMolar) {
+    const um = peakMolar * 1e3;
+    return (um >= 0.1) ? { unit: '\u00b5mol/L', factor: 1e3 } : { unit: 'nmol/L', factor: 1e6 };
+  }
+
+  // Every observable of this record has a molar mass (and it is a time course, not a sweep).
+  get hasMolar() {
+    const mm = (this.base && this.base.molar_masses) || {};
+    const obs = (this.base && this.base.observables) || [];
+    return !(this.base && this.base.x_axis) && obs.length > 0 && obs.every(k => mm[k] > 0);
+  }
+
   // Round tick step (1/2/5 x 10^n) so the axis reads 0.2, 0.4, 0.6 rather than 0.1819, 0.3638.
   niceStep(range, target) {
     const raw = range / target, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
@@ -528,6 +547,10 @@ export class Fmusim {
     const o = res.outs[0];
     const ys = res.series[o], xs = res.xs || res.times;
     if (!ys || !ys.length) return;
+    // kg/m^3 → mol/m^3: each molecule divided by its own molar mass
+    const mm = (this.base && this.base.molar_masses) || {};
+    const molar = !res.sweep && this.molar && this.hasMolar;
+    const div = k => (molar ? 1 / mm[k] : 1);
     // the first run, when it is a different run and the reader has not hidden it
     const bl = (this.showBaseline && this.baseline && this.baseline !== res
                 && this.baseline.series && this.baseline.series[o]
@@ -551,17 +574,19 @@ export class Fmusim {
     // their peaks differ by more than 20x (clopidogrel's carboxylic acid is ~800x the parent)
     // a linear axis would flatten all but one, so the axis goes logarithmic.
     const multi = !xa && res.outs.length > 1;
-    const outPeaks = res.outs.map(k => Math.max.apply(null, res.series[k] || [0]));
+    const outPeaks = res.outs.map(k => Math.max.apply(null, res.series[k] || [0]) * div(k));
     const allMax = Math.max.apply(null, outPeaks);
     const posPeaks = outPeaks.filter(v => v > 0);
     const autoLog = multi && posPeaks.length > 1 && allMax / Math.min.apply(null, posPeaks) > 20;
     const logY = !xa && (this.yScale === 'log' || (this.yScale === 'auto' && autoLog));
     this.logActive = logY;
     const cu = ya ? { unit: ya.display_unit || '', factor: ya.factor ? 1 / ya.factor : 1 }
-                  : this.pickConcUnit(multi ? allMax : Math.max.apply(null, ys));
-    const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}` : `concentration (${cu.unit})`;
-    const ymaxRaw = Math.max(multi ? allMax : Math.max.apply(null, ys),
-                             bys ? Math.max.apply(null, bys) : -Infinity) * cu.factor;
+                  : (molar ? this.pickMolarUnit : this.pickConcUnit)(
+                      multi ? allMax : Math.max.apply(null, ys) * div(o));
+    const yLabel = ya ? `${o}${cu.unit ? ` (${cu.unit})` : ''}`
+                      : `${molar ? 'molar ' : ''}concentration (${cu.unit})`;
+    const ymaxRaw = Math.max(multi ? allMax : Math.max.apply(null, ys) * div(o),
+                             bys ? Math.max.apply(null, bys) * div(o) : -Infinity) * cu.factor;
     // A sweep can go NEGATIVE (an inhibition from a baseline of 0: 0 → −0.076); the axis
     // starts at the curve's minimum then, not at 0.
     const yminRaw = Math.min(0, Math.min.apply(null, ys) * cu.factor,
@@ -579,9 +604,11 @@ export class Fmusim {
     // down twenty decades.
     let dTop = 0, dLow = 0;
     if (logY) {
-      const drawn = (multi ? res.outs : [o]).map(k => res.series[k] || []).concat(bys ? [bys] : []);
+      const drawn = (multi ? res.outs : [o]).map(k => [res.series[k] || [], div(k)])
+        .concat(bys ? [[bys, div(o)]] : []);
       const vmax = ymaxRaw > 0 ? ymaxRaw : 1;
-      const ends = drawn.map(sy => (sy.length ? sy[sy.length - 1] * cu.factor : 0)).filter(v => v > 0);
+      const ends = drawn.map(([sy, d]) => (sy.length ? sy[sy.length - 1] * d * cu.factor : 0))
+        .filter(v => v > 0);
       const trough = Math.max(ends.length ? Math.min.apply(null, ends) : vmax * 1e-3, vmax * 1e-6);
       dTop = Math.floor(Math.log10(vmax)) + 1;
       dLow = Math.min(Math.floor(Math.log10(trough)) - 1, dTop - 1);
@@ -629,7 +656,7 @@ export class Fmusim {
     if (bl) {
       g.strokeStyle = '#9ec9f0'; g.lineWidth = 3; g.beginPath();
       bxs.forEach((tt, i) => {
-        const px = X(tt * xf), py = Y(bys[i] * cu.factor);
+        const px = X(tt * xf), py = Y(bys[i] * div(o) * cu.factor);
         i ? g.lineTo(px, py) : g.moveTo(px, py);
       });
       g.stroke();
@@ -640,7 +667,7 @@ export class Fmusim {
       if (!sy || !sy.length) return;
       g.strokeStyle = PALETTE[j % PALETTE.length]; g.lineWidth = 1.75; g.beginPath();
       xs.forEach((tt, i) => {
-        const px = X(tt * xf), py = Y(sy[i] * cu.factor);
+        const px = X(tt * xf), py = Y(sy[i] * div(k) * cu.factor);
         i ? g.lineTo(px, py) : g.moveTo(px, py);
       });
       g.stroke();
@@ -676,7 +703,7 @@ export class Fmusim {
         + `  \u00b7  ${res.steps} points  \u00b7  ${res.ms.toFixed(0)} ms`;
       return;
     }
-    const peakDisp = res.peak[o] * cu.factor;
+    const peakDisp = res.peak[o] * div(o) * cu.factor;
     this.plotNote = `Peak ${peakDisp.toPrecision(4)} ${cu.unit} (${o})  \u00b7  `
       + `${res.steps} steps \u00d7 ${res.step} s  \u00b7  ${res.ms.toFixed(0)} ms`;
   }
@@ -722,6 +749,10 @@ export class Fmusim {
 
   // localStorage is per-origin and may throw (private mode, blocked site data), so every
   // access is guarded and an unreadable store simply means the default.
+  static loadMolar() {
+    try { return localStorage.getItem('dbs-fmusim.molar') === '1'; } catch (e) { return false; }
+  }
+
   static loadMode() {
     try {
       const m = localStorage.getItem('dbs-fmusim.simMode');
@@ -735,6 +766,12 @@ export class Fmusim {
     // Switching to a less manual mode settles whatever the reader already moved, so the
     // curve on screen always matches the sliders under it.
     if (mode !== 'manual' && this.pending) this.run();
+  }
+
+  toggleMolar() {
+    this.molar = !this.molar;
+    try { localStorage.setItem('dbs-fmusim.molar', this.molar ? '1' : '0'); } catch (e) { /* not stored */ }
+    if (this.lastRes) this.plot(this.lastRes);      // a redraw — the simulation is unchanged
   }
 
   toggleScale() {

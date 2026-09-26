@@ -15,6 +15,10 @@
               title="Linear shows the peak; logarithmic shows the decline and the metabolites next to the parent.">
         ${logActive ? 'Linear' : 'Logarithmic'} scale
       </button>
+      <button click.trigger="toggleMolar()" if.bind="molarAvailable" disabled.bind="!ready" class="ghost"
+              title="Mass concentration (mg/L), or molar (µmol/L) from each molecule's molar mass — a parent and its metabolites then compare molecule for molecule.">
+        ${molar ? 'Mass (mg/L)' : 'Molar (µmol/L)'}
+      </button>
     </div>
   </div>
 
