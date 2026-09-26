@@ -1,1 +1,1 @@
-bundle exec jekyll serve
+docsify serve .

@@ -1,22 +1,15 @@
----
-title: FMI
-layout: home
-nav_order: 2
----
-
 # `<dbs-fmi>` Web Component
 
 The `<dbs-fmi>` web component instantiate and execute functional mockup unit exported from modeling environment. Via standardized API calls it can make a simulation step, set values of input variables or parameters and get values of model variables, states.
 
-{: .note }
-version: 0.1<br/>The component is in development. Some features may not work or may change.
+?> version: 0.1<br/>The component is in development. Some features may not work or may change.
 
 ## Demo
 ```html
 <dbs-fmi id="pgpk"
     showvalues="true"
     mode="oneshot"
-    src="../pgx-chart/PKPG_2C_generic.js"
+    src="pgx-chart/PKPG_2C_generic.js"
     fminame="PKPG_2C_generic"
     tolerance="1e-9"
     starttime="0"
@@ -35,7 +28,7 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 <dbs-fmi id="pgpk"
     showvalues="true"
     mode="oneshot"
-    src="../pgx-chart/PKPG_2C_generic.js"
+    src="pgx-chart/PKPG_2C_generic.js"
     fminame="PKPG_2C_generic"
     tolerance="1e-9"
     starttime="0"

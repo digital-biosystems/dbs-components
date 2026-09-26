@@ -1,15 +1,8 @@
----
-title: Knowledge Base Search
-layout: home
-nav_order: 2
----
-
 # `<dbs-kbsearch>` Web Component
 
 `dbs-kbsearch` is a customizable web component for searching in knowledge base. Knowledge base is embedded within the component from deliverable D2.2 of oncoscreen project [https://oncoscreen.health/](https://oncoscreen.health/). Future version may add customized knowledge via attribute.
 
-{: .note }
-version: 0.1<br/>The component is in development. Some features may not work or may change.
+?> version: 0.1<br/>The component is in development. Some features may not work or may change.
 ## Example
 
 `<dbs-kbsearch showinput="true"></dbs-kbsearch>`
