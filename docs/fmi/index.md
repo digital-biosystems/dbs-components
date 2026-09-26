@@ -29,7 +29,8 @@ version: 0.1<br/>The component is in development. Some features may not work or 
     period,360,3600,1,t;period,442,3600,1,t;period,523,3600,1,t"
     inputLabels="adminDosage[mg];adminPeriod[h]"
     >
-</dbs-fmi>```
+</dbs-fmi>
+```
 
 <dbs-fmi id="pgpk"
     showvalues="true"
@@ -73,7 +74,7 @@ version: 0.1<br/>The component is in development. Some features may not work or 
 | Attribute | Description                | Type   | Default         |
 |-----------|----------------------------|--------|-----------------|
 | `id` | Unique identifier, can be used by other components    | String |  |
-| `showvalues` | Shows final simulated values of variables | "true|false" | `false` |
+| `showvalues` | Shows final simulated values of variables | Boolean | `false` |
 | `mode` | `continuous` for continuous simulation, `oneshot` for all simulation steps performed from starttime to stoptime, `onestep` for single simulation step performed after each `start` event | String | `continuous` |
 |`src` | link to functional mockup unit translated to JS and WebAssembly | String| |
 | `fminame` | FMI name as it is presented in FMU | String | |
