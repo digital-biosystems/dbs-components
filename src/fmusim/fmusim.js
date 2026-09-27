@@ -228,6 +228,37 @@ export class Fmusim {
         lab.appendChild(hint);
       }
 
+      if (Array.isArray(c.choices) && c.choices.length) {
+        // A fixed set of values from the paper (the doses its subjects received): a choice,
+        // not a slider — the model was fitted to these doses and no other.
+        const sel = document.createElement('select');
+        const startDisplay = start * c.scale;
+        let best = 0;
+        c.choices.forEach((v, i) => {
+          const o = document.createElement('option');
+          o.value = String(v);
+          o.textContent = `${v} ${c.unit}`;
+          sel.appendChild(o);
+          if (Math.abs(v - startDisplay) < Math.abs(c.choices[best] - startDisplay)) best = i;
+        });
+        sel.selectedIndex = best;
+        const showSel = () => {
+          const v = Number(sel.value) / c.scale;
+          this.cur.parameters[c.key] = v;
+          out.textContent = this.fmtSI(Number(sel.value), c.unit);
+        };
+        // the record's own value stays exact until the reader picks another (isPristine)
+        out.textContent = this.fmtSI(startDisplay, c.unit);
+        sel.addEventListener('change', () => {
+          showSel();
+          if (this.simMode === 'manual') this.pending = true;
+          else this.run();
+        });
+        wrap.appendChild(lab); wrap.appendChild(sel);
+        box.appendChild(wrap);
+        return;
+      }
+
       const inp = document.createElement('input');
       inp.type = 'range';
       // The slider lives in DISPLAY units (or in multiples, for mult controls); converting
@@ -540,7 +571,6 @@ export class Fmusim {
 
   plot(res) {
     this.lastRes = res;
-    const cv = this.plotCanvas;
     const { g, W, H } = this.sizeCanvas();
     const L = 58, R = 16, T = 14, B = 42;
     g.clearRect(0, 0, W, H);
@@ -750,19 +780,19 @@ export class Fmusim {
   // localStorage is per-origin and may throw (private mode, blocked site data), so every
   // access is guarded and an unreadable store simply means the default.
   static loadMolar() {
-    try { return localStorage.getItem('dbs-fmusim.molar') === '1'; } catch (e) { return false; }
+    try { return localStorage.getItem('dbs-fmusim.molar') === '1'; } catch { return false; }
   }
 
   static loadMode() {
     try {
       const m = localStorage.getItem('dbs-fmusim.simMode');
       return m === 'release' || m === 'manual' ? m : 'live';
-    } catch (e) { return 'live'; }
+    } catch { return 'live'; }
   }
 
   setSimMode(mode) {
     this.simMode = mode;
-    try { localStorage.setItem('dbs-fmusim.simMode', mode); } catch (e) { /* not stored */ }
+    try { localStorage.setItem('dbs-fmusim.simMode', mode); } catch { /* not stored */ }
     // Switching to a less manual mode settles whatever the reader already moved, so the
     // curve on screen always matches the sliders under it.
     if (mode !== 'manual' && this.pending) this.run();
@@ -770,7 +800,7 @@ export class Fmusim {
 
   toggleMolar() {
     this.molar = !this.molar;
-    try { localStorage.setItem('dbs-fmusim.molar', this.molar ? '1' : '0'); } catch (e) { /* not stored */ }
+    try { localStorage.setItem('dbs-fmusim.molar', this.molar ? '1' : '0'); } catch { /* not stored */ }
     if (this.lastRes) this.plot(this.lastRes);      // a redraw — the simulation is unchanged
   }
 
