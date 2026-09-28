@@ -24,28 +24,25 @@
   margin-left: 0.5rem;
 }
 
-/* full‑width slider */
+/* full‑width slider; basic custom styling for range, extend as needed */
 .param-slider__range {
   width: 100%;
   box-sizing: border-box;
-}
-
-/* basic custom styling for range; extend as needed */
-.param-slider__range {
-  -webkit-appearance: none;
   appearance: none;
   height: 4px;
   border-radius: 999px;
   background: #ddd;
 }
+
 .param-slider__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
+  appearance: none;
   width: 14px;
   height: 14px;
   border-radius: 50%;
   background: #1976d2;
   cursor: pointer;
 }
+
 .param-slider__range::-moz-range-thumb {
   width: 14px;
   height: 14px;
@@ -89,6 +86,7 @@
 .param-slider__tick--min {
   transform: translateX(0);
 }
+
 .param-slider__tick--max {
   transform: translateX(-100%);
 }

@@ -17,7 +17,7 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
 .search-input {
@@ -33,7 +33,7 @@
 .search-input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
 }
 
 select {
@@ -66,7 +66,7 @@ select {
   background: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
   margin-bottom: 2rem;
   font-weight: 500;
   color: #374151;
@@ -76,12 +76,12 @@ select {
   background: white;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
   margin-bottom: 2rem;
 }
 
 .pk-chart-section h3 {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.5rem;
   color: #1f2937;
   font-size: 1.25rem;
 }
@@ -105,7 +105,7 @@ select {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
   transition: all 0.2s;
   border: 1px solid #f1f5f9;
   cursor: pointer;
@@ -116,7 +116,7 @@ select {
 
 .drug-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
   border-color: #3b82f6;
 }
 
@@ -196,7 +196,7 @@ select {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .drug-viewer {
     padding: 1rem;
   }
@@ -228,6 +228,13 @@ select {
     color: #f9fafb;
   }
   
-  .synonym { background: #1e40af; color: #bfdbfe; }
-  .more { background: #374151; color: #d1d5db; }
+  .synonym {
+    background: #1e40af;
+    color: #bfdbfe;
+  }
+
+  .more {
+    background: #374151;
+    color: #d1d5db;
+  }
 }

@@ -2,9 +2,11 @@
     width: 100vw;
     height:100vh;
 }
+
 .chartjsgeocontainer {
     position: relative;
 }
+
 .chartjsgeodesc {
     position: absolute;
     bottom:5px;
@@ -13,6 +15,7 @@
     padding:10px;
     font-size:x-small;
 }
+
 .truncate {
     display: inline-block;    /* Ensures text-overflow works */
     max-width: 40ch;          /* Limit text to 30 characters */

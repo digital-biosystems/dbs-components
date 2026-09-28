@@ -122,7 +122,7 @@ canvas {
 }
 
 .side-panel h3 {
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -137,7 +137,7 @@ canvas {
 }
 
 .next-label {
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;

@@ -112,7 +112,7 @@ describe('dbs-fmusim', () => {
     delete window.FakeFactoryFmusimTest;
     // The re-simulate mode is remembered per browser, and jsdom keeps one localStorage for
     // the whole file: a test that picks a mode must not decide the next test's default.
-    try { localStorage.removeItem('dbs-fmusim.simMode'); } catch (e) { /* ignore */ }
+    try { localStorage.removeItem('dbs-fmusim.simMode'); } catch { /* ignore */ }
   });
 
   it('reports OK when the browser peak matches the recorded reference', async () => {
