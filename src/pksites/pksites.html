@@ -1,0 +1,71 @@
+<require from="./pksites.css"></require>
+
+<div class="pksites">
+  <div class="pkq-status ${statusErr ? 'err' : ''}" if.bind="status">${status}</div>
+
+  <div if.bind="dbInstance">
+    <p class="pkq-row">
+      <label for="pks-pick">add a drug</label>
+      <input id="pks-pick" type="text" placeholder="tolvaptan, Zyloprim, hydrochlorothiazide…" value.bind="searchTerm" autocomplete="off">
+      <span class="pkq-meta" if.bind="hintText">${hintText}</span>
+    </p>
+
+    <div class="pks-results" if.bind="hits.length">
+      <button repeat.for="h of hits" type="button" click.trigger="addDrug(h.slug)">
+        ${h.name}
+        <small if.bind="h.via">(${h.via})</small>
+        <small if.bind="!h.has_records">no records</small>
+      </button>
+    </div>
+
+    <div class="pks-chips" role="group" aria-label="selected drugs">
+      <button repeat.for="d of sel" type="button" class="pks-chip" aria-pressed.bind="focus === d.slug" click.trigger="toggleFocus(d.slug)">
+        <span class="sw" css="background: ${getColor($index)}">${getCode(d.name)}</span>
+        ${d.name}
+        <small if.bind="!d.has_records" class="pkq-meta">&nbsp;(no records)</small>
+        <span class="x" title="remove" click.trigger="removeDrug(d.slug); $event.stopPropagation()">×</span>
+      </button>
+      <span class="pkq-meta" if.bind="sel.length">${focus ? 'isolating ' + focus + ' — click again to clear' : 'click a drug to isolate it; × removes it'}</span>
+      <span class="pkq-meta" if.bind="!sel.length">pick two or more drugs to compare</span>
+    </div>
+
+    <p class="pkq-row pks-controls">
+      <label><input type="checkbox" checked.bind="showDdi"> co-administration layer</label>
+      <label><input type="checkbox" checked.bind="includeText"> include prose-only sites</label>
+      <button class="pkq-btn" click.trigger="copyLink()">copy link to this set</button>
+      <span class="pkq-meta">${metaText}</span>
+      <span class="pkq-meta" if.bind="copyHint">${copyHint}</span>
+    </p>
+
+    <div class="pks-evkey">
+      <span><i class="e3"></i>DrugBank actor</span>
+      <span><i class="e2"></i>paper PGx gene</span>
+      <span><i class="e1"></i>ADME prose</span>
+      <span><i class="e0"></i>none</span>
+      <span><i class="aff"></i>affected by co-administration</span>
+      <span><i class="dot"></i>dot = the perpetrator's colour (filled inhibits, hollow induces)</span>
+    </div>
+
+    <h2>Site heat-map</h2>
+    <div class="pks-heatmap" ref="heatmapEl"></div>
+
+    <h2>Who affects whom</h2>
+    <p class="pkq-meta">Rows are perpetrators, columns victims: the cell names the enzyme or transporter through which the row drug can change the column drug's exposure (⊣ inhibits, ↑ induces; the column drug is its substrate). The same pairs are marked on the heat-map row labels — ⇠ the drugs that affect this one, ⇢ the drugs it affects.</p>
+    <div class="pks-ddi-box" ref="ddiEl"></div>
+
+    <h2>Anatomogram</h2>
+    <p class="pkq-meta">The body is the EMBL-EBI Expression Atlas anatomogram (female view, CC BY 4.0), each organ tinted by the set's strongest evidence there (the kidney and the blood in their own red ramp) and outlined in the perpetrator's colour where another drug in the set inhibits or induces the actor at work in it. Beside each organ, one slot per drug in the chips' order, shaded by evidence, ringed when affected; click a chip to isolate a drug and draw the perpetrator → victim arrows. Hover an organ or a slot for its actors, click to pin.</p>
+    <div class="pks-grid">
+      <div class="pks-anatomogram" ref="bodyEl"></div>
+      <div class="pks-detailbox" ref="detailEl" dblclick.trigger="clearPin()"></div>
+    </div>
+
+    <h2>Shared actors — the co-administration table</h2>
+    <p class="pkq-meta">An actor two drugs share, with both roles. Substrate on one side and inhibitor/inducer on the other is a mechanism for one drug to change the other's exposure at that actor's tissue.</p>
+    <div class="pks-shared" ref="sharedEl"></div>
+
+    <details><summary>Table view — every site row</summary><div class="pks-scroll pks-table" ref="tableEl"></div></details>
+  </div>
+
+  <div class="pks-tip" ref="tipEl" css="opacity: ${tipVisible ? 1 : 0}; left: ${tipLeft}; top: ${tipTop};" innerhtml.bind="tipHtml"></div>
+</div>

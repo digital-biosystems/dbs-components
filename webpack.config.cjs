@@ -45,6 +45,7 @@ module.exports = function (env, { analyze }) {
       'dbs-table': './src/table/index.js',
       'dbs-quadrisgame': './src/quadrisgame/index.js',
       'dbs-fmusim': './src/fmusim/index.js',
+      'dbs-pksites': './src/pksites/index.js',
       'dbs-bundle': [
         './src/helloworld/index.js',
         //'./src/chartjsgeo/index.js',        
@@ -164,7 +165,8 @@ module.exports = function (env, { analyze }) {
     },
     module: {
       rules: [
-        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
+        { test: /\.svg$/i, type: 'asset/source', resourceQuery: /raw/ },
+        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset', resourceQuery: { not: [/raw/] } },
         { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, type: 'asset' },
         {
           test: /\.css$/i,

@@ -1,0 +1,22 @@
+{
+  "model_id": "Tolvaptan_Lanke2019_reference",
+  "template": "PK_1C",
+  "template_fmu": "PK_1C.fmu",
+  "parameters": {
+    "weight": 70.0,
+    "F": 1.0,
+    "Cl": 3.1666666666666667e-06,
+    "VdPerKg": 0.0015571428571428572,
+    "adminDuration": 600.0,
+    "adminCount": 1.0,
+    "adminMass": 0.0001
+  },
+  "observables": [
+    "central.C"
+  ],
+  "reference_peaks": {
+    "central.C": 0.0009094815088021335
+  },
+  "stop_time": 86400.0,
+  "note": "Values for the shared PK_1C.fmu. Vd/Vdp appear as VdPerKg/VdpPerKg because the template computes the absolute volume from body weight and FMI cannot set a calculated parameter."
+}
