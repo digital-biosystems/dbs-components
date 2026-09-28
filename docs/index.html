@@ -18,6 +18,9 @@
        dependency forever, with no error. dbs-shared.js must load first. -->
   <script src="assets/js/dbs-shared.js"></script>
   <script src="assets/js/dbs-fmusim.js"></script>
+  <!-- dbs-pksites.js is a per-component build too, not part of dbs-full-bundle: same
+       splitChunks caveat as dbs-fmusim — dbs-shared.js must load first. -->
+  <script src="assets/js/dbs-pksites.js"></script>
 </head>
 <body>
   <div id="app">Loading documentation…</div>

@@ -13,5 +13,6 @@
     - [Ibuprofen demo](/pgx-chart/ibuprofen.md)
   - [Knowledge Base Search](/kbsearch/index.md)
   - [Web LLM Chat](/webllmchat/index.md)
+  - [ADME Sites](/pksites/index.md)
 
 - [Source code](https://github.com/digital-biosystems/dbs-components)
