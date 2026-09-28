@@ -23,7 +23,7 @@
         <span class="sw" css="background: ${getColor($index)}">${getCode(d.name)}</span>
         ${d.name}
         <small if.bind="!d.has_records" class="pkq-meta">&nbsp;(no records)</small>
-        <span class="x" title="remove" click.trigger="removeDrug(d.slug); $event.stopPropagation()">×</span>
+        <span class="x" title="remove" click.trigger="removeDrugAndStop(d.slug, $event)">×</span>
       </button>
       <span class="pkq-meta" if.bind="sel.length">${focus ? 'isolating ' + focus + ' — click again to clear' : 'click a drug to isolate it; × removes it'}</span>
       <span class="pkq-meta" if.bind="!sel.length">pick two or more drugs to compare</span>

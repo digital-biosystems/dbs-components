@@ -298,6 +298,11 @@ export class Pksites {
     this.recomputeAndRender();
   }
 
+  removeDrugAndStop(slug, ev) {
+    if (ev) ev.stopPropagation();
+    this.removeDrug(slug);
+  }
+
   toggleFocus(slug) {
     this.focus = this.focus === slug ? null : slug;
     this.renderAll();

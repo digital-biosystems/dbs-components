@@ -1,4 +1,7 @@
 import { search, resolve, compute, esc, code, cellOf, affectedAt } from '../src/pksites/adme-compute.js';
+import { Pksites } from '../src/pksites/pksites.js';
+import { createFixture } from '@aurelia/testing';
+import { CustomElement } from 'aurelia';
 
 // Minimal mock for sql.js Database — implements prepare/bind/step/getAsObject/free
 function mockDb(tables) {
@@ -43,8 +46,7 @@ function mockDb(tables) {
   };
 }
 
-describe('adme-compute', () => {
-  const tables = {
+const tables = {
     adme_drug: [
       { slug: 'tolvaptan', generic_name: 'Tolvaptan', has_records: 1, drugbank_id: 'DB01295' },
       { slug: 'telmisartan', generic_name: 'Telmisartan', has_records: 1, drugbank_id: 'DB00966' },
@@ -68,6 +70,7 @@ describe('adme-compute', () => {
     ]
   };
 
+describe('adme-compute', () => {
   it('esc and code helpers', () => {
     expect(esc('a & b')).toBe('a &amp; b');
     expect(code('Tolvaptan')).toBe('To');
@@ -123,5 +126,100 @@ describe('adme-compute', () => {
     expect(c.w).toBe(3);
     const aff = affectedAt(M, 'tolvaptan', null, 'liver');
     expect(aff.length).toBe(1);
+  });
+});
+
+describe('dbs-pksites component', () => {
+  beforeEach(() => {
+    Pksites.dbCache.clear();
+    Pksites.bodyCache.clear();
+    Pksites.sqlPromise = null;
+  });
+
+  it('renders the placeholder status when db is empty', async () => {
+    const { appHost } = await createFixture(
+      '<dbs-pksites></dbs-pksites>',
+      class {},
+      [Pksites],
+    ).started;
+
+    const el = appHost.querySelector('dbs-pksites');
+    expect(el).toBeTruthy();
+    const vm = CustomElement.for(el).viewModel;
+    expect(vm).toBeInstanceOf(Pksites);
+    // no db -> explanatory placeholder, nothing fetched
+    expect(vm.dbInstance).toBeNull();
+    expect(vm.status).toContain('db=');
+    const shadow = el.shadowRoot;
+    expect(shadow.querySelector('.pksites')).toBeTruthy();
+    expect(shadow.querySelector('.pkq-status').textContent).toContain('db=');
+  });
+
+  it('bound() normalizes string attributes', () => {
+    const vm = Object.create(Pksites.prototype);
+    vm.showDdi = 'false';
+    vm.includeText = '0';
+    vm.max = '4';
+    vm.bound();
+    expect(vm.showDdi).toBe(false);
+    expect(vm.includeText).toBe(false);
+    expect(vm.max).toBe(4);
+  });
+
+  it('deriveBase falls back to the CDN', () => {
+    const vm = Object.create(Pksites.prototype);
+    expect(vm.deriveBase('')).toBe('https://sql.js.org/dist/');
+    expect(vm.deriveBase('assets/sqljs/sql-wasm.js')).toBe('assets/sqljs/');
+  });
+
+  it('selects, searches and recomputes against the mock db', () => {
+    const vm = Object.create(Pksites.prototype);
+    vm.element = { dispatchEvent: jest.fn() };
+    vm.dbInstance = mockDb(tables);
+    vm.drugs = 'tolvaptan,telmisartan';
+    vm.max = 8;
+    vm.focus = null;
+    vm.includeText = true;
+    vm.showDdi = true;
+    vm.searchTerm = '';
+    vm.hits = [];
+    vm.sel = [];
+    vm.model = null;
+    vm.heatmapEl = document.createElement('div');
+    vm.tableEl = document.createElement('div');
+
+    vm.initSelFromDrugs();
+    expect(vm.sel.map(d => d.slug)).toEqual(['tolvaptan', 'telmisartan']);
+
+    vm.searchTerm = 'Tol';
+    vm.onSearch();
+    expect(vm.hits.some(h => h.slug === 'tolvaptan')).toBe(true);
+    vm.searchTerm = 'x';
+    vm.onSearch();
+    expect(vm.hits).toEqual([]);
+
+    vm.recomputeAndRender();
+    expect(vm.model.rows.length).toBe(7);
+    expect(vm.metaText).toContain('7 site row');
+    // sync render paths populate the fake refs (renderAll itself is deferred)
+    vm.renderHeatmap();
+    expect(vm.heatmapEl.innerHTML).toContain('pks-hm');
+    vm.renderTable();
+    expect(vm.tableEl.innerHTML).toContain('CYP3A4');
+
+    vm.removeDrug('telmisartan');
+    expect(vm.sel.map(d => d.slug)).toEqual(['tolvaptan']);
+    expect(vm.element.dispatchEvent).toHaveBeenCalled();
+    vm.toggleFocus('tolvaptan');
+    expect(vm.focus).toBe('tolvaptan');
+    vm.toggleFocus('tolvaptan');
+    expect(vm.focus).toBeNull();
+  });
+
+  it('evidenceCell labels the tiers', () => {
+    const vm = Object.create(Pksites.prototype);
+    expect(vm.evidenceCell({ evidence: 'drugbank_actor' })).toBe('DrugBank actor');
+    expect(vm.evidenceCell({ evidence: 'drugbank_text' })).toBe('DrugBank ADME prose');
+    expect(vm.evidenceCell({ evidence: 'paper_pgx', source: 'S', page: null, doi: null })).toContain('paper PGx');
   });
 });

@@ -13,7 +13,7 @@ The SQLite database and the anatomogram SVG are **not bundled**. They are linked
 </dbs-pksites>
 ```
 
-<dbs-pksites db="assets/js/../../data/adme-ee9360f546.sqlite" drugs="tolvaptan,telmisartan,hydrochlorothiazide"></dbs-pksites>
+<dbs-pksites db="data/adme-ee9360f546.sqlite" drugs="tolvaptan,telmisartan,hydrochlorothiazide"></dbs-pksites>
 
 > The demo above uses the same artefacts as the pharmacolibrary docs site. Point `db` at the SQLite file you deploy alongside it (see *Deployment* below).
 
