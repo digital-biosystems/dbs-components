@@ -480,7 +480,9 @@ describe('dbs-fmusim', () => {
     expect(res.xs.length).toBe(res.series.response.length);
     expect(res.xs[res.xs.length - 1]).toBeGreaterThan(res.xs[0]);
     expect(res.outs).toEqual(['response']);                // exposure is x, not an observable
-    expect(vm.plotNote === '' || /end of sweep/.test(vm.plotNote)).toBe(true);  // jsdom has no canvas
+    // the note reads the response at the end of the sweep, in display units — not a peak
+    expect(vm.plotNote).toMatch(/^response \S+ sec at 1\.92e\+4 ng\/mL/);
+    expect(vm.plotNote).not.toMatch(/^Peak/);
   });
 
   it('editing a sweep slider withholds the point verdicts like a peak verdict', async () => {

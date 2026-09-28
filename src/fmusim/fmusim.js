@@ -564,14 +564,19 @@ export class Fmusim {
     cv.style.height = `${H}px`;
     const bw = Math.round(W * dpr), bh = Math.round(H * dpr);
     if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+    // getContext can return null (lost GPU context, too many canvases, jsdom); the caller
+    // then skips the drawing instead of throwing.
     const g = cv.getContext('2d');
+    if (!g) return null;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { g, W, H };
   }
 
   plot(res) {
     this.lastRes = res;
-    const { g, W, H } = this.sizeCanvas();
+    const sized = this.sizeCanvas();
+    if (!sized) return;
+    const { g, W, H } = sized;
     const L = 58, R = 16, T = 14, B = 42;
     g.clearRect(0, 0, W, H);
     const o = res.outs[0];
