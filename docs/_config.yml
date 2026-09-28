@@ -4,6 +4,13 @@ theme: just-the-docs
 baseurl: /dbs-components
 url: https://digital-biosystems.github.io
 
+# The site is rendered by docsify (docs/index.html), not by the Jekyll theme:
+# Jekyll only copies static files into _site for the gh-pages deploy. Files
+# starting with "_" are excluded by default, so docsify's sidebar definition
+# must be force-included or the deployed site renders with no sidebar.
+include:
+  - _sidebar.md
+
 aux_links:
   source codes: https://github.com/digital-biosystems/dbs-components
 callouts:
