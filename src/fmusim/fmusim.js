@@ -58,6 +58,12 @@ export class Fmusim {
   // 'manual' = only when the button is pressed. The choice is remembered per browser.
   simMode = Fmusim.loadMode();
   pending = false;                 // an edit the current mode has not simulated yet
+  // Pharmacogenomic phenotype (payload.pgx — pk.engineer_pgx). A paper that states a gene's
+  // effect on its model (CYP2C19 on clopidogrel Jung_2024's fractions metabolised) gives one
+  // parameter set per phenotype: the parameters the gene acts on and everything the template
+  // derives from them. The reader picks the phenotype; the same template runs with that set,
+  // and the reference phenotype's run is the baseline drawn beside it.
+  phenotype = null;
 
   // ── boot ────────────────────────────────────────────────────────────────────────────────
   // meta is fetched first, on its own: it carries model_identifier, the name the WASM
@@ -170,9 +176,60 @@ export class Fmusim {
   // ── controls ────────────────────────────────────────────────────────────────────────────
   // Where a control's starting value comes from: the record, the template's own default
   // (fallback: true), or the record's stop_time (sim: true). null means "skip this control".
+  // The record's parameters under the selected phenotype: the reference phenotype is the
+  // record itself; another one overrides the parameters the paper's gene effect changes.
+  effParams() {
+    const pg = this.base && this.base.pgx;
+    if (!pg || !this.phenotype || this.phenotype === pg.reference) return this.base.parameters;
+    return Object.assign({}, this.base.parameters, (pg.phenotypes || {})[this.phenotype] || {});
+  }
+
+  get pgxActive() { return !!(this.base && this.base.pgx && this.phenotype
+                              && this.phenotype !== this.base.pgx.reference); }
+
+  get baselineLabel() {
+    const pg = this.base && this.base.pgx;
+    return pg ? ((pg.labels || {})[pg.reference] || pg.reference) : 'the first run';
+  }
+
+  buildPhenotype(box) {
+    const pg = this.base.pgx;
+    const wrap = document.createElement('div');
+    wrap.className = 'pgx';
+    const lab = document.createElement('label');
+    lab.innerHTML = `<b>${pg.gene} phenotype</b> `;
+    const sel = document.createElement('select');
+    (pg.order || Object.keys(pg.phenotypes || {})).forEach(ph => {
+      const o = document.createElement('option');
+      o.value = ph;
+      o.textContent = (pg.labels || {})[ph] || ph;
+      sel.appendChild(o);
+    });
+    sel.value = this.phenotype;
+    const eff = (pg.effects || {})[this.phenotype] || [];
+    const note = document.createElement('span');
+    note.className = 'hint';
+    note.textContent = eff.length
+      ? eff.map(e => `${e.parameter}${e.compound ? ` (${e.compound})` : ''} ${(+e.reference).toPrecision(3)} → ${(+e.value).toPrecision(3)}`).join(', ')
+      : 'the record\'s own model';
+    note.title = pg.note || '';
+    sel.addEventListener('change', () => {
+      // a phenotype is a different model: the other controls restart from ITS values
+      this.phenotype = sel.value;
+      this.cur = JSON.parse(JSON.stringify(this.base));
+      Object.assign(this.cur.parameters, this.effParams());
+      this.buildControls();
+      this.run();
+    });
+    lab.appendChild(note);
+    wrap.appendChild(lab); wrap.appendChild(sel);
+    box.appendChild(wrap);
+  }
+
   startValue(c) {
     if (c.sim) return this.base.stop_time || 86400;
-    if (c.key in this.base.parameters) return this.base.parameters[c.key];
+    const ep = this.effParams();
+    if (c.key in ep) return ep[c.key];
     // `default_s` is the control's own starting value in SI, used when NEITHER the record
     // nor the template pins the parameter — a dosing interval on a weeks-long run, where the
     // template's 8 h is not a plausible schedule for the drug being simulated. It never
@@ -209,6 +266,7 @@ export class Fmusim {
   buildControls() {
     const box = this.controlsBox;
     box.innerHTML = '';
+    if (this.base && this.base.pgx) this.buildPhenotype(box);
     this.controlDefs.forEach(c => {
       const start = this.startValue(c);
       if (start === null) return;
@@ -288,7 +346,7 @@ export class Fmusim {
 
       const show = () => {
         const shown = Number(inp.value);
-        const v = c.mult ? this.base.parameters[c.key] * shown : shown / c.scale;
+        const v = c.mult ? this.effParams()[c.key] * shown : shown / c.scale;
         if (c.sim) { this.cur.stop_time = v; } else { this.cur.parameters[c.key] = v; }
         out.textContent = this.fmtSI(c.mult ? v * c.scale : shown, c.unit)
           + (c.mult ? `  (${shown.toFixed(2)}\u00d7)` : '');
@@ -453,6 +511,9 @@ export class Fmusim {
   // rather than turned red — compared against each control's start value (the template
   // default for a fallback control, which is what FMPy also ran with), not raw key equality.
   isPristine() {
+    // another phenotype is another model: its run is compared WITH the reference, never
+    // taken as the reference, and the FMPy check (recorded for the reference) does not apply
+    if (this.pgxActive) return false;
     return this.controlDefs.every(c => {
       const start = this.startValue(c);
       if (start === null) return true;
@@ -739,7 +800,13 @@ export class Fmusim {
       return;
     }
     const peakDisp = res.peak[o] * div(o) * cu.factor;
-    this.plotNote = `Peak ${peakDisp.toPrecision(4)} ${cu.unit} (${o})  \u00b7  `
+    const pg = this.base && this.base.pgx;
+    const phen = pg ? `${(pg.labels || {})[this.phenotype] || this.phenotype}  \u00b7  ` : '';
+    let vsRef = '';
+    if (this.pgxActive && bl && bl.peak && bl.peak[o]) {
+      vsRef = `  (${(100 * res.peak[o] / bl.peak[o]).toFixed(0)} % of ${this.baselineLabel})`;
+    }
+    this.plotNote = `${phen}Peak ${peakDisp.toPrecision(4)} ${cu.unit} (${o})${vsRef}  \u00b7  `
       + `${res.steps} steps \u00d7 ${res.step} s  \u00b7  ${res.ms.toFixed(0)} ms`;
   }
 
@@ -820,6 +887,7 @@ export class Fmusim {
   }
 
   reset() {
+    this.phenotype = this.base && this.base.pgx ? this.base.pgx.reference : null;
     this.cur = JSON.parse(JSON.stringify(this.base));
     this.baseline = null;            // the next run is pristine and becomes the new baseline
     this.buildControls();

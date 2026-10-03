@@ -27,7 +27,7 @@
     <div class="grid" ref="controlsBox"></div>
     <div class="row">
       <button click.trigger="toggleBaseline()" disabled.bind="!ready || !baseline" class="ghost">
-        ${showBaseline ? 'Hide' : 'Show'} the first run
+        ${showBaseline ? 'Hide' : 'Show'} ${baselineLabel}
       </button>
       <button click.trigger="reset()" disabled.bind="!ready" class="ghost">Reset to extracted values</button>
     </div>

@@ -174,3 +174,7 @@
   color: var(--muted);
   margin-top: 10px;
 }
+
+/* the pharmacogenomic phenotype (payload.pgx): a full-width first row above the sliders */
+.fmusim .pgx { grid-column: 1 / -1; }
+.fmusim .pgx select { min-width: 16em; }

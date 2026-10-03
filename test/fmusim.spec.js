@@ -87,11 +87,20 @@ async function waitUntil(fn, timeoutMs = 2000) {
   }
 }
 
-async function mountFmusim(referencePeak) {
+// pk.engineer_pgx: the parameters a CYP2C19 phenotype changes (Cl here), per phenotype
+const PGX = {
+  gene: 'CYP2C19', reference: 'Normal', order: ['Poor', 'Intermediate', 'Normal'],
+  labels: { Poor: 'Poor metabolizer', Intermediate: 'Intermediate metabolizer',
+            Normal: 'Normal metabolizer (reference)' },
+  phenotypes: { Normal: {}, Intermediate: { Cl: 0.6e-6 }, Poor: { Cl: 0.3e-6 } },
+  effects: { Poor: [{ parameter: 'CL', compound: '', reference: 1, value: 0.3 }] },
+};
+
+async function mountFmusim(referencePeak, extra = {}) {
   window.FakeFactoryFmusimTest = () => makeFakeModule(0.5); // fake FMU always reports 0.5
   global.fetch = mockFetch({
     'meta.json': META,
-    'params.json': { ...BASE_PARAMS, reference_peaks: { 'central.C': referencePeak } },
+    'params.json': { ...BASE_PARAMS, reference_peaks: { 'central.C': referencePeak }, ...extra },
     'controls.json': CONTROLS,
   });
 
@@ -113,6 +122,26 @@ describe('dbs-fmusim', () => {
     // The re-simulate mode is remembered per browser, and jsdom keeps one localStorage for
     // the whole file: a test that picks a mode must not decide the next test's default.
     try { localStorage.removeItem('dbs-fmusim.simMode'); } catch { /* ignore */ }
+  });
+
+  it('a PGx payload offers the phenotype; another phenotype runs its parameters against the reference', async () => {
+    const { vm } = await mountFmusim(0.5, { pgx: PGX });
+    const sel = vm.controlsBox.querySelector('.pgx select');
+    expect(sel).not.toBeNull();
+    expect([...sel.options].map(o => o.value)).toEqual(['Poor', 'Intermediate', 'Normal']);
+    expect(sel.value).toBe('Normal');
+    expect(vm.isPristine()).toBe(true);                   // the reference IS the record
+    const ref = vm.baseline;
+    sel.value = 'Poor';
+    sel.dispatchEvent(new Event('change'));
+    expect(vm.cur.parameters.Cl).toBeCloseTo(0.3e-6);       // the phenotype's parameter set
+    expect(vm.cur.parameters.adminMass).toBe(1e-4);         // everything else unchanged
+    expect(vm.isPristine()).toBe(false);                    // compared, not taken as reference
+    expect(vm.baseline).toBe(ref);                          // the Normal run stays the baseline
+    expect(vm.baselineLabel).toBe('Normal metabolizer (reference)');
+    vm.reset();
+    expect(vm.phenotype).toBe('Normal');
+    expect(vm.cur.parameters.Cl).toBe(1e-6);
   });
 
   it('reports OK when the browser peak matches the recorded reference', async () => {
