@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "source_repository": "https://github.com/digital-biosystems/dbs-components-dev",
-  "source_commit": "01944cefa1a58b60ff399ee196db148b3ceed74d",
-  "source_tree_sha256": "7e9d68600e4d0b64499bc4ac5e3b05687fed3e2bddcbd3aced770956121e707a",
+  "source_commit": "2285d1af3dd48e8ed0bc941e9371c3af7060b61c",
+  "source_tree_sha256": "3ca83719179e86c7b19d0b20be30fc17b2e804e6b070b49b767178d62d9d6ec5",
   "build_inputs": {
     "src/buttonparams/button-params.css": "34dbb9164a979801e8eea87443313e31d5171660d571d22c713d10d882076822",
     "src/buttonparams/button-params.html": "910038763a452f3749f71f4ef24ce07a01f2c76316b3c6f9f121412a33704ecd",
@@ -124,7 +124,7 @@
     "webpack.config.cjs": "82172a4919fbcb4ce211ca2f5d8622e84407482743106c427bb200d2dc70168a",
     "babel.config.json": "0119e93ee230cf030174696c7ce668f54f3830891d7315496d663e1ad1442bb5",
     ".browserslistrc": "0dac9b89186c87f3c5b3cbde12f5bf06c839432c34a4d899d7bef000dab3a8ba",
-    "scripts/release.py": "f334a572a14f75e4357669dc1a5a300a679a2b82f48ce9498d6b2306b283544b"
+    "scripts/release.py": "718f43c15163738743c3a26baec496856153323426bf45dc39f24c24d2fa3d2d"
   },
   "node": "v24.18.0",
   "entrypoints": {
@@ -231,5 +231,5 @@
       "bytes": 190
     }
   },
-  "release": "9e5617f7788c05ad"
+  "release": "d6d44e649e292324"
 }
