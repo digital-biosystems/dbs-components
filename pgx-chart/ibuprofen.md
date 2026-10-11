@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="assets/w3.css">
+
+<div class="w3-row-padding" style="margin-top:8px; display:flex; gap:16px; align-items:flex-start; flex-wrap:nowrap;">
+  <div class="w3-col s6 w3-margin-bottom" style="flex:1; min-width:0;">
+    <dbs-pgxchartd id="pgxdemo"></dbs-pgxchartd>
+  </div>
+
+  <div class="w3-col s6 w3-large" style="line-height:1.6; flex:1; min-width:0;">
+    <div class="w3-card w3-white w3-padding-large w3-round-large">
+      <h3>Ibuprofen</h3>
+      <p class="w3-margin-top">{description}</p>
+      <p>{pharmacokinetic_description}</p>
+      <div id="chosenvalues" class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-round w3-small">
+        <b>Covariates:</b>
+        <dbs-summary scopeid="pgxdemo" placeholder="-"
+          template="weight: {weight}, renal/liver function: {renalliver}, PGx: SLA22CA2 {slc22a2}, CYP2C19 {cyp2c19}; dosage: {dosage}"></dbs-summary>
+      </div>
+      <div class="w3-small">
+        <dbs-value fromid="pgpk" refindex="0" min="0.015" max="0.07" lowtext="consider higher dosage" oktext="OK"
+          hightext="consider lower dosage/change regimen or different drug" labels="drug concentration"></dbs-value>
+      </div>
+      <div id="step-a" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
+        <h3>1. weight</h3>
+        <p>Choose the nearest option</p>
+        <dbs-buttonparams title="40kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,0.6;ka2,1.5;patientclfactor,0.6"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="50kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,0.7;ka2,1.3;patientclfactor,0.7"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="60kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,0.8;ka2,1.2;patientclfactor,0.8"></dbs-buttonparams><br />
+        <dbs-buttonparams title="70kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,0.9;ka2,1.1;patientclfactor,0.9"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="80kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,1.0;ka2,1;patientclfactor,1"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="90kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,1.2;ka2,0.9;patientclfactor,1.2"></dbs-buttonparams><br />
+        <dbs-buttonparams title="100kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,2;ka2,0.9;patientclfactor,1.3"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="120kg" targetid="pgxdemo" group="weight"
+          idvalues="patientfactor,3;ka2,0.8;patientclfactor,1.5"></dbs-buttonparams>
+      </div>
+      <div id="step-b" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
+        <h3>2. renal / liver function?</h3>
+        <dbs-buttonparams title="intermediate impairment (CKD2)" targetid="pgxdemo" group="renalliver"
+          idvalues="patientclfactor,0.5"></dbs-buttonparams><br />
+        <dbs-buttonparams title="severe impairment (CKD3)" targetid="pgxdemo" group="renalliver"
+          idvalues="patientclfactor,0.3"></dbs-buttonparams><br />
+      </div>
+      <div id="step-c" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
+        <h3>3. Pharmacogenomic profile</h3>
+        <p>select mutation</p>
+        <dbs-buttonparams title="SLA22CA2 (*1) normal" targetid="pgxdemo" group="slc22a2" label="normal"
+          idvalues="slc22a2,1"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="SLA22CA2 (808T) poor metabolizer" targetid="pgxdemo" group="slc22a2"
+          label="poor metabolizer" idvalues="slc22a2,0.5"></dbs-buttonparams><br />
+        <dbs-buttonparams title="CYP2C19 (*1) normal" targetid="pgxdemo" group="cyp2c19" label="normal"
+          idvalues="cyp2c19,1"></dbs-buttonparams>&nbsp;
+        <dbs-buttonparams title="CYP2C19 (*2) poor metabolizer" targetid="pgxdemo" group="cyp2c19"
+          label="poor metabolizer" idvalues="cyp2c19,0.5"></dbs-buttonparams><br />
+        <dbs-buttonparams title="CYP2C19 (*17) rapid metabolizer" targetid="pgxdemo" group="cyp2c19"
+          label="rapid metabolizer" idvalues="cyp2c19,2"></dbs-buttonparams><br />
+      </div>
+      <div id="step-d" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom">
+        <h3>4. Dosage change</h3>
+        <dbs-buttonparams title="200mg every 8 hours" targetid="pgxdemo" group="dosage" label="200mg"
+          idvalues="ka,1.0;dosage,200"></dbs-buttonparams>
+        <dbs-buttonparams title="400mg every 8 hours" targetid="pgxdemo" group="dosage" label="400mg"
+          idvalues="ka,1.0;dosage,400"></dbs-buttonparams>
+        <dbs-buttonparams title="600mg every 8 hours" targetid="pgxdemo" group="dosage" label="600mg"
+          idvalues="ka,1.0;dosage,600"></dbs-buttonparams>
+      </div>
+      <div id="step-e" class="w3-padding w3-light-grey w3-round-large w3-margin-bottom w3-medium">
+        <h3>Summary</h3>
+        <p>{summary_content}</p>
+      </div>
+      <p></p>
+      <dbs-guidedslides slideids="step-a;step-b;step-c;step-d;step-e" showdots="false"></dbs-guidedslides>
+    </div>
+  </div>
+</div>
