@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "source_repository": "https://github.com/digital-biosystems/dbs-components-dev",
+  "source_commit": "01944cefa1a58b60ff399ee196db148b3ceed74d",
+  "source_tree_sha256": "7e9d68600e4d0b64499bc4ac5e3b05687fed3e2bddcbd3aced770956121e707a",
+  "build_inputs": {
+    "src/buttonparams/button-params.css": "34dbb9164a979801e8eea87443313e31d5171660d571d22c713d10d882076822",
+    "src/buttonparams/button-params.html": "910038763a452f3749f71f4ef24ce07a01f2c76316b3c6f9f121412a33704ecd",
+    "src/buttonparams/button-params.js": "204aa0fdf4f00e4c0bc1cb574eeb30698f08109291360d201dd11dce3250a534",
+    "src/buttonparams/index.js": "c9037999dcc0f7b371e7017bb665d6dae8d0f0a51a49eb62e4a272e7115d80dd",
+    "src/chartjs/_legacy/chartjs-time-ci.html": "cb3eec4e2f0dcdaa401753ec7f2a9baf8a7a7a54daffb574d079ad06f2c03493",
+    "src/chartjs/_legacy/chartjs-time-ci.js": "a8213ccf936f9848fd4971876f93bf06570a21f0a8b7e45abdf5dda0dc3f4dfa",
+    "src/chartjs/_legacy/chartjs-time-error.html": "cb3eec4e2f0dcdaa401753ec7f2a9baf8a7a7a54daffb574d079ad06f2c03493",
+    "src/chartjs/_legacy/chartjs-time-error.js": "892f00e38d41aa930e38ab18930a3620d11e9c06cfaeecc5fd449bb5dbaa43b0",
+    "src/chartjs/_legacy/chartjs-time.html": "cb3eec4e2f0dcdaa401753ec7f2a9baf8a7a7a54daffb574d079ad06f2c03493",
+    "src/chartjs/_legacy/chartjs-time.js": "0f44ac9e62dde0de1da539158f38c1f608e3c01684bf49de515c66abda88d710",
+    "src/chartjs/_legacy/chartjs.html": "1989f3fc1a131867b107876a2528bf0f34922852904c969e958504b10f8b6473",
+    "src/chartjs/_legacy/chartjs.js": "05ceee99d9e1ae7c9579a62850f16088c10a96145cdde28fe1b2115d07f5b5b1",
+    "src/chartjs/chartjs-time-base.js": "f12a19e246638dda467016e97f23a964e4831b1fcfb0887a66c622646f2696cf",
+    "src/chartjs/chartjs3-base.js": "f9894e0cfd66cf435b1d04897c856ba98713d948715338fc44c928be8739c047",
+    "src/chartjs/chartjs3.css": "104b7bea4011ba90dbd317f1ea023fbd88b76d65f79e6fb9e866ec7975d9eced",
+    "src/chartjs/chartjs3.html": "e6d5f94b6a17c2246ac7849df94513b9e6c0aba3f73b218c4a7e32faf99c2dba",
+    "src/chartjs/chartjs3.js": "52980095093627d9a40629e50df34d9cfa3a5d2a65206b2292e63225824ed06c",
+    "src/chartjs/chartjs4.html": "7d3bb98d7235d29ebfd7a9289738fa7cffbebe85c3a57f3a3e75ac2d0592adf5",
+    "src/chartjs/chartjs4.js": "74e81eab6c201ee6a586f5186361b84d804f2b485cf1dc5a54f37e697b5e57b3",
+    "src/chartjs/convertors-attribute.js": "3e68501b5a8c987ceb4cb4b3fa1809829398af7da526167f15d3bab78b32554a",
+    "src/chartjs/index.js": "23adc8182439f4efda48fcfe38d9f09ebe6f0896b6b46765461cf28a5c959f00",
+    "src/chartjs/mydata.json": "1fb470a87143f61f6ce98ef315b9eae6dec1b6d476f53cf4e0a7ebeb935a2ceb",
+    "src/chartjs/mydata2.json": "3f58194ad5cc1903125fc9cbd6118fd866a13e7f7c568a5f0e4525bd4b97c59f",
+    "src/chartjs/pgxchart.html": "e9bc03b50aa178a5ed2873b2de0d207fd93214787bcece9bfb56b0e12f15baea",
+    "src/chartjs/pgxchart.js": "b8bd5cf27824ea3248ac5a946d4b6560d22d86ba4e4d287ea62b61edfcb11a19",
+    "src/chartjs/pgxchart2c.html": "f8a10df5ed26f4a5f397dd757e9c1064954f132067f3713db14e3fdbc37c13f9",
+    "src/chartjs/pgxchart2c.js": "62b92e37213aca6adfb60c4a27718892c8dfcc0b95b55dfc060425d8e1374c23",
+    "src/chartjs/pgxchartd.html": "fa438d58af3324521613a13fca82712c14f44150320e6d99f185ca7e67fe1c84",
+    "src/chartjs/pgxchartd.js": "415f4d30a45f4084e8c964a85524f920ed1256fab9341a8a54be7704ef041997",
+    "src/chartjs/pgxchartsingle.html": "f521ff534c04dbefe32c059762a5826b505e0914f4e241b30789eef18d4250ea",
+    "src/chartjs/pgxchartsingle.js": "c00582d724fcf0346ad1025efa040ef4f5d88303308d4c558e94077bf556843f",
+    "src/chartjs/range.css": "b6f634ea30fa5616603127b8b69234523423e6af4c5feaee2c7c711d8bcfa788",
+    "src/chartjs/range.html": "11576d29d0624c5ad97c25b0a7b72a1b94ee60072eafd5a612efa8b7f460e3c0",
+    "src/chartjs/range.js": "261e9df1d31e588c1622acce35efe2f366431e62fd100d3a8955a8044fd3d5f6",
+    "src/chartjsgeo/chartjs-geo.css": "fda72c3797c5e53bb602a3185919ecba0e9b3291080ee04084cb5f58709a8be5",
+    "src/chartjsgeo/chartjs-geo.html": "5df2a470d4d572b03488a22b4f7ef74e5c823e5b960f449dfe57babee22e6946",
+    "src/chartjsgeo/chartjs-geo.js": "41271ec8b0633c20e55085ee7b1c5be89dcf7abb16b9f4d7b2fb833d063c2044",
+    "src/chartjsgeo/countries-50m.json": "04342cdc1e3016bcd7db1630de95684d67b79fe3c8c460321e87aef469502394",
+    "src/chartjsgeo/index.js": "330d5df6c5dd8f68c1bcaae0ac55c479f08ad8a9bbcf9d0fe4f3c8296e6c8fe9",
+    "src/chartjsgeo/mydata.json": "383093ff49c3b74672d61cbe464ad3ff085db7b05d19a43dd2e57f15b3ba100a",
+    "src/druglist/alldrugs.json": "fcaf25816941939fa0b3cada004a11c843ceb3a2b9da23f22929815e6d228adf",
+    "src/druglist/drugcard.html": "1365b558c8bff85a3ee499988f84a25f00f2a1af10cb392f4e448e2cfe017ccd",
+    "src/druglist/drugcard.js": "d253efcb05def8102e7daea54e859dde2ec7214051f170fd2c6fcb5a36c29c2f",
+    "src/druglist/druglist.html": "37458edf24b0783b2c6e044503e6a07ea92aaa4972c375d842a9ae37e8d808d8",
+    "src/druglist/druglist.js": "406223128b5daddde9a06b4d5aed141e09f5ef744db8f28c7ac424b1388ad21b",
+    "src/druglist/druglist.json": "90566054dab86227cd6a2de9ca39a5f6aa999e12de6ad922e8d6e66efd0fe368",
+    "src/druglist/drugviewer.css": "7e2aa366b44df7ae6e627f2bd045074e7c6f1674477963bdaa4b25a9585435c0",
+    "src/druglist/drugviewer.html": "f73480b8e2dc81edf8f994035afb7e6da16385c10b14316ed70799463849c6d7",
+    "src/druglist/drugviewer.js": "a5d05a4a5c4099e09a8f74cdecb3c870084fb95abbd139324c875dc446412709",
+    "src/druglist/index.js": "ebfb489008fe2f6ebcaf6d82343c33d3c1e9212df6422a6ce59a444de88e2bbe",
+    "src/fmi/EVENT_AGGREGATOR_MIGRATION.md": "9a1268b5a0a2f6d5d474dc1e9a80a60e448c5365613df7990cc9cf6780e86a85",
+    "src/fmi/FmiBufferManager.js": "c5c4915d78441a31ebbc3d229d259e0105a1a8ecf91fa0afbea36d85be1668d0",
+    "src/fmi/FmiBufferUtils.js": "f4f42b065f1504ab831458d826a2595daa88f37ea4c8f9c64c2dcd8e053ec25b",
+    "src/fmi/FmiEventHandlers.js": "1cb316530d865343738cdeb46487a1422b96926e49791dcd7461a8e912380aff",
+    "src/fmi/FmiInputManager.js": "be25c6cc8583368e2f405f8d3a0403708ff3d05175da23a7a38e8bf56ad15263",
+    "src/fmi/FmiInstance.js": "5c15d6827b0359550e284b92f53a9600a2795526fb63b2fb6330afefe14cbb2f",
+    "src/fmi/FmiSimulationController.js": "ea8a3e8c6d8200565f0baab797c914c911587eee6ac50a8060006f994d82273e",
+    "src/fmi/fmi.html": "7d5f7a0e982fb0112d218f4850700add3ade1002d700edee638238bac529ddd6",
+    "src/fmi/fmi.js": "29c8c1f5ee8ead474059121ecf268a4659adf67fb33804485a4190ddfd5d5cf3",
+    "src/fmi/index.js": "94fa8a265ccfb28b67fab9f3b9552d4cb4ba57f753140e2d9fa35fe87a78483a",
+    "src/fmusim/default-controls.json": "4e3e7ba4eeb58f36bb80e5a70f11e0e48dc4852cbb592576c4d41f1909c83d82",
+    "src/fmusim/fmusim.css": "981c0e35580f33554f989166c41bff0a18dae4ae17788c9a07cebedd4bafac35",
+    "src/fmusim/fmusim.html": "c7784924e8d1afffc34d0a0705f280dfb438df829474277213b25522d7e22dd9",
+    "src/fmusim/fmusim.js": "c664cd736c7875643c7abb0b063cf57e14e0285f84ff57decb51ce33cc9d8a82",
+    "src/fmusim/index.js": "c12accb7d15ed92be573accab0a3180b3c06f4d756654ef5953d8fdd2964f615",
+    "src/guidedslides/guided-slide.html": "84770f833169df15f17b97bbdd75577caa30f452d9b9594eb02828c561a9729e",
+    "src/guidedslides/guided-slide.js": "b1ddc613446145554271b31006d888307abce5883391564c593123edd1c6ab49",
+    "src/guidedslides/guided-slides.css": "dad81a1a9510ae818c292b8e88dc0cd857e06628f2e6612ab411ffe8cdea90ca",
+    "src/guidedslides/guided-slides.html": "c248c270bf0fe40b936b86db745f1da7591ada79417489be01952aa2e19e177e",
+    "src/guidedslides/guided-slides.js": "121b1a1f41ebdfef38c116e14204d5fde44969df3c23a9b0da7361bc4047b42f",
+    "src/guidedslides/index.js": "6d110d63ec69cfaced79ef6ee778d3c18a355fa5b8086a61554244aba5c1ca3d",
+    "src/helloworld/hello-world.css": "2a383f52b6e01c92a8a2461593993dfb131beef3190a1b36112368c0c01a234c",
+    "src/helloworld/hello-world.html": "823f0539137aeed900cdcba8b3da9519e2fb02eaef19e65c861c09629f89539b",
+    "src/helloworld/hello-world.js": "ea6820857f9420139276d7beb5f7ac2961ce205ac528ac92b84f8cbcf819c11b",
+    "src/helloworld/index.js": "6bf2cd8fd7920337f114551ff982e1a97cf6eb32756370123e4ff290038e4fc5",
+    "src/index.js": "18f63e4560a39d953cc5adea6a0b19d1b08757674f64b3884376dade10b49728",
+    "src/kbsearch/index.js": "78cdab8086c2a8955b02dac0ee436c55874053a6e72da2a2e2bcb97c46e13c06",
+    "src/kbsearch/kbsearch.html": "837f650b983562dd73d5c49879f840477b08d947d8638295e99f4fdf230b83cd",
+    "src/kbsearch/kbsearch.js": "4dd0039a97d50bbe3c4cdd76024db315ef77f99210ede9a58c09e9a07064ab1a",
+    "src/kbsearch/kgl3v3.json": "49aea876d7f8a74c295bc16f1afa6b337b34169d807757ca17c1a7fd911375a0",
+    "src/pgxbadge/index.js": "9ecb0fb3e4ef964c693809f9e6412f48d4e2a1a6defb8864491c7b1bdd50acfc",
+    "src/pgxbadge/pgx-badge.css": "a23302327f6b4d4b6cfa641b09391078642d3da13943564ce4cc3f80771c5b77",
+    "src/pgxbadge/pgx-badge.html": "487abb9726f6beb0cde9223d79517a8da15ad71aa409ae3f562ffa20e98d151c",
+    "src/pgxbadge/pgx-badge.js": "fe01f975e8fa2f2572203fb362b4e60590b1ac942639d67ac333dfd7f770cc2d",
+    "src/pksites/adme-compute.js": "7ea42b7859b1d00bb92f4042d0de99de4143ba87c36ce196c81c9e79dfdfe486",
+    "src/pksites/anatomogram-text.js": "406f2c9a39a37fa8c9d47014ccb51942f3a561a5b690a03c33fe7878774b0ddb",
+    "src/pksites/anatomogram.svg": "bc0edc8081dabbc3d9712f2c34576f3784b27500a2577e9c6771ffd475e88a67",
+    "src/pksites/constants.js": "05ff17bb58feebdc8fbc4bb81d530d235da28c3145e234160a48c1b5ab500709",
+    "src/pksites/index.js": "81d4d56b70e8f71b7755af1de03b2eaa32a923d06184a61efdd6d28596fbba30",
+    "src/pksites/pksites.css": "3729c4469ed061806c37df777c7d5ed4c936fe9d860126d408192947266d6a3d",
+    "src/pksites/pksites.html": "a0d5d6840aa047038a4b1ab7b34a531efc5724401b47c80d8bd9d3caed16c74a",
+    "src/pksites/pksites.js": "ba9ca709928c8f14ed61ea46c5dc235306f46100df08ce906402928d3091491c",
+    "src/quadrisgame/index.js": "d8215e807ade4f5a26f16c837d2ef625c93da56262b98d639422e55b06c54578",
+    "src/quadrisgame/quadrisgame.css": "625bf742414968e62da25b6ae65cb0433b151f6ca42aeae3dad0bd57fac9768d",
+    "src/quadrisgame/quadrisgame.html": "7b64a88973cc3d9ac5b189f2fe9a8ce74be3b20bb5382868e24e3340a067b69a",
+    "src/quadrisgame/quadrisgame.js": "0ceb28f3e59c244f3915373d5aee15f340778a355e1d52b05f4e2e614864a184",
+    "src/register.js": "15b8382f26566c9175182a178afc89fe8e328edc8a22265bd0750f1302a5aac2",
+    "src/summary/index.js": "7164193eb9a43084372a612534265e52b14db1a13e77a632abb60359394349b8",
+    "src/summary/summary.css": "4a0fc20d5d9f19b576a3b6c4a494427988b7aad7ff85a71e80d97d44fa7c05b7",
+    "src/summary/summary.html": "f834a614377dc8d6235b5546316cfa214bd0a8fbc028cc4705f613ed85d54b88",
+    "src/summary/summary.js": "cbe0b0160b8926c4c7047d1680dcdad6c52e3e98a0195ea904a6eec4a8c4f1a4",
+    "src/table/index.js": "db4b748ce85a21a5a2c184225eb7bca5f5b0cc3b95841682f53dd30781402cbf",
+    "src/table/table.html": "bcb4745b817d613b779666fb58eb1fe6e4b26cc70e6d7cbc4df470c33e1c73c6",
+    "src/table/table.js": "98ee11571b9ab68695aa41c2bcca2f894954fb8cebfb1c66d8938f57e8172fea",
+    "src/table/table.json": "3643c9ff86437a77c8adbc44e96636d597f03921e2f80e2eb5fb93a7d3e19cf6",
+    "src/utils/convertors.js": "9a964f25461fb9f0b17f8cbfbf54eaea397150c41badee5013671dc03d80128e",
+    "src/value/index.js": "99e95c3721f47169925fedf7fa78fe7773fd7d4a5e4952c0323194a867f346a8",
+    "src/value/value.css": "ec630a0946b89ee832e6d4508e78cd457819da5085ef0126d00df091f8a370fd",
+    "src/value/value.html": "0f42c2a33ee529dc094db36e0804e5e37606a649ea4568cb1bec3ec58cb64dca",
+    "src/value/value.js": "6aa99aa6bfd79b91b0ad43408802e6ff5bfb11d0a63ac8b078f6e14a00b89fb1",
+    "src/w3.css": "45bc4e620a1a03613bada04bddd941aedf0a0485c900f34c62c07c65b348d384",
+    "src/webllmchat/index.js": "a5dfab71de2589f8bf96198bd74ecfb4abf0d23d02dc8815fbf5fa28a5c8eb72",
+    "src/webllmchat/webllmchat.css": "ffff9b2134a2a50d6f2693a05499a91c8f21a1937d703871f763aa7990027ee8",
+    "src/webllmchat/webllmchat.html": "94f667b20ea59264eb02dfd9278577e7c69674f8f8fce9e280e2fa8d2278ba14",
+    "src/webllmchat/webllmchat.js": "639dba4a6f508834306b34b9cbd529fdee266e132f59d897a72316fca8f0e5da",
+    "package.json": "149728bd21a8bbbc2fd2c36d780bb68903cf6564ba908cfa59a6bfb2a50e4f0f",
+    "package-lock.json": "2911120d8bc04c797b9403657852c624420d48b6242839b02cd659ac61557ce2",
+    "webpack.config.cjs": "82172a4919fbcb4ce211ca2f5d8622e84407482743106c427bb200d2dc70168a",
+    "babel.config.json": "0119e93ee230cf030174696c7ce668f54f3830891d7315496d663e1ad1442bb5",
+    ".browserslistrc": "0dac9b89186c87f3c5b3cbde12f5bf06c839432c34a4d899d7bef000dab3a8ba",
+    "scripts/release.py": "f334a572a14f75e4357669dc1a5a300a679a2b82f48ce9498d6b2306b283544b"
+  },
+  "node": "v24.18.0",
+  "entrypoints": {
+    "dbs-fmusim": [
+      "dbs-shared.js",
+      "dbs-fmusim.js"
+    ],
+    "dbs-pksites": [
+      "dbs-shared.js",
+      "dbs-pksites.js"
+    ]
+  },
+  "files": {
+    "dbs-bundle.js": {
+      "sha256": "35419f9b6287626b159ded474fbecb9c5f070ddeadfd08a7cc6fbb96dc346d65",
+      "bytes": 1388289
+    },
+    "dbs-bundle.js.LICENSE.txt": {
+      "sha256": "692fb5057c3e4a655f68dd13a77b2909c12a8e9ad8a3c4d0c553c6dc41e53caa",
+      "bytes": 936
+    },
+    "dbs-buttonparams.js": {
+      "sha256": "cb056cc37e7b6e1c403361cf11abdf91c6297785b69c7dc9ca3967dc3c189697",
+      "bytes": 8274
+    },
+    "dbs-chartjsgeo.js": {
+      "sha256": "1e01ed00e1bbcb27d01c004b71d7ed7458c9b69c9e5c575e9864ce61f25092a4",
+      "bytes": 1078768
+    },
+    "dbs-chartjsgeo.js.LICENSE.txt": {
+      "sha256": "bb18f0767ad13e07f0bdf92aa7a0307117a7f9f8f0de5fed060f7ed797b1cbc0",
+      "bytes": 122
+    },
+    "dbs-fmi.js": {
+      "sha256": "4a9a7399f9316108a8e5ce8b107692bdf95b6a76a458a2446c0009a79b7c5174",
+      "bytes": 956352
+    },
+    "dbs-fmi.js.LICENSE.txt": {
+      "sha256": "2e9f73c36db545bda48d13b1aa92f871e7af670484ddcd9fa822c611c67e9abd",
+      "bytes": 614
+    },
+    "dbs-fmusim.js": {
+      "sha256": "11e94afaa0f1fc778e9cf13681dd938dd5f38a5f1917d9bce7e7b2582c6dc0ca",
+      "bytes": 39836
+    },
+    "dbs-full-bundle.js": {
+      "sha256": "90f2cbfb5253d25df744f8d309d7828df3c34b15314a617df777ffb900673bae",
+      "bytes": 8948973
+    },
+    "dbs-full-bundle.js.LICENSE.txt": {
+      "sha256": "20cc393768eb9be898ed05bdaa7cfa164f1d0d3a528a6eedfb426547cc5b1a7f",
+      "bytes": 1127
+    },
+    "dbs-guidedslides.js": {
+      "sha256": "178519c60a5a31849ea6412ee3653d8e54cb512dd3512f691e573882a4b4af8c",
+      "bytes": 15021
+    },
+    "dbs-helloworld.js": {
+      "sha256": "89fc3444bdf8fc247a77ae638095efa11f1b3a0ab86da3765aeb68103071cd33",
+      "bytes": 5718
+    },
+    "dbs-kbsearch.js": {
+      "sha256": "706b76ca68e7143dddf2aba1258352d74f61a0440191fc1b33d51375e0b7fb6b",
+      "bytes": 513449
+    },
+    "dbs-pgxbadge.js": {
+      "sha256": "0223278a6745a331742df056df697ec7a0cb93075e46ebfc85ed86dd3d04c368",
+      "bytes": 6864
+    },
+    "dbs-pksites.js": {
+      "sha256": "a50b2c099eef481df58fa13072dadbe81ccb320e21597365a605bcad59fbbbdc",
+      "bytes": 181661
+    },
+    "dbs-quadrisgame.js": {
+      "sha256": "20423c29dbacaa30eed17fea7092b472cecebbba4c7d6aa16917736cef03aece",
+      "bytes": 19825
+    },
+    "dbs-shared.js": {
+      "sha256": "a53721e6f252a58aeee196567ab4405349ad21099a4a1ebb6db4a984e3e04e27",
+      "bytes": 376324
+    },
+    "dbs-shared.js.LICENSE.txt": {
+      "sha256": "832ebde1847448bffc123478ae1fe8e5c596ca13833fa9a8be3649fac3165bee",
+      "bytes": 444
+    },
+    "dbs-summary.js": {
+      "sha256": "6bc4cc0826994f68cb72dc64e9c5d800cc86b4e498cedb1ef9e0c552b0a697ee",
+      "bytes": 7036
+    },
+    "dbs-table.js": {
+      "sha256": "58e671f7c7a868f3bf2d60de81c6a21daafa3014a115c510342fa88a2f90ec00",
+      "bytes": 14171
+    },
+    "dbs-value.js": {
+      "sha256": "d4d1857b3dde45688104fb94df86bbbbd123349644ad8343d57a34e659ece2fc",
+      "bytes": 10013
+    },
+    "dbs-webllmchat.js": {
+      "sha256": "c9882bf9f0fa3e026ef0816b7264dfc3f87a8c6b4e7a9be6b3888796f8407ab3",
+      "bytes": 6154323
+    },
+    "dbs-webllmchat.js.LICENSE.txt": {
+      "sha256": "6572577ccf252e40df28082f49f8aa50ed979268e442ccd23f37d5c383591722",
+      "bytes": 190
+    }
+  },
+  "release": "9e5617f7788c05ad"
+}
